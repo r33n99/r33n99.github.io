@@ -1,7 +1,6 @@
-# Rinat Razhapov Portfolio
+# Portfolio
 
-Nuxt 4 SSG сайт-визитка frontend-разработчика Рината Ражапова.
-Визуальное направление вдохновлено Lattice Portfolio и компонентным подходом Inspira UI.
+Nuxt 4 SSG сайт-визитка frontend-разработчика.
 
 ## Команды
 
