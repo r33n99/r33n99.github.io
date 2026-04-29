@@ -1,24 +1,50 @@
 <script setup lang="ts">
-const skills = [
-  'Vue 3',
-  'Nuxt',
-  'TypeScript',
-  'Pinia',
-  'Playwright',
-  'Vitest',
-  'Stripe',
-  'Zoho CRM',
-  'Mapbox',
-  'Core Web Vitals',
-  'React',
-  'Telegram Bots',
-  'Mentoring',
-  'Business Logic',
-  'Docker',
-  'CI/CD',
-]
+const { language } = useLanguage()
 
-const marqueeSkills = [...skills, ...skills]
+const skillsByLanguage: Record<'ru' | 'en', string[]> = {
+  ru: [
+    'Vue 3',
+    'Nuxt',
+    'TypeScript',
+    'Pinia',
+    'Playwright',
+    'Vitest',
+    'Stripe',
+    'Zoho CRM',
+    'Mapbox',
+    'Core Web Vitals',
+    'React',
+    'Telegram Bots',
+    'Mentoring',
+    'Business Logic',
+    'Docker',
+    'CI/CD',
+  ],
+  en: [
+    'Vue 3',
+    'Nuxt',
+    'TypeScript',
+    'Pinia',
+    'Playwright',
+    'Vitest',
+    'Stripe',
+    'Zoho CRM',
+    'Mapbox',
+    'Core Web Vitals',
+    'React',
+    'Telegram Bots',
+    'Mentoring',
+    'Business Logic',
+    'Docker',
+    'CI/CD',
+  ],
+}
+
+const marqueeSkills = computed(() => {
+  const skills = skillsByLanguage[language.value]
+
+  return [...skills, ...skills]
+})
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative isolate min-h-screen overflow-x-hidden bg-background text-foreground">
+  <div class="relative isolate min-h-screen overflow-x-clip bg-background text-foreground">
     <LatticeBackdrop
     
     />
