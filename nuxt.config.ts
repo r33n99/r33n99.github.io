@@ -15,6 +15,7 @@ export default {
     },
   },
   app: {
+    baseURL: '/r33n99/',
     head: {
       htmlAttrs: {
         lang: 'ru',
