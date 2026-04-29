@@ -56,7 +56,7 @@
 
 
  
-
+  <RevealOnScroll>
     <section id="work" class="w-full px-[clamp(1rem,6vw,10rem)] py-[clamp(5rem,8vw,12rem)]">
       <SectionTitle
         eyebrow="Experience"
@@ -75,7 +75,10 @@
         />
       </div>
     </section>
+  </RevealOnScroll>
+   
 
+  <RevealOnScroll>
     <section id="stack" class="w-full px-[clamp(1rem,6vw,10rem)] py-[clamp(5rem,8vw,12rem)]">
       <div class="glass-card overflow-hidden rounded-[clamp(1.5rem,2.6vw,3.5rem)] p-[clamp(1.25rem,2.6vw,4rem)]">
         <SectionTitle
@@ -97,7 +100,9 @@
         </div>
       </div>
     </section>
+  </RevealOnScroll>
 
+  <RevealOnScroll>
     <section id="process" class="w-full px-[clamp(1rem,6vw,10rem)] py-[clamp(5rem,8vw,12rem)]">
       <SectionTitle
         eyebrow="Strengths"
@@ -117,7 +122,8 @@
         </article>
       </div>
     </section>
-
+  </RevealOnScroll>
+  <RevealOnScroll>
     <section id="contact" class="w-full px-[clamp(1rem,6vw,10rem)] py-[clamp(5rem,8vw,12rem)]">
       <div class="glass-card relative overflow-hidden rounded-[clamp(1.5rem,2.6vw,3.5rem)] p-[clamp(1.5rem,4vw,6rem)] text-center">
         <div class="absolute inset-x-12 top-0 h-px bg-linear-to-r from-transparent via-primary to-transparent" />
@@ -145,6 +151,7 @@
         </div>
       </div>
     </section>
+  </RevealOnScroll>
   </main>
 </template>
 

@@ -15,7 +15,6 @@ export default {
     },
   },
   app: {
-    baseURL: '/r33n99/',
     head: {
       htmlAttrs: {
         lang: 'ru',
@@ -26,7 +25,7 @@ export default {
         {
           name: 'description',
           content:
-            'Frontend Developer с 3+ годами коммерческого опыта: Vue, Nuxt, TypeScript, сложная бизнес-логика, тестирование и Core Web Vitals.',
+            'Frontend Developer c 3+ годами коммерческого опыта: Vue, Nuxt, TypeScript, сложная бизнес-логика, тестирование и Core Web Vitals.',
         },
         { name: 'theme-color', content: '#05070d' },
         { property: 'og:title', content: 'Ринат Ражапов - Frontend Developer' },
