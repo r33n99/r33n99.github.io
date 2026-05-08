@@ -4,26 +4,64 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.12 0.018 270);
-  --foreground: oklch(0.985 0.01 265);
-  --card: oklch(0.17 0.022 270);
-  --card-foreground: oklch(0.985 0.01 265);
-  --popover: oklch(0.17 0.022 270);
-  --popover-foreground: oklch(0.985 0.01 265);
-  --primary: #1f447f;
-  --primary-foreground: oklch(0.985 0.01 265);
-  --secondary: oklch(0.23 0.032 270);
-  --secondary-foreground: oklch(0.92 0.018 265);
-  --muted: oklch(0.24 0.022 270);
-  --muted-foreground: oklch(0.72 0.025 265);
-  --accent: #6f8fc4;
-  --accent-foreground: oklch(0.98 0.01 265);
-  --destructive: oklch(0.63 0.22 25);
-  --destructive-foreground: oklch(0.98 0.01 265);
-  --border: oklch(0.28 0.035 270);
-  --input: oklch(0.28 0.035 270);
-  --ring: #1f447f;
+  color-scheme: light;
   --radius: 1rem;
+  /* Молочная светлая тема (тёплый нейтрал, без «больничного» белого) */
+  --background: oklch(0.972 0.002 95);
+  --foreground: oklch(0.31 0.015 270);
+  --card: oklch(0.985 0.002 95);
+  --card-foreground: oklch(0.31 0.015 270);
+  --popover: oklch(0.99 0.01 95);
+  --popover-foreground: oklch(0.27 0.024 55);
+  --primary: oklch(0.63 0.23 25);
+  --primary-foreground: oklch(0.985 0.003 95);
+  --secondary: oklch(0.95 0.002 95);
+  --secondary-foreground: oklch(0.36 0.012 270);
+  --muted: oklch(0.95 0.002 95);
+  --muted-foreground: oklch(0.49 0.01 270);
+  --accent: oklch(0.58 0.065 175);
+  --accent-foreground: oklch(0.20 0.03 55);
+  --destructive: oklch(0.58 0.2 25);
+  --destructive-foreground: oklch(0.99 0.01 95);
+  --border: oklch(0.89 0.003 95);
+  --input: oklch(0.89 0.003 95);
+  --ring: oklch(0.63 0.23 25);
+  --backdrop-base: oklch(0.972 0.002 95);
+  --backdrop-grid: #d1d5db;
+  --backdrop-overlay-1: rgba(170, 170, 170, 0.08);
+  --backdrop-overlay-2: rgba(140, 140, 140, 0.06);
+  --backdrop-overlay-3: rgba(110, 110, 110, 0.05);
+  --backdrop-vignette: rgba(70, 70, 70, 0.05);
+}
+
+.dark {
+  color-scheme: dark;
+  /* Нейтральный почти чёрный без коричневого оттенка */
+  --background: oklch(0.13 0.004 260);
+  --foreground: oklch(0.96 0.01 260);
+  --card: oklch(0.18 0.005 260);
+  --card-foreground: oklch(0.96 0.01 260);
+  --popover: oklch(0.18 0.005 260);
+  --popover-foreground: oklch(0.96 0.01 260);
+  --primary: oklch(0.62 0.2 25);
+  --primary-foreground: oklch(0.14 0.01 260);
+  --secondary: oklch(0.23 0.006 260);
+  --secondary-foreground: oklch(0.92 0.012 260);
+  --muted: oklch(0.23 0.006 260);
+  --muted-foreground: oklch(0.72 0.01 260);
+  --accent: oklch(0.72 0.06 82);
+  --accent-foreground: oklch(0.14 0.01 260);
+  --destructive: oklch(0.62 0.2 25);
+  --destructive-foreground: oklch(0.98 0.01 95);
+  --border: oklch(0.36 0.008 260);
+  --input: oklch(0.30 0.008 260);
+  --ring: oklch(0.76 0.07 82);
+  --backdrop-base: oklch(0.12 0.004 260);
+  --backdrop-grid: #4b5563;
+  --backdrop-overlay-1: rgba(148, 163, 184, 0.08);
+  --backdrop-overlay-2: rgba(100, 116, 139, 0.07);
+  --backdrop-overlay-3: rgba(71, 85, 105, 0.06);
+  --backdrop-vignette: rgba(2, 6, 23, 0.5);
 }
 
 @theme inline {
@@ -59,8 +97,14 @@
     @apply border-border outline-ring/50;
   }
 
+  button,
+  [type="button"],
+  [type="submit"],
+  [type="reset"] {
+    border-radius: 0;
+  }
+
   html {
-    color-scheme: dark;
     scroll-behavior: smooth;
   }
 
@@ -76,8 +120,29 @@
 }
 
 @layer utilities {
+  .section-shell {
+    @apply w-full border-t border-border/70;
+  }
+
+  .section-shell-hero {
+    @apply border-t-0;
+  }
+
+  .section-shell-last {
+    @apply border-b border-border/70;
+  }
+
+  .section-container {
+    @apply mx-auto w-full max-w-screen-2xl border-x border-border;
+  }
+
   .glass-card {
-    @apply border border-white/10 bg-white/4 shadow-2xl shadow-black/30 backdrop-blur-xl;
+    @apply border border-border bg-card;
+    box-shadow: none;
+  }
+
+  .dark .glass-card {
+    box-shadow: none;
   }
 
   .lattice-mask {
@@ -110,11 +175,6 @@
 
   .marquee-mask {
     mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
-  }
-
-  .parallax-grid {
-    transform: translate3d(0, calc(var(--scroll-y, 0px) * -0.08), 0);
-    will-change: transform;
   }
 }
 

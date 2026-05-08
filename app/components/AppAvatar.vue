@@ -5,7 +5,7 @@ withDefaults(
     alt?: string
   }>(),
   {
-    sizeClass: 'size-[clamp(2rem,2.2vw,2.8rem)]',
+    sizeClass: 'size-11',
     alt: 'Ринат Ражапов',
   },
 )
@@ -16,7 +16,7 @@ const imageError = ref(false)
 <template>
   <span
     :class="[
-      'relative grid shrink-0 place-items-center overflow-hidden rounded-full bg-primary text-primary-foreground ring-1 ring-white/10',
+      'relative grid shrink-0 place-items-center overflow-hidden rounded-full bg-primary text-primary-foreground ring-1 ring-border',
       sizeClass,
     ]"
   >

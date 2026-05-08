@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev --host 0.0.0.0 --port 3000",
+    "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -14,6 +14,7 @@
     "@iconify/vue": "^5.0.0",
     "@inspira-ui/plugins": "^0.0.2",
     "@nuxt/icon": "^2.2.1",
+    "@nuxt/image": "^2.0.0",
     "@tailwindcss/postcss": "^4.2.4",
     "@vueuse/core": "^14.2.1",
     "motion-v": "^2.2.1",

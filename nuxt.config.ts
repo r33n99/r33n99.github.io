@@ -2,7 +2,7 @@
 export default {
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/icon'],
+  modules: ['@nuxt/icon', '@nuxt/image'],
   css: ['~/assets/css/main.css'],
   postcss: {
     plugins: {
@@ -18,7 +18,6 @@ export default {
     head: {
       htmlAttrs: {
         lang: 'ru',
-        class: 'dark',
       },
       title: 'Frontend Developer',
       meta: [
@@ -27,7 +26,16 @@ export default {
           content:
             'Frontend Developer c 3+ годами коммерческого опыта: Vue, Nuxt, TypeScript, сложная бизнес-логика, тестирование и Core Web Vitals.',
         },
-        { name: 'theme-color', content: '#05070d' },
+        {
+          name: 'theme-color',
+          content: '#f3ebe1',
+          media: '(prefers-color-scheme: light)',
+        },
+        {
+          name: 'theme-color',
+          content: '#161311',
+          media: '(prefers-color-scheme: dark)',
+        },
         { property: 'og:title', content: 'Ринат Ражапов - Frontend Developer' },
         {
           property: 'og:description',
@@ -38,6 +46,9 @@ export default {
     },
   },
   nitro: {
+    routeRules: {
+      '/projects': { redirect: '/' },
+    },
     prerender: {
       crawlLinks: true,
       routes: ['/'],

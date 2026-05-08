@@ -96,64 +96,62 @@ const t = computed(() => texts[language.value])
 </script>
 
 <template>
-  <aside class="hero-float glass-card relative w-full overflow-hidden rounded-[clamp(1.75rem,2.5vw,3.5rem)] p-[clamp(0.9rem,1vw,1.4rem)]">
-    <InspiraBorderBeam :duration="9" :border-width="1.2" />
-
-    <div class="relative overflow-hidden rounded-4xl border border-white/10 bg-[#070a12]/85 p-[clamp(1.25rem,1.6vw,2.4rem)]">
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(31,68,127,0.24),transparent_34%),radial-gradient(circle_at_85%_20%,rgba(31,68,127,0.18),transparent_30%)]" />
+  <aside class="hero-float glass-card relative w-full max-h-[860px] overflow-x-hidden overflow-y-auto p-4">
+    <div class="relative overflow-hidden border border-border bg-card/90 p-5">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,color-mix(in_oklch,var(--primary)_16%,transparent),transparent_34%),radial-gradient(circle_at_85%_20%,color-mix(in_oklch,var(--accent)_12%,transparent),transparent_30%)]" />
 
       <div class="relative">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-[clamp(0.8rem,0.8vw,1rem)] text-muted-foreground">{{ t.eyebrow }}</p>
-            <p class="text-[clamp(1.05rem,1.15vw,1.55rem)] font-semibold">{{ t.title }}</p>
+            <p class="text-sm text-muted-foreground">{{ t.eyebrow }}</p>
+            <p class="text-xl font-semibold">{{ t.title }}</p>
           </div>
-          <div class="grid size-[clamp(3rem,3vw,4rem)] place-items-center rounded-2xl border border-white/10 bg-white/5 text-foreground">
-            <Icon name="lucide:sparkles" class="size-[clamp(1.5rem,1.6vw,2rem)]" />
+          <div class="grid size-11 place-items-center border border-border bg-muted/60 text-foreground">
+            <Icon name="lucide:sparkles" class="size-5" />
           </div>
         </div>
 
-        <div class="mt-[clamp(1.25rem,1.6vw,2.2rem)] grid grid-cols-2 gap-3">
+        <div class="mt-4 grid grid-cols-2 gap-2">
           <div
             v-for="principle in t.principles"
             :key="principle.title"
-            class="group rounded-3xl border border-white/10 bg-white/5 p-[clamp(0.9rem,1.05vw,1.45rem)] transition duration-500 hover:-translate-y-1 hover:border-primary/35 hover:bg-white/8"
+            class="group border border-border bg-muted/45 p-3 transition duration-500 hover:-translate-y-0.5 hover:border-primary/35 hover:bg-muted/70"
           >
             <div class="flex items-start justify-between gap-3">
-              <p class="max-w-40 text-[clamp(0.95rem,1vw,1.25rem)] font-semibold leading-tight">{{ principle.title }}</p>
-              <Icon :name="principle.icon" class="size-[clamp(1rem,1vw,1.35rem)] shrink-0 text-muted-foreground transition group-hover:text-foreground" />
+              <p class="max-w-36 text-[15px] font-semibold leading-tight">{{ principle.title }}</p>
+              <Icon :name="principle.icon" class="size-4 shrink-0 text-muted-foreground transition group-hover:text-foreground" />
             </div>
-            <p class="mt-3 text-[clamp(0.72rem,0.72vw,0.92rem)] leading-[1.55] text-muted-foreground">{{ principle.description }}</p>
+            <p class="mt-2 text-xs leading-[1.45] text-muted-foreground">{{ principle.description }}</p>
           </div>
         </div>
 
-        <div class="mt-4 rounded-3xl border border-white/10 bg-black/25 p-[clamp(1rem,1.2vw,1.7rem)]">
-          <div class="mb-4 flex items-center justify-between gap-3">
-            <p class="text-[clamp(0.82rem,0.82vw,1rem)] font-semibold">{{ t.rhythm }}</p>
-            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[clamp(0.68rem,0.68vw,0.85rem)] text-muted-foreground">
+        <div class="mt-3 border border-border bg-muted/55 p-3">
+          <div class="mb-2 flex items-center justify-between gap-2">
+            <p class="text-sm font-semibold">{{ t.rhythm }}</p>
+            <span class="border border-border bg-muted/50 px-2.5 py-0.5 text-[11px] text-muted-foreground">
               {{ t.badge }}
             </span>
           </div>
 
-          <div class="grid gap-2">
+          <div class="grid gap-1.5">
             <div
               v-for="step in t.deliverySteps"
               :key="step.label"
-              class="flex items-center gap-3 rounded-2xl border border-white/8 bg-white/4 px-3 py-2.5"
+              class="flex items-center gap-2 border border-border/80 bg-muted/35 px-2.5 py-2"
             >
-              <span class="grid size-8 shrink-0 place-items-center rounded-full bg-primary/15 text-[0.72rem] font-semibold text-foreground">
+              <span class="grid size-6 shrink-0 place-items-center bg-primary/15 text-[0.62rem] font-semibold text-foreground">
                 {{ step.label }}
               </span>
-              <span class="text-[clamp(0.78rem,0.8vw,1rem)] text-muted-foreground">{{ step.value }}</span>
-              <div class="ml-auto h-px min-w-8 flex-1 bg-linear-to-r from-primary/50 to-transparent" />
+              <span class="text-xs text-muted-foreground">{{ step.value }}</span>
+              <div class="ml-auto h-px min-w-6 flex-1 bg-linear-to-r from-primary/50 to-transparent" />
             </div>
           </div>
         </div>
 
-        <div class="mt-4 flex flex-wrap gap-2">
-          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[clamp(0.74rem,0.76vw,0.95rem)] text-muted-foreground">Core Web Vitals</span>
-          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[clamp(0.74rem,0.76vw,0.95rem)] text-muted-foreground">Cross-domain</span>
-          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[clamp(0.74rem,0.76vw,0.95rem)] text-muted-foreground">API contracts</span>
+        <div class="mt-3 hidden flex-wrap gap-2 2xl:flex">
+          <span class="border border-border bg-muted/45 px-2.5 py-1 text-xs text-muted-foreground">Core Web Vitals</span>
+          <span class="border border-border bg-muted/45 px-2.5 py-1 text-xs text-muted-foreground">Cross-domain</span>
+          <span class="border border-border bg-muted/45 px-2.5 py-1 text-xs text-muted-foreground">API contracts</span>
         </div>
       </div>
     </div>

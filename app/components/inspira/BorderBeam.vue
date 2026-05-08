@@ -14,8 +14,8 @@ interface BorderBeamProps {
 const props = withDefaults(defineProps<BorderBeamProps>(), {
   duration: 12,
   borderWidth: 1,
-  colorFrom: '#1F447F',
-  colorTo: '#6f8fc4',
+  colorFrom: '#b8734a',
+  colorTo: '#e8c48a',
   delay: 0,
 })
 

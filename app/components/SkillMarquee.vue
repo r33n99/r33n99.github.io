@@ -7,6 +7,8 @@ const skillsByLanguage: Record<'ru' | 'en', string[]> = {
     'Nuxt',
     'TypeScript',
     'Pinia',
+    'Zustand',
+    'Inspira UI',
     'Playwright',
     'Vitest',
     'Stripe',
@@ -25,6 +27,8 @@ const skillsByLanguage: Record<'ru' | 'en', string[]> = {
     'Nuxt',
     'TypeScript',
     'Pinia',
+    'Zustand',
+    'Inspira UI',
     'Playwright',
     'Vitest',
     'Stripe',
@@ -55,7 +59,7 @@ const marqueeSkills = computed(() => {
           <span
             v-for="skill in marqueeSkills"
             :key="`${loopIndex}-${skill}`"
-            class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[clamp(0.72rem,0.75vw,1rem)] text-muted-foreground shadow-lg shadow-black/20 backdrop-blur"
+            class="border border-border bg-muted/45 px-4 py-2 text-base text-muted-foreground shadow-md shadow-foreground/8 backdrop-blur dark:shadow-black/30"
           >
             {{ skill }}
           </span>
