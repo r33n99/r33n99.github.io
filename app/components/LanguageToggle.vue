@@ -20,7 +20,7 @@ function toggleLanguage(): void {
 <template>
   <button
     type="button"
-    class="min-w-16 rounded-full border border-border bg-muted/45 px-3 py-2 text-xs font-semibold text-foreground shadow-inner shadow-foreground/10 transition hover:bg-muted/70 dark:shadow-black/25"
+    class="min-w-16 rounded-full cursor-pointer border border-border bg-muted/45 px-3 py-2 text-xs font-semibold text-foreground shadow-inner shadow-foreground/10 transition hover:bg-muted/70 dark:shadow-black/25"
     :title="labels.title"
     :aria-label="labels.title"
     @click="toggleLanguage"

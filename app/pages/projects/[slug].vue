@@ -6,7 +6,7 @@
       <div class="section-container py-16 md:py-20 xl:py-24">
         <nav
           aria-label="Breadcrumb"
-          class="mb-10 text-sm text-muted-foreground md:mb-12"
+          class="mb-10 px-5 text-sm text-muted-foreground md:mb-12"
         >
           <NuxtLink
             to="/"
@@ -15,7 +15,7 @@
             {{ t.home }}
           </NuxtLink>
           <span class="mx-2 text-border">→</span>
-          <span>{{ t.projects }}</span>
+          <NuxtLink to="/#projects" class="transition hover:text-foreground">{{ t.projects }}</NuxtLink>
           <span class="mx-2 text-border">→</span>
           <span class="font-medium text-foreground">{{ title }}</span>
         </nav>
@@ -42,6 +42,7 @@
           </p>
           <div class="mt-8 overflow-hidden border border-border bg-muted/20">
             <img
+              v-if="entry.previewImage"
               :src="entry.previewImage"
               :alt="title"
               class="h-auto w-full object-cover"
@@ -49,12 +50,22 @@
             >
           </div>
           <a
+            v-if="entry.websiteUrl"
             :href="entry.websiteUrl"
             target="_blank"
             rel="noreferrer"
-            class="mt-8 inline-flex border border-primary bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 md:text-base"
+            class="mt-8 inline-flex border border-primary bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 hover:text-foreground md:text-base"
           >
             {{ t.openSite }}
+          </a>
+          <a
+            v-if="entry.codeUrl"
+            :href="entry.codeUrl"
+            target="_blank"
+            rel="noreferrer"
+            class="mt-8 ml-2 inline-flex bg-foreground px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 hover:text-foreground md:text-base"
+          >
+            {{ t.code }}
           </a>
         </article>
       </div>
@@ -73,18 +84,20 @@ const { getBySlug } = useProjects()
 const slugParam = route.params.slug
 const slug = typeof slugParam === 'string' ? slugParam : slugParam?.[0] ?? ''
 
-const copy: Record<Language, { home: string; projects: string; openSite: string; notFound: string }> = {
+const copy: Record<Language, { home: string; projects: string; openSite: string; notFound: string, code: string }> = {
   ru: {
     home: 'Главная',
     projects: 'Проекты',
     openSite: 'Открыть сайт',
     notFound: 'Проект не найден',
+    code: 'Код',
   },
   en: {
     home: 'Home',
     projects: 'Projects',
     openSite: 'Open website',
     notFound: 'Project not found',
+    code: 'Code',
   },
 }
 

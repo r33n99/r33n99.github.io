@@ -65,7 +65,7 @@ function closeMenu(): void {
         <LanguageToggle />
         <a
           href="#contact"
-          class="border border-border bg-background px-5 py-2.5 text-sm font-semibold text-foreground transition hover:bg-primary hover:text-primary-foreground"
+          class="border border-border bg-background px-5 py-2.5 text-sm font-semibold text-foreground transition hover:bg-primary hover:text-foreground"
         >
           {{ t.contact }}
         </a>

@@ -19,6 +19,7 @@ export default {
       htmlAttrs: {
         lang: 'ru',
       },
+      favicon: '/favicon.ico',
       title: 'Frontend Developer',
       meta: [
         {
@@ -51,7 +52,7 @@ export default {
     },
     prerender: {
       crawlLinks: true,
-      routes: ['/'],
+      routes: ['/', '/projects/dli-deluxe-limo-italy', '/projects/eventner', '/projects/inspiritaly', '/projects/travel-2025', '/projects/silkway-rally-account', '/projects/parcelpoint'],
     },
   },
 }

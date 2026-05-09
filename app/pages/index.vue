@@ -7,29 +7,32 @@
         <div class="relative min-h-[640px] md:min-h-[760px] xl:min-h-[860px]">
           <ClientOnly>
             <div class="absolute inset-0 w-full">
-              <InspiraFallingStarsBg
-                :color="isDark ? '#FFF' : '#000'"
-              />
+              <InspiraFallingStarsBg :color="isDark ? '#FFF' : '#000'" />
             </div>
           </ClientOnly>
           <section
             class="relative z-10 mx-auto grid h-full w-full max-w-7xl min-w-0 items-center justify-items-center gap-8 px-4 py-16 text-center sm:px-8 md:gap-10 md:px-12 md:py-20 xl:px-16 xl:py-24"
           >
-            <div class="hero-reveal relative min-w-0 max-w-296 bg-background/50 backdrop-blur-sm pt-5 ">
+            <div
+              class="hero-reveal relative min-w-0 max-w-296"
+            >
               <div class="px-5">
                 <p class="text-2xl text-muted-foreground">
-                  {{language === 'ru' ? 'Привет!' : 'Hi!'}} <span class=" text-red-500">{{ t.name }}</span>
+                  {{ language === "ru" ? "Привет!" : "Hi!" }}
+                  <span class="text-red-500">{{ t.name }}</span>
                 </p>
-              <h1
-                    class="mx-auto mt-6 max-w-[16ch] text-3xl font-semibold leading-[0.9] tracking-tighter sm:text-6xl md:mt-8 md:text-5xl lg:text-7xl xl:tracking-[-0.075em]"
-              >
-                {{ t.heroBadge }}
-              </h1>       
+                <h1
+                  class="mx-auto mt-6 max-w-[16ch] text-3xl font-semibold leading-[0.9] tracking-tighter sm:text-6xl md:mt-8 md:text-5xl lg:text-7xl xl:tracking-[-0.075em]"
+                >
+                  {{ t.heroBadge }}
+                </h1>
               </div>
               <p class="mt-5 px-5 text-sm text-muted-foreground">
                 #Vue #Nuxt #TypeScript
               </p>
-              <div class="mt-6 flex flex-col items-center justify-center gap-1 px-5 text-center">
+              <div
+                class="mt-6 flex flex-col items-center justify-center gap-1 px-5 text-center"
+              >
                 <InspiraFlipWords
                   class="mx-auto max-w-[46ch] text-center text-base font-medium leading-snug text-foreground md:text-lg"
                   :words="t.flipWords"
@@ -37,17 +40,12 @@
                   :animate-on-load="true"
                 />
               </div>
-              <!-- <p
-                class="mt-5 max-w-[62ch] text-base leading-[1.55] text-muted-foreground md:mt-6 md:text-lg xl:text-[20px]"
-              >
-                {{ t.heroDescription }}
-              </p> -->
               <div
                 class="mt-8 flex flex-col justify-center gap-3 sm:mt-9 sm:flex-row"
               >
                 <a
                   href="#experience"
-                  class="group border border-primary bg-primary px-7 py-3 text-center text-sm font-semibold text-primary-foreground shadow-2xl shadow-primary/20 transition hover:-translate-y-0.5 hover:bg-primary/90 md:px-8 md:py-3.5 md:text-base xl:px-9 xl:py-4 xl:text-[17px]"
+                  class="group border border-primary bg-primary px-7 py-3 text-center text-sm font-semibold text-primary-foreground shadow-2xl shadow-primary/20 transition hover:-translate-y-0.5 hover:bg-primary/90 hover:text-foreground md:px-8 md:py-3.5 md:text-base xl:px-9 xl:py-4 xl:text-[17px]"
                 >
                   {{ t.heroPrimaryCta }}
                   <Icon
@@ -57,14 +55,14 @@
                 </a>
                 <a
                   href="#contact"
-                  class="border border-border bg-muted/40 px-7 py-3 text-center text-sm font-semibold text-foreground backdrop-blur transition hover:-translate-y-0.5 hover:bg-muted/65 md:px-8 md:py-3.5 md:text-base xl:px-9 xl:py-4 xl:text-[17px]"
+                  class="border border-border bg-background px-7 py-3 text-center text-sm font-semibold text-foreground backdrop-blur transition hover:-translate-y-0.5 hover:bg-muted/65 md:px-8 md:py-3.5 md:text-base xl:px-9 xl:py-4 xl:text-[17px]"
                 >
                   {{ t.heroSecondaryCta }}
                 </a>
                 <a
                   :href="t.resumeHref"
                   download
-                  class="border border-border bg-background px-7 py-3 text-center text-sm font-semibold text-foreground transition hover:-translate-y-0.5 hover:bg-primary/20 md:px-8 md:py-3.5 md:text-base xl:px-9 xl:py-4 xl:text-[17px]"
+                  class="border border-border bg-background px-7 py-3 text-center text-sm font-semibold text-foreground transition hover:-translate-y-0.5 hover:bg-muted/65 md:px-8 md:py-3.5 md:text-base xl:px-9 xl:py-4 xl:text-[17px]"
                 >
                   {{ t.resumeButton }}
                 </a>
@@ -119,7 +117,11 @@
               <div
                 class="h-[320px] border border-border bg-muted/25 md:h-[420px] xl:h-[500px]"
               >
-               <NuxtImg src="/images/avatar.png" alt="About" class="w-full h-full object-cover" />
+                <NuxtImg
+                  src="/images/avatar.png"
+                  alt="About"
+                  class="w-full h-full object-cover"
+                />
               </div>
 
               <div class="max-w-[760px]">
@@ -143,14 +145,14 @@
                   <a
                     :href="t.resumeHref"
                     download
-                    class="inline-flex items-center gap-2 border border-primary bg-primary px-6 py-3 text-base font-semibold text-primary-foreground transition hover:bg-primary/90"
+                    class="w-full md:w-auto inline-flex items-center justify-center md:justify-start gap-2 border border-primary bg-primary px-6 py-3 text-base font-semibold text-primary-foreground transition hover:bg-primary/90 hover:text-foreground"
                   >
                     <Icon name="lucide:download" class="size-4" />
                     {{ language === "ru" ? "Скачать резюме" : "Download CV" }}
                   </a>
                   <a
                     href="#contact"
-                    class="inline-flex items-center gap-2 border border-border bg-background px-6 py-3 text-base font-semibold transition hover:bg-muted/50"
+                    class="w-full md:w-auto inline-flex items-center justify-center md:justify-start gap-2 border border-border bg-background px-6 py-3 text-base font-semibold transition hover:bg-muted/50"
                   >
                     <Icon name="lucide:mail" class="size-4" />
                     {{ language === "ru" ? "Связаться" : "Email Me" }}
@@ -159,10 +161,10 @@
                     href="https://t.me/r33n_dev"
                     target="_blank"
                     rel="noreferrer"
-                    class="inline-flex items-center gap-2 border border-border bg-background px-6 py-3 text-base font-semibold transition hover:bg-muted/50"
+                    class="w-full md:w-auto inline-flex items-center justify-center md:justify-start gap-2 border border-border bg-background px-6 py-3 text-base font-semibold transition hover:bg-muted/50"
                   >
                     <Icon name="lucide:send" class="size-4" />
-                    {{ language === "ru" ? "Написать в TG" : "Message in TG" }}
+                    {{ language === "ru" ? "Написать в telegram" : "Message in telegram" }}
                   </a>
                 </div>
               </div>
@@ -440,7 +442,7 @@ const pageText: Record<Language, PageText> = {
         "Ключевые позиции и компании. Подробные продуктовые кейсы — в разделе «Проекты».",
     },
     projectsSection: {
-      eyebrow: "Проекты",
+      eyebrow: "Опыт",
       title: "Проекты",
       description:
         "Краткий обзор продуктов, в которых я вёл frontend: от booking flow и маркетплейсов до карт и операторских панелей.",
@@ -574,14 +576,14 @@ const pageText: Record<Language, PageText> = {
     projectsReadMore: "Read more",
     workHistory: [
       {
-        role: "Senior Frontend Developer",
-        company: "TrustyOne / Paleo Studio",
-        period: "2019 — present",
+        role: "Frontend Developer",
+        company: "TrustyOne",
+        period: "2024 — 2026",
       },
       {
         role: "Frontend Developer",
-        company: "Freelance & contracts",
-        period: "2016 — 2019",
+        company: "Paleo Studio",
+        period: "2022 — 2024",
       },
     ],
     stackSection: {

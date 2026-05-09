@@ -22,7 +22,7 @@ const isDark = computed(() => resolvedMode.value === 'dark')
 <template>
   <button
     type="button"
-    class="grid size-10 place-items-center rounded-full border border-border bg-muted/50 text-foreground shadow-inner shadow-black/5 transition hover:bg-muted dark:shadow-black/25"
+    class="grid size-10 place-items-center rounded-full border border-border cursor-pointer bg-muted/50 text-foreground shadow-inner shadow-black/5 transition hover:bg-muted dark:shadow-black/25"
     role="switch"
     :aria-checked="isDark"
     :aria-label="isDark ? aria.dark : aria.light"

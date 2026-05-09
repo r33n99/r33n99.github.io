@@ -12,6 +12,7 @@ export interface ProjectEntry {
   previewImage: string
   websiteUrl: string
   tags: string[]
+  codeUrl: string
 }
 
 const projectsData: ProjectEntry[] = [
@@ -29,9 +30,10 @@ const projectsData: ProjectEntry[] = [
       'Booking platform for transfers and tours: multi-step booking flow, dynamic pricing, Stripe and Zoho CRM integrations, stable API contracts with backend. Focus on conversion and predictable releases.',
     periodRu: '2024 — 2026',
     periodEn: '2024 — 2026',
-    previewImage: '/images/projects/placeholder-preview.svg',
-    websiteUrl: 'https://example.com/dli-deluxe-limo-italy',
-    tags: ['Nuxt', 'Booking Flow', 'Stripe', 'Zoho CRM'],
+    previewImage: '/images/projects/dli.png',
+    websiteUrl: 'https://booking.deluxelimoitaly.com/',
+    tags: ['Booking Flow', 'Stripe', 'Zoho CRM'],
+    codeUrl: 'https://github.com/r33n99/booking.deluxelimoitaly',
   },
   {
     slug: 'eventner',
@@ -46,9 +48,10 @@ const projectsData: ProjectEntry[] = [
       'Venue marketplace: listings, filters, search, venue pages, booking flows and SEO-focused pages for organic traffic.',
     periodRu: '2024 — 2025',
     periodEn: '2024 — 2025',
-    previewImage: '/images/projects/placeholder-preview.svg',
-    websiteUrl: 'https://example.com/eventner',
+    previewImage: '/images/projects/eventner.png',
+    websiteUrl: 'https://eventner.ru/',
     tags: ['Nuxt', 'Marketplace', 'SEO', 'UX'],
+    codeUrl: 'https://github.com/r33n99/eventner',
   },
   {
     slug: 'inspiritaly',
@@ -63,9 +66,10 @@ const projectsData: ProjectEntry[] = [
       'Tours platform: catalogs, tour pages, cart, checkout, account area, Core Web Vitals and media performance.',
     periodRu: '2025 — 2026',
     periodEn: '2025 — 2026',
-    previewImage: '/images/projects/placeholder-preview.svg',
-    websiteUrl: 'https://example.com/inspiritaly',
+    previewImage: '/images/projects/insp.png',
+    websiteUrl: 'https://www.inspiritaly.com/',
     tags: ['Nuxt', 'Checkout', 'SSR/ISR', 'Core Web Vitals'],
+    codeUrl: 'https://github.com/r33n99/inspiritaly',
   },
   {
     slug: 'travel-2025',
@@ -80,9 +84,10 @@ const projectsData: ProjectEntry[] = [
       'Mobile-first international tourism forum: interactive map, activities, participant catalogs, quests and personalized routes.',
     periodRu: '2024',
     periodEn: '2024',
-    previewImage: '/images/projects/placeholder-preview.svg',
-    websiteUrl: 'https://example.com/travel-2025',
+    previewImage: '/images/projects/travel.png',
+    websiteUrl: 'https://rustravelforum.com/visit/registration/',
     tags: ['EventTech', 'Mapbox', 'Mobile-first', 'Performance'],
+    codeUrl: 'https://github.com/r33n99/travel-advisor-2025',
   },
   {
     slug: 'silkway-rally-account',
@@ -97,9 +102,10 @@ const projectsData: ProjectEntry[] = [
       'Built both admin and client applications: interactive tables and charts, complex UI state, and adaptive flows for different roles.',
     periodRu: '2022',
     periodEn: '2022',
-    previewImage: '/images/projects/placeholder-preview.svg',
-    websiteUrl: 'https://example.com/silkway-rally-account',
+    previewImage: '',
+    websiteUrl: '',
     tags: ['Vue 2', 'Vuetify', 'Charts', 'Dashboard'],
+    codeUrl: 'https://gitlab.com/r33n99/silkroad-client',
   },
   {
     slug: 'parcelpoint',
@@ -114,9 +120,10 @@ const projectsData: ProjectEntry[] = [
       'Built both admin and client ParcelPoint apps: operator dashboards, status management, complex forms and validation, release stability.',
     periodRu: '2023',
     periodEn: '2023',
-    previewImage: '/images/projects/placeholder-preview.svg',
-    websiteUrl: 'https://example.com/parcelpoint',
+    previewImage: '',
+    websiteUrl: '',
     tags: ['Vue 2', 'Operations UI', 'Forms', 'Release Stability'],
+    codeUrl: 'https://gitlab.com/r33n99/parcelpoint-client',
   },
 ]
 
