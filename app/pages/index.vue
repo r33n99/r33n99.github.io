@@ -4,10 +4,10 @@
 
     <section class="section-shell section-shell-hero">
       <div class="section-container relative px-0">
-        <div class="relative min-h-[640px] md:min-h-[760px] xl:min-h-[860px]">
+        <div class="relative min-h-[640px] md:min-h-[760px] xl:min-h-[860px] flex items-center justify-center h-full">
           <ClientOnly>
             <div class="absolute inset-0 w-full">
-              <InspiraFallingStarsBg :color="isDark ? '#FFF' : '#000'" />
+              <InspiraFallingStarsBg :count="starsCount" :color="isDark ? '#FFF' : '#000'" />
             </div>
           </ClientOnly>
           <section
@@ -86,8 +86,18 @@
             >
               {{ item.label }}
             </p>
-            <p class="mt-3 text-4xl font-semibold leading-none text-primary">
-              {{ item.value }}
+            <p class="text-4xl font-semibold leading-none text-primary flex items-center">
+              <template v-if="typeof item.value === 'number'">
+                <InspiraNumberTicker
+                  :value="Number(item.value)"
+                  :decimal-places="0"
+                  class="text-4xl font-semibold leading-none text-primary!"
+                />
+                +
+              </template>
+              <span v-else>
+                {{ item.value }}
+              </span>
             </p>
             <p class="mt-2 text-base text-muted-foreground">
               {{ item.description }}
@@ -125,21 +135,18 @@
               </div>
 
               <div class="max-w-[760px]">
-                <p
+                <div class="flex flex-col gap-5">
+                  <InspiraEncrypted
+                  :text="aboutIntro"
                   class="text-2xl font-semibold leading-tight text-primary md:text-3xl xl:text-[36px]"
-                >
-                  {{ aboutIntro }}
-                </p>
-                <p
-                  class="mt-5 text-base leading-[1.65] text-muted-foreground md:mt-6 md:text-lg xl:text-[23px]"
-                >
+                />
+                <p class="mt-5 text-base leading-[1.65] text-muted-foreground md:mt-6 md:text-lg xl:text-[23px]">
                   {{ aboutParagraph1 }}
                 </p>
-                <p
-                  class="mt-5 text-base leading-[1.65] text-muted-foreground md:mt-6 md:text-lg xl:text-[23px]"
-                >
+                <p class="mt-5 text-base leading-[1.65] text-muted-foreground md:mt-6 md:text-lg xl:text-[23px]">
                   {{ aboutParagraph2 }}
                 </p>
+                </div>
 
                 <div class="mt-10 flex flex-wrap gap-3">
                   <a
@@ -259,7 +266,7 @@
 
     <RevealOnScroll>
       <section id="stack" class="section-shell">
-        <div class="section-container p-10">
+        <div class="section-container py-10 px-5 md:px-10">
           <div class="bg-background">
             <SectionTitle
               :eyebrow="t.stackSection.eyebrow"
@@ -293,7 +300,7 @@
 
     <RevealOnScroll>
       <section id="contact" class="section-shell section-shell-last mb-10">
-        <div class="section-container p-10">
+        <div class="section-container py-10 px-5 md:px-10">
           <div class="relative bg-background text-center">
             <SectionTitle
               :eyebrow="t.contactSection.eyebrow"
@@ -303,7 +310,7 @@
             <div class="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
               <a
                 href="mailto:rinni499@gmail.com"
-                class="border border-foreground bg-foreground px-6 py-3 text-sm font-semibold text-background transition hover:bg-primary hover:text-primary-foreground"
+                class="bg-foreground px-6 py-3 text-sm font-semibold text-background transition hover:bg-primary hover:text-primary-foreground"
               >
                 rinni499@gmail.com
               </a>
@@ -340,6 +347,7 @@
 </template>
 
 <script setup lang="ts">
+import { useMediaQuery } from "@vueuse/core";
 import { useHead, useSeoMeta } from "nuxt/app";
 
 type Language = "ru" | "en";
@@ -676,21 +684,21 @@ const isDark = computed(() => resolvedMode.value === "dark");
 const heroStats = computed(() =>
   language.value === "ru"
     ? [
-        { label: "Опыт", value: "3+", description: "года в продакшене" },
-        { label: "Релизы", value: "10+", description: "проектов и релизов" },
+        { label: "Опыт", value: 3, description: "года в продакшене" },
+        { label: "Релизы", value: 10, description: "проектов и релизов" },
         {
           label: "Формат",
-          value: "Remote",
+          value: "Удалённо",
           description: "Full-time, комфортно в распределённых командах",
         },
       ]
     : [
         {
           label: "Experience",
-          value: "3+",
+          value: 3,
           description: "Years in production",
         },
-        { label: "Delivery", value: "10+", description: "Projects shipped" },
+        { label: "Delivery", value: 10, description: "Projects shipped" },
         {
           label: "Format",
           value: "Remote",
@@ -725,4 +733,8 @@ useSeoMeta({
   title: computed(() => t.value.seo.title),
   description: computed(() => t.value.seo.description),
 });
+
+const isMobile = useMediaQuery("(max-width: 768px)");
+
+const starsCount = computed(() => isMobile.value ? 50 : 200);
 </script>

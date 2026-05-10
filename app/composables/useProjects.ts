@@ -125,6 +125,24 @@ const projectsData: ProjectEntry[] = [
     tags: ['Vue 2', 'Operations UI', 'Forms', 'Release Stability'],
     codeUrl: 'https://gitlab.com/r33n99/parcelpoint-client',
   },
+  {
+    slug: 'kipish-bar',
+    index: '07',
+    titleRu: 'Kipish bar',
+    titleEn: 'Kipish bar',
+    introRu: 'Сайт бара: дизайн, UX, интеграции с внешними сервисами.',
+    introEn: 'Bar website: design, UX, integrations with external services.',
+    descriptionRu:
+      'Разработан сайт бара Kipish: дизайн, UX, интеграции с внешними сервисами.',
+    descriptionEn:
+      'Built the Kipish bar website: design, UX, integrations with external services.',
+    periodRu: '2024',
+    periodEn: '2024',
+    previewImage: '/images/projects/kipish.png',
+    websiteUrl: 'https://kipish.kg/',
+    tags: ['Vue 2', 'Vuetify', 'UX', 'Integrations'],
+    codeUrl: 'https://gitlab.com/r33n99/kipish-client',
+  }
 ]
 
 export function useProjects(): {
