@@ -62,7 +62,7 @@
                 <a
                   :href="t.resumeHref"
                   download
-                  class="border border-border bg-background px-7 py-3 text-center text-sm font-semibold text-foreground transition hover:-translate-y-0.5 hover:bg-muted/65 md:px-8 md:py-3.5 md:text-base xl:px-9 xl:py-4 xl:text-[17px]"
+                  class="border border-border bg-background px-7 py-3 text-center text-sm font-semibold text-foreground transition hover:-translate-y-0.5 hover:bg-muted/65 md:px-8 md:py-3.5 md:text-base xl:px-9 xl:py-4 xl:text-[17px] cursor-pointer"
                 >
                   {{ t.resumeButton }}
                 </a>
@@ -128,7 +128,7 @@
                 class="h-[320px] border border-border bg-muted/25 md:h-[420px] xl:h-[500px]"
               >
                 <NuxtImg
-                  src="/images/avatar.png"
+                  src="/images/avatar.jpg"
                   alt="About"
                   class="w-full h-full object-cover"
                 />
@@ -152,7 +152,7 @@
                   <a
                     :href="t.resumeHref"
                     download
-                    class="w-full md:w-auto inline-flex items-center justify-center md:justify-start gap-2 border border-primary bg-primary px-6 py-3 text-base font-semibold text-primary-foreground transition hover:bg-primary/90 hover:text-foreground"
+                    class="w-full md:w-auto inline-flex items-center justify-center md:justify-start gap-2 border border-primary bg-primary px-6 py-3 text-base font-semibold text-primary-foreground transition hover:bg-primary/90 hover:text-foreground cursor-pointer"
                   >
                     <Icon name="lucide:download" class="size-4" />
                     {{ language === "ru" ? "Скачать резюме" : "Download CV" }}
@@ -426,7 +426,7 @@ const pageText: Record<Language, PageText> = {
     heroPrimaryCta: "Смотреть опыт",
     heroSecondaryCta: "Связаться",
     resumeButton: "Скачать резюме",
-    resumeHref: "/resume-rinat-razhapov-ru.pdf",
+    resumeHref: "/cv-ru.pdf",
     coreWebVitals: "Core Web Vitals",
     bookingArchitecture: "Booking flow architecture",
     aboutSection: {
@@ -552,7 +552,7 @@ const pageText: Record<Language, PageText> = {
     heroPrimaryCta: "View experience",
     heroSecondaryCta: "Contact me",
     resumeButton: "Download resume",
-    resumeHref: "/resume-rinat-razhapov-ru.pdf",
+    resumeHref: "/cv-en.pdf",
     coreWebVitals: "Core Web Vitals",
     bookingArchitecture: "Booking flow architecture",
     aboutSection: {
