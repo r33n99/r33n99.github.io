@@ -28,7 +28,7 @@
                 </h1>
               </div>
               <p class="mt-5 px-5 text-sm text-muted-foreground">
-                #Vue #Nuxt #TypeScript
+                #TypeScript #Vue #Nuxt #React #Next #Node.js
               </p>
               <div
                 class="mt-6 flex flex-col items-center justify-center gap-1 px-5 text-center"
@@ -411,7 +411,7 @@ const pageText: Record<Language, PageText> = {
     seo: {
       title: "Frontend Developer",
       description:
-        "Frontend (Vue/Nuxt/TypeScript): сложные продуктовые сценарии, white label, карты и производительность. Удалённо, full-time.",
+        "Frontend (Vue/Nuxt/TypeScript): сложные продуктовые сценарии, white label, карты и производительность. Удалённо / гибрид / офис, full-time.",
     },
     heroBadge: "Frontend Developer",
     name: "Я Ринат",
@@ -436,7 +436,7 @@ const pageText: Record<Language, PageText> = {
         "Ценю ясные договорённости с продуктом и backend: фиксирую сценарии, краевые случаи и контракты до того, как они превращаются в переделки. Люблю системный подход — от структуры фронта до наблюдаемости и регрессий — и спокойное ведение задачи до релиза без «пожаров» к дедлайну.",
     },
     aboutHighlights: [
-      "Формат: удалённо, full-time; комфортно в международных командах и англоязычной переписке",
+      "Формат: удалённо / гибрид / офис, full-time; комфортно в международных командах и англоязычной переписке",
       "White Label: несколько брендов из одной кодовой базы с общей логикой и разными визуальными настройками",
       "Карты и плотный UI: Mapbox, Google/Yandex Maps — маршруты, большие наборы точек, отзывчивость интерфейса",
       "SEO и разметка: SSR/ISR, динамические meta и JSON-LD для органического трафика на больших каталогах",
@@ -538,7 +538,7 @@ const pageText: Record<Language, PageText> = {
     seo: {
       title: "Frontend Developer",
       description:
-        "Frontend (Vue/Nuxt/TypeScript): complex product flows, white label, maps and performance. Remote, full-time.",
+        "Frontend (Vue/Nuxt/TypeScript): complex product flows, white label, maps and performance. Remote / hybrid / office, full-time.",
     },
     heroBadge: "Frontend Developer",
     flipWords: [
@@ -562,7 +562,7 @@ const pageText: Record<Language, PageText> = {
         "I care about clear agreements with product and backend: scenarios, edge cases, and contracts before they become rework. I prefer a systematic approach—from frontend structure to observability and regressions—and calm execution through release without last-minute chaos.",
     },
     aboutHighlights: [
-      "Remote, full-time; comfortable in international teams and English-first communication",
+      "Remote / hybrid / office, full-time; comfortable in international teams and English-first communication",
       "White label delivery: multiple brands from one codebase with shared logic and separate branding",
       "Maps and dense UI: Mapbox plus Google/Yandex Maps—routes, large datasets, responsive UX",
       "SEO and markup: SSR/ISR, dynamic meta and JSON-LD for organic traffic on large catalogs",
@@ -688,7 +688,7 @@ const heroStats = computed(() =>
         { label: "Релизы", value: 10, description: "проектов и релизов" },
         {
           label: "Формат",
-          value: "Удалённо",
+          value: "Удалённо / гибрид / офис",
           description: "Full-time, комфортно в распределённых командах",
         },
       ]
@@ -701,7 +701,7 @@ const heroStats = computed(() =>
         { label: "Delivery", value: 10, description: "Projects shipped" },
         {
           label: "Format",
-          value: "Remote",
+          value: "Remote / hybrid / office",
           description: "Full-time, comfortable in distributed teams",
         },
       ],

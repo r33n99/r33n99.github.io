@@ -141,7 +141,43 @@ const projectsData: ProjectEntry[] = [
     previewImage: '/images/projects/kipish.png',
     websiteUrl: 'https://kipish.kg/',
     tags: ['Vue 2', 'Vuetify', 'UX', 'Integrations'],
-    codeUrl: 'https://gitlab.com/r33n99/kipish-client',
+        codeUrl: 'https://gitlab.com/r33n99/kipish-client',
+  },
+  {
+    slug: 'lago-transfer',
+    index: '08',
+    titleRu: 'Lago Transfer',
+    titleEn: 'Lago Transfer',
+    introRu: 'Сервис бронирования трансферов: Next.js 15, React 19, Zustand.',
+    introEn: 'Transfer booking service: Next.js 15, React 19, Zustand.',
+    descriptionRu:
+      'Современная платформа для бронирования трансферов, построенная на Next.js 15 и React 19. Включает сложную валидацию через Zod, управление состоянием с помощью Zustand и Unit-тестирование на Vitest.',
+    descriptionEn:
+      'A modern transfer booking platform built with Next.js 15 and React 19. Features complex Zod validation, Zustand state management, and Vitest unit testing.',
+    periodRu: '2026',
+    periodEn: '2026',
+    previewImage: '/images/projects/lago.png',
+    websiteUrl: '',
+    tags: ['Next.js 15', 'React 19', 'Zustand', 'Vitest'],
+    codeUrl: 'https://github.com/r33n99/lago-transfer',
+  },
+  {
+    slug: 'nova-shop',
+    index: '09',
+    titleRu: 'Nova Shop',
+    titleEn: 'Nova Shop',
+    introRu: 'Интернет-магазин: React 19, Vite, Ant Design, Zustand.',
+    introEn: 'E-commerce website: React 19, Vite, Ant Design, Zustand.',
+    descriptionRu:
+      'Полнофункциональный интернет-магазин, построенный на самом свежем стеке: React 19 и Vite. Реализован современный интерфейс на Ant Design, управление состоянием через Zustand и роутинг на React Router 7. Особое внимание уделено качеству кода и производительности с использованием Oxlint.',
+    descriptionEn:
+      'Full-featured e-commerce application built on the latest stack: React 19 and Vite. Implements a modern UI with Ant Design, state management via Zustand, and routing with React Router 7. Special focus on code quality and performance using Oxlint.',
+    periodRu: '2026',
+    periodEn: '2026',
+    previewImage: '/images/projects/nova.png',
+    websiteUrl: '',
+    tags: ['React 19', 'Ant Design', 'Zustand', 'Vite'],
+    codeUrl: 'https://github.com/r33n99/nova-shop',
   }
 ]
 
