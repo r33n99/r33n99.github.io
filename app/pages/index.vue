@@ -265,6 +265,53 @@
     </RevealOnScroll>
 
     <RevealOnScroll>
+      <section id="pet-projects" class="section-shell">
+        <div class="section-container py-10">
+          <SectionTitle
+            :eyebrow="t.petProjectsSection.eyebrow"
+            :title="t.petProjectsSection.title"
+            :description="t.petProjectsSection.description"
+          />
+
+          <div
+            class="divide-y divide-border border-t border-border bg-background"
+          >
+            <NuxtLink
+              v-for="card in petProjectRows"
+              :key="card.slug"
+              :to="`/projects/${card.slug}`"
+              class="group grid grid-cols-1 gap-3 px-5 py-6 transition hover:bg-muted/20 md:grid-cols-[1fr_auto] md:items-center md:gap-8 md:px-10 md:py-7"
+            >
+              <div class="min-w-0">
+                <p
+                  class="text-xs font-semibold tracking-[0.18em] text-muted-foreground"
+                >
+                  {{ card.index }}
+                </p>
+                <p
+                  class="mt-1 text-sm font-semibold text-foreground md:text-base"
+                >
+                  {{ card.title }}
+                </p>
+                <p class="mt-1 text-sm text-muted-foreground md:text-base">
+                  {{ card.intro }}
+                </p>
+              </div>
+              <div class="text-left md:text-right">
+                <p class="text-sm text-muted-foreground md:text-base">
+                  {{ card.period }}
+                </p>
+                <p class="mt-1 text-sm font-semibold text-primary">
+                  {{ t.projectsReadMore }}
+                </p>
+              </div>
+            </NuxtLink>
+          </div>
+        </div>
+      </section>
+    </RevealOnScroll>
+
+    <RevealOnScroll>
       <section id="stack" class="section-shell">
         <div class="section-container py-10 px-5 md:px-10">
           <div class="bg-background">
@@ -398,6 +445,7 @@ interface PageText {
   processSection: SectionCopy;
   contactSection: SectionCopy;
   projectsSection: SectionCopy;
+  petProjectsSection: SectionCopy;
   projectsReadMore: string;
   workHistory: WorkHistoryRow[];
   stack: StackItem[];
@@ -454,6 +502,12 @@ const pageText: Record<Language, PageText> = {
       title: "Проекты",
       description:
         "Краткий обзор продуктов, в которых я вёл frontend: от booking flow и маркетплейсов до карт и операторских панелей.",
+    },
+    petProjectsSection: {
+      eyebrow: "Пет-проекты",
+      title: "Пет-проекты",
+      description:
+        "Небольшие проекты для себя: расширение для браузера, конвертер Figma в Vue и CRM для лидов. Во всех трёх — интеграция с Gemini API для генерации текста и автоматизации, пробую AI-инструменты вне рабочих задач.",
     },
     projectsReadMore: "Подробнее",
     workHistory: [
@@ -581,6 +635,12 @@ const pageText: Record<Language, PageText> = {
       description:
         "A short overview of products where I owned the frontend: booking flows, marketplaces, maps and operator tooling.",
     },
+    petProjectsSection: {
+      eyebrow: "Pet projects",
+      title: "Pet projects",
+      description:
+        "Small side projects: a browser extension, a Figma-to-Vue converter and a lead CRM. All three integrate the Gemini API for text generation and automation — trying out AI tooling outside of work tasks.",
+    },
     projectsReadMore: "Read more",
     workHistory: [
       {
@@ -666,16 +726,32 @@ const t = computed(() => pageText[language.value]);
 const { projects: projectsList } = useProjects();
 
 const projectCards = computed(() =>
-  projectsList.map((p) => ({
-    slug: p.slug,
-    index: p.index,
-    title: language.value === "ru" ? p.titleRu : p.titleEn,
-    intro: language.value === "ru" ? p.introRu : p.introEn,
-    period: language.value === "ru" ? p.periodRu : p.periodEn,
-  })),
+  projectsList
+    .filter((p) => p.category === "work")
+    .map((p) => ({
+      slug: p.slug,
+      index: p.index,
+      title: language.value === "ru" ? p.titleRu : p.titleEn,
+      intro: language.value === "ru" ? p.introRu : p.introEn,
+      period: language.value === "ru" ? p.periodRu : p.periodEn,
+    })),
 );
 
 const projectRows = projectCards;
+
+const petProjectCards = computed(() =>
+  projectsList
+    .filter((p) => p.category === "pet")
+    .map((p) => ({
+      slug: p.slug,
+      index: p.index,
+      title: language.value === "ru" ? p.titleRu : p.titleEn,
+      intro: language.value === "ru" ? p.introRu : p.introEn,
+      period: language.value === "ru" ? p.periodRu : p.periodEn,
+    })),
+);
+
+const petProjectRows = petProjectCards;
 
 const { resolvedMode } = useTheme();
 

@@ -1,6 +1,7 @@
 export interface ProjectEntry {
   slug: string
   index: string
+  category: 'work' | 'pet'
   titleRu: string
   titleEn: string
   introRu: string
@@ -19,6 +20,7 @@ const projectsData: ProjectEntry[] = [
   {
     slug: 'dli-deluxe-limo-italy',
     index: '01',
+    category: 'work',
     titleRu: 'DLI / Deluxe Limo Italy',
     titleEn: 'DLI / Deluxe Limo Italy',
     introRu:
@@ -38,6 +40,7 @@ const projectsData: ProjectEntry[] = [
   {
     slug: 'eventner',
     index: '02',
+    category: 'work',
     titleRu: 'Eventner',
     titleEn: 'Eventner',
     introRu: 'EventTech-маркетплейс площадок: каталог, фильтры, SEO.',
@@ -56,6 +59,7 @@ const projectsData: ProjectEntry[] = [
   {
     slug: 'inspiritaly',
     index: '03',
+    category: 'work',
     titleRu: 'Inspiritaly',
     titleEn: 'Inspiritaly',
     introRu: 'Туры и experiences: каталог, checkout, личный кабинет, CWV.',
@@ -74,6 +78,7 @@ const projectsData: ProjectEntry[] = [
   {
     slug: 'travel-2025',
     index: '04',
+    category: 'work',
     titleRu: 'Travel 2025',
     titleEn: 'Travel 2025',
     introRu: 'Форум: карта, активности, квесты, mobile-first.',
@@ -92,6 +97,7 @@ const projectsData: ProjectEntry[] = [
   {
     slug: 'silkway-rally-account',
     index: '05',
+    category: 'work',
     titleRu: 'Silkway Rally',
     titleEn: 'Silkway Rally',
     introRu: 'Админка и клиент: таблицы, графики, роли.',
@@ -110,6 +116,7 @@ const projectsData: ProjectEntry[] = [
   {
     slug: 'parcelpoint',
     index: '06',
+    category: 'work',
     titleRu: 'ParcelPoint',
     titleEn: 'ParcelPoint',
     introRu: 'Логистика: админка и клиент, панели операторов, формы.',
@@ -128,6 +135,7 @@ const projectsData: ProjectEntry[] = [
   {
     slug: 'kipish-bar',
     index: '07',
+    category: 'work',
     titleRu: 'Kipish bar',
     titleEn: 'Kipish bar',
     introRu: 'Сайт бара: дизайн, UX, интеграции с внешними сервисами.',
@@ -146,6 +154,7 @@ const projectsData: ProjectEntry[] = [
   {
     slug: 'lago-transfer',
     index: '08',
+    category: 'work',
     titleRu: 'Lago Transfer',
     titleEn: 'Lago Transfer',
     introRu: 'Сервис бронирования трансферов: Next.js 15, React 19, Zustand.',
@@ -164,6 +173,7 @@ const projectsData: ProjectEntry[] = [
   {
     slug: 'nova-shop',
     index: '09',
+    category: 'work',
     titleRu: 'Nova Shop',
     titleEn: 'Nova Shop',
     introRu: 'Интернет-магазин: React 19, Vite, Ant Design, Zustand.',
@@ -178,7 +188,64 @@ const projectsData: ProjectEntry[] = [
     websiteUrl: '',
     tags: ['React 19', 'Ant Design', 'Zustand', 'Vite'],
     codeUrl: 'https://github.com/r33n99/nova-shop',
-  }
+  },
+  {
+    slug: 'hh-auto-apply-extension',
+    index: '01',
+    category: 'pet',
+    titleRu: 'HH Auto Apply Extension',
+    titleEn: 'HH Auto Apply Extension',
+    introRu: 'Расширение для браузера: автоотклик на вакансии hh.ru с AI-письмами.',
+    introEn: 'Browser extension: auto-apply to hh.ru with AI-generated cover letters.',
+    descriptionRu:
+      'Расширение для браузера, автоматизирующее отклики на вакансии на hh.ru: находит подходящие вакансии в выдаче и отправляет отклики без ручного повторения одних и тех же действий. Интеграция с Gemini API генерирует персональное сопроводительное письмо под каждую вакансию на основе резюме и текста объявления, а также поддерживает чат с AI прямо в расширении.',
+    descriptionEn:
+      'A browser extension that automates applying to jobs on hh.ru: it walks through the search results and submits applications so you don\'t have to repeat the same manual steps. It integrates with the Gemini API to generate a tailored cover letter for each vacancy based on the resume and job description, and includes an in-extension AI chat.',
+    periodRu: '2026',
+    periodEn: '2026',
+    previewImage: '',
+    websiteUrl: '',
+    tags: ['Browser Extension', 'JavaScript', 'Automation', 'Gemini API'],
+    codeUrl: 'https://github.com/r33n99/hh-auto-apply-extansion',
+  },
+  {
+    slug: 'figma-2-vue',
+    index: '02',
+    category: 'pet',
+    titleRu: 'Figma 2 Vue',
+    titleEn: 'Figma 2 Vue',
+    introRu: 'Конвертер дизайнов Figma в Vue-компоненты с помощью AI.',
+    introEn: 'AI-assisted converter that turns Figma designs into Vue components.',
+    descriptionRu:
+      'Инструмент для конвертации макетов из Figma в готовые Vue-компоненты: забирает структуру дизайна через Figma API и с помощью Gemini генерирует разметку и стили компонента, сокращая ручную вёрстку.',
+    descriptionEn:
+      'A tool that converts Figma designs into ready-to-use Vue components: it pulls the design structure via the Figma API and uses Gemini to generate the component markup and styles, cutting down manual layout work.',
+    periodRu: '2026',
+    periodEn: '2026',
+    previewImage: '',
+    websiteUrl: '',
+    tags: ['Vue', 'Figma API', 'Gemini API', 'Codegen'],
+    codeUrl: 'https://github.com/r33n99/figma-2-vue',
+  },
+  {
+    slug: '2gis-lead-crm',
+    index: '03',
+    category: 'pet',
+    titleRu: '2GIS Lead CRM',
+    titleEn: '2GIS Lead CRM',
+    introRu: 'CRM для лидов из 2ГИС с AI-автоответами в WhatsApp.',
+    introEn: 'Lead CRM for 2GIS with AI auto-replies in WhatsApp.',
+    descriptionRu:
+      'CRM-система для парсинга и обработки лидов из 2ГИС: структурированное хранение контактов организаций, статусы обработки и удобный интерфейс для работы с базой лидов. Интегрирован Gemini API: AI ведёт переписку с лидом в WhatsApp от лица заданной персоны, подставляет контекст лида (ниша, адрес, история сообщений) и генерирует ответ по системному промпту, настраиваемому в UI.',
+    descriptionEn:
+      'A CRM system for parsing and managing leads from 2GIS: structured storage of organization contacts, lead status tracking, and a convenient interface for working with the lead database. It integrates the Gemini API: the AI replies to leads in WhatsApp on behalf of a configured persona, using the lead\'s context (niche, address, message history) and a system prompt editable from the UI.',
+    periodRu: '2026',
+    periodEn: '2026',
+    previewImage: '',
+    websiteUrl: '',
+    tags: ['CRM', 'Parsing', 'Vue', 'Gemini API', 'WhatsApp'],
+    codeUrl: 'https://github.com/r33n99/2gis-lead-crm',
+  },
 ]
 
 export function useProjects(): {
