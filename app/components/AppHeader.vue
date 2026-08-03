@@ -4,6 +4,7 @@ interface HeaderText {
   about: string
   experience: string
   projects: string
+  landings: string
   stack: string
   contact: string
   menuTitle: string
@@ -20,6 +21,7 @@ const texts: Record<'ru' | 'en', HeaderText> = {
     about: 'Обо мне',
     experience: 'Опыт',
     projects: 'Проекты',
+    landings: 'Лендинги',
     stack: 'Навыки',
     contact: 'Связаться',
     menuTitle: 'Меню',
@@ -31,6 +33,7 @@ const texts: Record<'ru' | 'en', HeaderText> = {
     about: 'About',
     experience: 'Experience',
     projects: 'Projects',
+    landings: 'Landings',
     stack: 'Skills',
     contact: 'Contact',
     menuTitle: 'Menu',
@@ -57,6 +60,7 @@ function closeMenu(): void {
         <a href="#about" class="header-nav-link">{{ t.about }}</a>
         <a href="#experience" class="header-nav-link">{{ t.experience }}</a>
         <a href="#projects" class="header-nav-link">{{ t.projects }}</a>
+        <a href="#landings" class="header-nav-link">{{ t.landings }}</a>
         <a href="#stack" class="header-nav-link">{{ t.stack }}</a>
       </nav>
 
@@ -111,6 +115,9 @@ function closeMenu(): void {
           </a>
           <a href="#projects" class="border border-border bg-muted/35 px-4 py-3 transition hover:bg-muted/65" @click="closeMenu">
             {{ t.projects }}
+          </a>
+          <a href="#landings" class="border border-border bg-muted/35 px-4 py-3 transition hover:bg-muted/65" @click="closeMenu">
+            {{ t.landings }}
           </a>
           <a href="#stack" class="border border-border bg-muted/35 px-4 py-3 transition hover:bg-muted/65" @click="closeMenu">
             {{ t.stack }}

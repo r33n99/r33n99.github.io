@@ -1,7 +1,7 @@
 export interface ProjectEntry {
   slug: string
   index: string
-  category: 'work' | 'pet'
+  category: 'work' | 'pet' | 'landing'
   titleRu: string
   titleEn: string
   introRu: string
@@ -245,6 +245,63 @@ const projectsData: ProjectEntry[] = [
     websiteUrl: '',
     tags: ['CRM', 'Parsing', 'Vue', 'Gemini API', 'WhatsApp'],
     codeUrl: 'https://github.com/r33n99/2gis-lead-crm',
+  },
+  {
+    slug: 'visteria-flower-studio',
+    index: '01',
+    category: 'landing',
+    titleRu: 'Visteria — цветочная мастерская',
+    titleEn: 'Visteria — flower studio',
+    introRu: 'Лендинг цветочной мастерской: тёмная тема, анимации, заказ в WhatsApp.',
+    introEn: 'Flower studio landing: dark theme, animations, ordering via WhatsApp.',
+    descriptionRu:
+      'Одностраничный лендинг цветочной мастерской в Бишкеке. Вёрстка без фреймворков — чистые HTML, CSS и JavaScript. Крупная типографика заголовка залита изображением через background-clip, фон и слои двигаются с параллаксом при скролле, по экрану летят лепестки, секции появляются на IntersectionObserver, у кнопок — ripple и shimmer. Структура: hero, «О нас» со статистикой, «Как заказать» в три шага и контакты с прямым переходом в WhatsApp. Полностью адаптивный: под мобильные переопределяются отступы, размеры шрифтов и раскладка строк.',
+    descriptionEn:
+      'A single-page landing for a flower studio in Bishkek. Built with no frameworks — plain HTML, CSS and JavaScript. The oversized display heading is filled with an image via background-clip, background layers move with scroll parallax, petals drift across the screen, sections reveal through IntersectionObserver, and buttons have ripple and shimmer effects. Structure: hero, an About block with stats, a three-step "How to order" section, and contacts with a direct WhatsApp link. Fully responsive: spacing, font sizes and row layout are overridden for mobile.',
+    periodRu: '2026',
+    periodEn: '2026',
+    previewImage: '/images/projects/landing-1.png',
+    websiteUrl: 'https://visteria-landing.vercel.app/',
+    tags: ['HTML', 'CSS', 'Vanilla JS', 'Parallax', 'Animations'],
+    codeUrl: '',
+  },
+  {
+    slug: 'noir-restaurant',
+    index: '02',
+    category: 'landing',
+    titleRu: 'NOIR — ресторан',
+    titleEn: 'NOIR — restaurant',
+    introRu: 'Лендинг ресторана: прелоадер, горизонтальный скролл блюд, меню и бронь.',
+    introEn: 'Restaurant landing: preloader, horizontal dish scroll, menu and booking.',
+    descriptionRu:
+      'Лендинг вечернего ресторана в чёрно-белой эстетике, без фреймворков — HTML, CSS и JavaScript. Начинается с прелоадера со счётчиком загрузки и раскрытием по clip-path. Дальше — hero на полный экран с параллаксом, посимвольная анимация заголовков, секция фирменных блюд с горизонтальным скроллом, привязанным к вертикальному, «атмосфера» с раскрывающимся кадром на закреплённой секции, меню с переключением категорий, блок о шефе и форма бронирования. Хедер сжимается при скролле, на мобильных — полноэкранное меню-оверлей.',
+    descriptionEn:
+      'A landing page for a late-night restaurant in a black-and-white aesthetic, no frameworks — HTML, CSS and JavaScript. It opens with a preloader with a loading counter and a clip-path reveal. Then: a full-screen hero with parallax, per-character heading animations, a signature dishes section with horizontal scroll driven by vertical scrolling, an "atmosphere" pinned section with an expanding frame, a menu with category switching, a chef block and a reservation form. The header shrinks on scroll, and mobile gets a full-screen overlay menu.',
+    periodRu: '2026',
+    periodEn: '2026',
+    previewImage: '/images/projects/landing-2.png',
+    websiteUrl: 'https://noir-landing-brown.vercel.app/',
+    tags: ['HTML', 'CSS', 'Vanilla JS', 'Scroll-driven', 'Responsive'],
+    codeUrl: '',
+  },
+  {
+    slug: 'nord-atelier',
+    index: '03',
+    category: 'landing',
+    titleRu: 'Ателье Норд — архитектура и интерьер',
+    titleEn: 'Nord Atelier — architecture and interiors',
+    introRu: 'Лендинг архитектурного бюро: сдержанная типографика и закреплённая галерея.',
+    introEn: 'Architecture studio landing: restrained typography and a pinned gallery.',
+    descriptionRu:
+      'Лендинг архитектурного бюро из Санкт-Петербурга: светлая бежевая палитра, крупная антиква и много воздуха. Сделан на чистых HTML, CSS и JavaScript. Изображения въезжают из-под маски при появлении в зоне видимости, внутри кадров работает параллакс, галерея материалов собрана на закреплённой секции с горизонтальной прокруткой по мере скролла. Разделы: hero, о бюро, избранные интерьеры разной высоты, галерея «Материал и свет» и контактный блок.',
+    descriptionEn:
+      'A landing page for an architecture studio from Saint Petersburg: a light beige palette, large serif type and plenty of whitespace. Built with plain HTML, CSS and JavaScript. Images slide up from behind a mask as they enter the viewport, frames have inner parallax, and the materials gallery is a pinned section that scrolls horizontally as you scroll down. Sections: hero, about the studio, selected interiors at varying heights, the "Material and light" gallery and a contact block.',
+    periodRu: '2026',
+    periodEn: '2026',
+    previewImage: '/images/projects/landing-3.png',
+    websiteUrl: 'https://nord-landing-iota.vercel.app/',
+    tags: ['HTML', 'CSS', 'Vanilla JS', 'Scroll Reveal', 'Typography'],
+    codeUrl: '',
   },
 ]
 

@@ -312,6 +312,53 @@
     </RevealOnScroll>
 
     <RevealOnScroll>
+      <section id="landings" class="section-shell">
+        <div class="section-container py-10">
+          <SectionTitle
+            :eyebrow="t.landingsSection.eyebrow"
+            :title="t.landingsSection.title"
+            :description="t.landingsSection.description"
+          />
+
+          <div
+            class="divide-y divide-border border-t border-border bg-background"
+          >
+            <NuxtLink
+              v-for="card in landingRows"
+              :key="card.slug"
+              :to="`/projects/${card.slug}`"
+              class="group grid grid-cols-1 gap-3 px-5 py-6 transition hover:bg-muted/20 md:grid-cols-[1fr_auto] md:items-center md:gap-8 md:px-10 md:py-7"
+            >
+              <div class="min-w-0">
+                <p
+                  class="text-xs font-semibold tracking-[0.18em] text-muted-foreground"
+                >
+                  {{ card.index }}
+                </p>
+                <p
+                  class="mt-1 text-sm font-semibold text-foreground md:text-base"
+                >
+                  {{ card.title }}
+                </p>
+                <p class="mt-1 text-sm text-muted-foreground md:text-base">
+                  {{ card.intro }}
+                </p>
+              </div>
+              <div class="text-left md:text-right">
+                <p class="text-sm text-muted-foreground md:text-base">
+                  {{ card.period }}
+                </p>
+                <p class="mt-1 text-sm font-semibold text-primary">
+                  {{ t.projectsReadMore }}
+                </p>
+              </div>
+            </NuxtLink>
+          </div>
+        </div>
+      </section>
+    </RevealOnScroll>
+
+    <RevealOnScroll>
       <section id="stack" class="section-shell">
         <div class="section-container py-10 px-5 md:px-10">
           <div class="bg-background">
@@ -446,6 +493,7 @@ interface PageText {
   contactSection: SectionCopy;
   projectsSection: SectionCopy;
   petProjectsSection: SectionCopy;
+  landingsSection: SectionCopy;
   projectsReadMore: string;
   workHistory: WorkHistoryRow[];
   stack: StackItem[];
@@ -508,6 +556,12 @@ const pageText: Record<Language, PageText> = {
       title: "Пет-проекты",
       description:
         "Небольшие проекты для себя: расширение для браузера, конвертер Figma в Vue и CRM для лидов. Во всех трёх — интеграция с Gemini API для генерации текста и автоматизации, пробую AI-инструменты вне рабочих задач.",
+    },
+    landingsSection: {
+      eyebrow: "Лендинги",
+      title: "Сайты-визитки и лендинги",
+      description:
+        "Одностраничники для небольшого бизнеса: цветочная мастерская, ресторан и архитектурное бюро. Собраны на чистых HTML, CSS и JavaScript — без фреймворков и сборки. Акцент на типографике, анимациях по скроллу и адаптиве.",
     },
     projectsReadMore: "Подробнее",
     workHistory: [
@@ -641,6 +695,12 @@ const pageText: Record<Language, PageText> = {
       description:
         "Small side projects: a browser extension, a Figma-to-Vue converter and a lead CRM. All three integrate the Gemini API for text generation and automation — trying out AI tooling outside of work tasks.",
     },
+    landingsSection: {
+      eyebrow: "Landings",
+      title: "Landing pages and business-card sites",
+      description:
+        "Single-page sites for small businesses: a flower studio, a restaurant and an architecture studio. Built with plain HTML, CSS and JavaScript — no frameworks, no build step. Focused on typography, scroll-driven animation and responsive layout.",
+    },
     projectsReadMore: "Read more",
     workHistory: [
       {
@@ -752,6 +812,20 @@ const petProjectCards = computed(() =>
 );
 
 const petProjectRows = petProjectCards;
+
+const landingCards = computed(() =>
+  projectsList
+    .filter((p) => p.category === "landing")
+    .map((p) => ({
+      slug: p.slug,
+      index: p.index,
+      title: language.value === "ru" ? p.titleRu : p.titleEn,
+      intro: language.value === "ru" ? p.introRu : p.introEn,
+      period: language.value === "ru" ? p.periodRu : p.periodEn,
+    })),
+);
+
+const landingRows = landingCards;
 
 const { resolvedMode } = useTheme();
 
