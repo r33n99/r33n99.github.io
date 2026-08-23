@@ -24,6 +24,15 @@
   --accent-wash-strong: rgba(236, 48, 19, 0.1);
   --on-accent: #ffffff;
 
+  /* Плакатная плашка лендингов — единственное место, где акцент работает полем.
+     Взят глубокий шаг рампы, а не базовый красный: блок остаётся выделенным,
+     но не выжигает глаза. Значения одни для обеих тем — это заявление, а не роль. */
+  --poster-bg: #46190f;
+  --poster-text: #f3f2f2;
+  --poster-dim: #cbbdb8;
+  --poster-accent: #ff8266;
+  --poster-line: rgba(255, 255, 255, 0.2);
+
   --radius: 0px;
 
   /* 20px → 56px и 40px → 72px между 390 и 1440 */
@@ -66,6 +75,12 @@
   --color-accent-quiet: var(--accent-quiet);
   --color-accent-wash: var(--accent-wash);
 
+  --color-poster-bg: var(--poster-bg);
+  --color-poster-text: var(--poster-text);
+  --color-poster-dim: var(--poster-dim);
+  --color-poster-accent: var(--poster-accent);
+  --color-poster-line: var(--poster-line);
+
   --font-sans: Archivo, "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --radius-sm: 0px;
@@ -101,10 +116,6 @@
   --text-row: clamp(1.625rem, 3.6vw, 3.25rem);
   --text-row--line-height: 1;
   --text-row--letter-spacing: -0.03em;
-
-  --text-mail: clamp(1.375rem, 3.9vw, 3.5rem);
-  --text-mail--line-height: 1.1;
-  --text-mail--letter-spacing: -0.03em;
 }
 
 @layer base {
@@ -261,11 +272,6 @@
 
   /* Ячейка модульной сетки: рамки рисуют только правая и нижняя грани,
      внешние верх и лево задаёт контейнер — так линии не удваиваются */
-  .grid-frame {
-    border-top: 2px solid var(--line);
-    border-left: 2px solid var(--line);
-  }
-
   .grid-cell {
     border-right: 2px solid var(--line);
     border-bottom: 2px solid var(--line);

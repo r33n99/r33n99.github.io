@@ -21,7 +21,7 @@ withDefaults(
       class="kicker"
       :class="{
         'kicker-accent': tone === 'accent',
-        'text-primary-foreground/75': tone === 'poster',
+        'text-poster-accent': tone === 'poster',
       }"
     >
       {{ eyebrow }}
@@ -38,7 +38,7 @@ withDefaults(
       <p
         v-if="description"
         class="rise max-w-[52ch] text-[17px] leading-[1.5]"
-        :class="tone === 'poster' ? 'text-primary-foreground/85 md:text-lg' : 'text-muted-foreground'"
+        :class="tone === 'poster' ? 'text-poster-dim md:text-lg' : 'text-muted-foreground'"
         style="--rise-index: 1"
       >
         {{ description }}

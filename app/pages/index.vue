@@ -19,7 +19,7 @@
             <div
               v-for="(claim, index) in t.heroClaims"
               :key="claim.number"
-              class="rise flex gap-3.5 py-5"
+              class="rise flex gap-3.5 py-3.5 sm:py-5"
               :class="[
                 index === 3 ? '' : 'border-b-2 border-border',
                 index % 2 === 0 ? 'sm:border-r-2 sm:border-border sm:pr-6' : 'sm:pl-6',
@@ -126,12 +126,12 @@
         :description="t.workSection.description"
       />
 
-      <div class="mt-12">
+      <div class="mt-8 md:mt-12">
         <div class="rule-draw h-0.5 w-full bg-border" />
         <div
           v-for="(job, index) in t.workHistory"
           :key="job.company"
-          class="rise grid gap-4 border-b-2 border-border py-8 transition-colors duration-150 ease-out hover:bg-accent-wash md:grid-cols-[180px_300px_1fr] md:items-start md:gap-8"
+          class="rise grid gap-3 border-b-2 border-border py-6 transition-colors duration-150 ease-out hover:bg-accent-wash md:grid-cols-[180px_300px_1fr] md:items-start md:gap-8 md:py-8 md:pr-7"
           :style="{ '--rise-index': index + 1 }"
         >
           <p class="text-[15px] font-medium leading-[1.4] text-muted-foreground nums">{{ job.years }}</p>
@@ -154,14 +154,14 @@
         :description="t.projectsSection.description"
       />
 
-      <div class="mt-12">
+      <div class="mt-8 md:mt-12">
         <div class="rule-draw h-0.5 w-full bg-border" />
         <div class="grid border-l-2 border-border sm:grid-cols-2 xl:grid-cols-3">
           <NuxtLink
             v-for="(card, index) in projectCards"
             :key="card.slug"
             :to="`/projects/${card.slug}`"
-            class="rise grid-cell group flex min-h-[230px] flex-col gap-3.5 p-7 transition-colors duration-150 ease-out hover:bg-surface"
+            class="rise grid-cell group flex flex-col gap-2.5 p-5 transition-colors duration-150 ease-out hover:bg-surface sm:min-h-[230px] sm:gap-3.5 sm:p-7"
             :style="{ '--rise-index': index % 3 }"
           >
             <div class="flex items-center justify-between">
@@ -196,14 +196,14 @@
         tone="accent"
       />
 
-      <div class="mt-12">
+      <div class="mt-8 md:mt-12">
         <div class="rule-draw h-0.5 w-full bg-border" />
         <div class="grid border-l-2 border-border sm:grid-cols-2 xl:grid-cols-3">
           <NuxtLink
             v-for="(card, index) in petCards"
             :key="card.slug"
             :to="`/projects/${card.slug}`"
-            class="rise grid-cell group flex min-h-[200px] flex-col gap-3.5 bg-accent-wash p-7 transition-colors duration-150 ease-out hover:bg-[var(--accent-wash-strong)]"
+            class="rise grid-cell group flex flex-col gap-2.5 bg-accent-wash p-5 transition-colors duration-150 ease-out hover:bg-[var(--accent-wash-strong)] sm:min-h-[200px] sm:gap-3.5 sm:p-7"
             :style="{ '--rise-index': index }"
           >
             <div class="flex items-center justify-between">
@@ -226,11 +226,11 @@
       </div>
     </RevealOnScroll>
 
-    <!-- Лендинги — плакатная секция, акцент работает полем -->
+    <!-- Лендинги — плакатная секция на глубоком шаге акцента -->
     <RevealOnScroll
       id="landings"
       as="section"
-      class="section-pad section-rule bg-primary text-primary-foreground"
+      class="section-pad section-rule bg-poster-bg text-poster-text"
     >
       <SectionHeading
         :eyebrow="t.landingsSection.eyebrow"
@@ -239,18 +239,21 @@
         tone="poster"
       />
 
-      <div class="mt-14">
-        <div class="rule-draw h-0.5 w-full bg-white/35" />
+      <div class="mt-8 md:mt-14">
+        <div class="rule-draw h-0.5 w-full bg-poster-line" />
         <NuxtLink
           v-for="(card, index) in landingCards"
           :key="card.slug"
           :to="`/projects/${card.slug}`"
-          class="rise grid items-center gap-4 border-b-2 border-white/35 py-6 text-primary-foreground transition-colors duration-150 ease-out hover:bg-black/15 md:grid-cols-[80px_1fr_200px_140px] md:gap-6"
+          class="rise grid items-center gap-2 border-b-2 border-poster-line py-5 text-poster-text transition-colors duration-150 ease-out hover:bg-white/5 md:grid-cols-[80px_1fr_220px_140px] md:gap-6 md:py-6 md:pr-7"
           :style="{ '--rise-index': index + 1 }"
         >
-          <span class="text-[15px] font-semibold leading-none opacity-70 nums">{{ card.index }}</span>
-          <span class="text-row font-semibold">{{ card.title }}</span>
-          <span class="text-base leading-[1.4] opacity-85">{{ card.intro }}</span>
+          <!-- В колонку номер встаёт в строку с названием, в сетку — отдельной ячейкой -->
+          <span class="flex items-baseline gap-3 md:contents">
+            <span class="text-[15px] font-semibold leading-none text-poster-accent nums">{{ card.index }}</span>
+            <span class="text-row font-semibold">{{ card.title }}</span>
+          </span>
+          <span class="text-base leading-[1.4] text-poster-dim">{{ card.intro }}</span>
           <span class="text-[15px] font-semibold leading-none md:text-right">{{ t.readMore }} →</span>
         </NuxtLink>
       </div>
@@ -264,13 +267,13 @@
         :description="t.stackSection.description"
       />
 
-      <div class="mt-12">
+      <div class="mt-8 md:mt-12">
         <div class="rule-draw h-0.5 w-full bg-border" />
         <div class="grid border-l-2 border-border lg:grid-cols-2">
           <article
             v-for="(group, index) in t.skills"
             :key="group.title"
-            class="rise grid-cell p-8"
+            class="rise grid-cell p-5 sm:p-8"
             :style="{ '--rise-index': index }"
           >
             <h3 class="text-[26px] font-semibold leading-[1.1] tracking-[-0.02em]">{{ group.title }}</h3>
@@ -299,35 +302,29 @@
         {{ t.contactSection.description }}
       </p>
 
-      <a
-        href="mailto:rinni499@gmail.com"
-        class="rise mt-11 inline-block border-b-2 border-primary pb-1.5 text-mail font-semibold transition-colors duration-150 ease-out hover:text-accent-quiet"
-        style="--rise-index: 2"
-      >
-        rinni499@gmail.com
-      </a>
-
-      <div class="mt-14">
+      <div class="mt-8 md:mt-13">
         <div class="rule-draw h-0.5 w-full bg-border" />
-        <div class="grid border-l-2 border-border sm:grid-cols-3">
-          <a
-            v-for="(link, index) in contactLinks"
-            :key="link.label"
-            :href="link.href"
-            target="_blank"
-            rel="noreferrer"
-            class="rise grid-cell flex min-h-11 items-center px-6 py-5 text-lg font-semibold leading-none transition-colors duration-150 ease-out hover:bg-surface hover:text-accent-quiet"
-            :style="{ '--rise-index': index }"
-          >
-            {{ link.label }}
-            <span class="ml-2 font-normal text-muted-foreground">{{ link.handle }}</span>
-          </a>
-        </div>
-      </div>
-
-      <div class="mt-8 flex justify-between text-[13px] leading-none text-muted-foreground">
-        <span>reen.cv — {{ currentYear }}</span>
-        <span>Nuxt SSG</span>
+        <a
+          v-for="(link, index) in contactLinks"
+          :key="link.id"
+          :href="link.href"
+          :target="link.external ? '_blank' : undefined"
+          :rel="link.external ? 'noreferrer' : undefined"
+          class="rise grid min-h-11 grid-cols-[1fr_auto] items-center gap-4 border-b-2 border-border py-4 transition-colors duration-150 ease-out hover:bg-accent-wash md:grid-cols-[180px_1fr_40px] md:items-baseline md:gap-6 md:py-6 md:pr-7"
+          :style="{ '--rise-index': index }"
+        >
+          <span class="flex flex-col gap-1.5 md:contents">
+            <span class="kicker text-[11px] tracking-[0.18em] md:text-xs">{{ t.contactLabels[link.id] }}</span>
+            <span
+              class="text-[19px] font-semibold leading-[1.1] tracking-[-0.02em] md:text-[34px] md:leading-[1.05] md:tracking-[-0.025em]"
+            >
+              {{ link.value }}
+            </span>
+          </span>
+          <span aria-hidden="true" class="text-lg font-semibold leading-none text-primary md:text-xl md:text-right">
+            →
+          </span>
+        </a>
       </div>
     </RevealOnScroll>
   </main>
@@ -356,6 +353,8 @@ interface WorkHistoryRow {
   role: string
   desc: string
 }
+
+type ContactId = 'email' | 'telegram' | 'github' | 'gitlab'
 
 interface SkillGroup {
   title: string
@@ -398,6 +397,7 @@ interface PageText {
   landingsSection: SectionCopy
   stackSection: SectionCopy
   contactSection: SectionCopy
+  contactLabels: Record<ContactId, string>
   readMore: string
   skills: SkillGroup[]
 }
@@ -493,6 +493,12 @@ const pageText: Record<Language, PageText> = {
       title: 'Нужен frontend-разработчик в команду?',
       description:
         'Готов подключиться к Vue/Nuxt проекту, усилить архитектуру, стабилизировать релизы и довести интерфейс до хороших метрик.',
+    },
+    contactLabels: {
+      email: 'Почта',
+      telegram: 'Telegram',
+      github: 'GitHub',
+      gitlab: 'GitLab',
     },
     readMore: 'Подробнее',
     skills: [
@@ -605,6 +611,12 @@ const pageText: Record<Language, PageText> = {
       description:
         'I can join a Vue/Nuxt project, strengthen the architecture, stabilise releases and bring the interface to solid metrics.',
     },
+    contactLabels: {
+      email: 'Email',
+      telegram: 'Telegram',
+      github: 'GitHub',
+      gitlab: 'GitLab',
+    },
     readMore: 'Read more',
     skills: [
       {
@@ -666,13 +678,12 @@ const landingCards = computed(() =>
     })),
 )
 
-const contactLinks = [
-  { label: 'Telegram', handle: '@r33n_dev', href: 'https://t.me/r33n_dev' },
-  { label: 'GitHub', handle: 'r33n99', href: 'https://github.com/r33n99' },
-  { label: 'GitLab', handle: 'r33n99', href: 'https://gitlab.com/r33n99' },
+const contactLinks: { id: ContactId; value: string; href: string; external: boolean }[] = [
+  { id: 'email', value: 'rinni499@gmail.com', href: 'mailto:rinni499@gmail.com', external: false },
+  { id: 'telegram', value: '@r33n_dev', href: 'https://t.me/r33n_dev', external: true },
+  { id: 'github', value: 'github.com/r33n99', href: 'https://github.com/r33n99', external: true },
+  { id: 'gitlab', value: 'gitlab.com/r33n99', href: 'https://gitlab.com/r33n99', external: true },
 ]
-
-const currentYear = new Date().getFullYear()
 
 useHead(() => ({
   htmlAttrs: {
