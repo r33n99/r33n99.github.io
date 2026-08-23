@@ -21,6 +21,15 @@ export default {
       },
       favicon: '/favicon.ico',
       title: 'Frontend Developer',
+      link: [
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        {
+          rel: 'stylesheet',
+          // Archivo несёт латиницу, Golos Text — кириллицу; стек в --font-sans идёт именно в этом порядке
+          href: 'https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Golos+Text:wght@400;500;600;700&display=swap',
+        },
+      ],
       meta: [
         {
           name: 'description',
@@ -29,7 +38,7 @@ export default {
         },
         {
           name: 'theme-color',
-          content: '#f3ebe1',
+          content: '#f3f2f2',
           media: '(prefers-color-scheme: light)',
         },
         {

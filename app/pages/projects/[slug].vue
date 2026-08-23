@@ -2,59 +2,55 @@
   <main class="min-h-screen overflow-x-clip">
     <AppHeader />
 
-    <section class="section-shell">
-      <div class="section-container py-16 md:py-20 xl:py-24">
-        <nav
-          aria-label="Breadcrumb"
-          class="mb-10 px-5 text-sm text-muted-foreground md:mb-12"
-        >
-          <NuxtLink
-            to="/"
-            class="transition hover:text-foreground"
-          >
-            {{ t.home }}
-          </NuxtLink>
-          <span class="mx-2 text-border">→</span>
-          <NuxtLink to="/#projects" class="transition hover:text-foreground">{{ t.projects }}</NuxtLink>
-          <span class="mx-2 text-border">→</span>
-          <span class="font-medium text-foreground">{{ title }}</span>
-        </nav>
+    <section class="section-pad">
+      <nav aria-label="Breadcrumb" class="text-sm text-muted-foreground">
+        <NuxtLink to="/" class="transition-colors duration-150 ease-out hover:text-foreground">
+          {{ t.home }}
+        </NuxtLink>
+        <span class="mx-2 text-border" aria-hidden="true">→</span>
+        <NuxtLink to="/#projects" class="transition-colors duration-150 ease-out hover:text-foreground">
+          {{ t.projects }}
+        </NuxtLink>
+        <span class="mx-2 text-border" aria-hidden="true">→</span>
+        <span class="font-medium text-foreground">{{ title }}</span>
+      </nav>
 
-        <article class="border border-border bg-background p-6 md:p-10 xl:p-12">
-          <p class="text-sm font-semibold text-muted-foreground">{{ entry.index }}</p>
-          <h1 class="mt-3 text-3xl font-semibold tracking-tight md:text-4xl xl:text-5xl">
-            {{ title }}
-          </h1>
-          <p class="mt-3 text-sm text-muted-foreground md:text-base">
-            {{ period }}
-          </p>
-          <div class="mt-6 flex flex-wrap gap-2">
-            <span
-              v-for="tag in entry.tags"
-              :key="tag"
-              class="border border-border bg-muted/40 px-3 py-1 text-sm text-muted-foreground"
-            >
-              {{ tag }}
-            </span>
-          </div>
-          <p class="mt-8 max-w-[72ch] text-base leading-[1.65] text-muted-foreground md:text-lg">
-            {{ description }}
-          </p>
-          <div class="mt-8 overflow-hidden border border-border bg-muted/20">
-            <img
-              v-if="entry.previewImage"
-              :src="entry.previewImage"
-              :alt="title"
-              class="h-auto w-full object-cover"
-              loading="lazy"
-            >
-          </div>
+      <article class="mt-10">
+        <div class="flex items-center justify-between">
+          <span class="text-[13px] font-semibold leading-none tracking-[0.1em] text-accent-quiet nums">
+            {{ entry.index }}
+          </span>
+          <span class="text-[13px] font-medium leading-none text-muted-foreground nums">{{ period }}</span>
+        </div>
+
+        <h1 class="mt-5 text-section font-semibold">{{ title }}</h1>
+
+        <ul class="mt-7 flex flex-wrap gap-2">
+          <li v-for="tag in entry.tags" :key="tag" class="tag normal-case tracking-[0.04em] text-foreground">
+            {{ tag }}
+          </li>
+        </ul>
+
+        <p class="mt-9 max-w-[72ch] text-[19px] leading-[1.5] text-muted-foreground">
+          {{ description }}
+        </p>
+
+        <div v-if="entry.previewImage" class="mt-10 border-2 border-border bg-surface">
+          <img
+            :src="entry.previewImage"
+            :alt="title"
+            class="h-auto w-full object-cover grayscale"
+            loading="lazy"
+          >
+        </div>
+
+        <div v-if="entry.websiteUrl || entry.codeUrl" class="mt-10 flex flex-col gap-3 sm:flex-row">
           <a
             v-if="entry.websiteUrl"
             :href="entry.websiteUrl"
             target="_blank"
             rel="noreferrer"
-            class="mt-8 inline-flex border border-primary bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 hover:text-foreground md:text-base"
+            class="btn btn-accent"
           >
             {{ t.openSite }}
           </a>
@@ -63,18 +59,30 @@
             :href="entry.codeUrl"
             target="_blank"
             rel="noreferrer"
-            class="mt-8 ml-2 inline-flex bg-foreground px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 hover:text-foreground md:text-base"
+            class="btn btn-outline"
           >
             {{ t.code }}
           </a>
-        </article>
-      </div>
+        </div>
+
+        <div class="mt-14">
+          <div class="h-0.5 w-full bg-border" />
+          <NuxtLink
+            to="/#projects"
+            class="flex min-h-11 items-center gap-2 py-5 text-lg font-semibold transition-colors duration-150 ease-out hover:text-accent-quiet"
+          >
+            <span aria-hidden="true" class="text-primary">←</span>
+            {{ t.back }}
+          </NuxtLink>
+        </div>
+      </article>
     </section>
   </main>
 </template>
 
 <script setup lang="ts">
 import { useHead, useSeoMeta } from 'nuxt/app'
+
 type Language = 'ru' | 'en'
 
 const route = useRoute()
@@ -84,13 +92,17 @@ const { getBySlug } = useProjects()
 const slugParam = route.params.slug
 const slug = typeof slugParam === 'string' ? slugParam : slugParam?.[0] ?? ''
 
-const copy: Record<Language, { home: string; projects: string; openSite: string; notFound: string, code: string }> = {
+const copy: Record<
+  Language,
+  { home: string; projects: string; openSite: string; notFound: string; code: string; back: string }
+> = {
   ru: {
     home: 'Главная',
     projects: 'Проекты',
     openSite: 'Открыть сайт',
     notFound: 'Проект не найден',
     code: 'Код',
+    back: 'Ко всем проектам',
   },
   en: {
     home: 'Home',
@@ -98,6 +110,7 @@ const copy: Record<Language, { home: string; projects: string; openSite: string;
     openSite: 'Open website',
     notFound: 'Project not found',
     code: 'Code',
+    back: 'Back to all projects',
   },
 }
 
@@ -111,13 +124,9 @@ const entry = found
 
 const t = computed(() => copy[language.value])
 
-const title = computed(() =>
-  language.value === 'ru' ? entry.titleRu : entry.titleEn,
-)
+const title = computed(() => (language.value === 'ru' ? entry.titleRu : entry.titleEn))
 
-const period = computed(() =>
-  language.value === 'ru' ? entry.periodRu : entry.periodEn,
-)
+const period = computed(() => (language.value === 'ru' ? entry.periodRu : entry.periodEn))
 
 const description = computed(() =>
   language.value === 'ru' ? entry.descriptionRu : entry.descriptionEn,

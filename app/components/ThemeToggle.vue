@@ -1,39 +1,32 @@
 <script setup lang="ts">
+withDefaults(defineProps<{ compact?: boolean }>(), { compact: false })
+
 const { language } = useLanguage()
 const { resolvedMode, toggleTheme } = useTheme()
 
-const aria = computed(() =>
+const isDark = computed(() => resolvedMode.value === 'dark')
+
+const copy = computed(() =>
   language.value === 'ru'
-    ? {
-        label: 'Тема оформления',
-        light: 'Светлая тема',
-        dark: 'Тёмная тема',
-      }
-    : {
-        label: 'Theme',
-        light: 'Light theme',
-        dark: 'Dark theme',
-      },
+    ? { label: 'Тема', light: 'Включить светлую тему', dark: 'Включить тёмную тему' }
+    : { label: 'Theme', light: 'Switch to light theme', dark: 'Switch to dark theme' },
 )
 
-const isDark = computed(() => resolvedMode.value === 'dark')
+const title = computed(() => (isDark.value ? copy.value.light : copy.value.dark))
 </script>
 
 <template>
   <button
     type="button"
-    class="grid size-10 place-items-center rounded-full border border-border cursor-pointer bg-muted/50 text-foreground shadow-inner shadow-black/5 transition hover:bg-muted dark:shadow-black/25"
     role="switch"
     :aria-checked="isDark"
-    :aria-label="isDark ? aria.dark : aria.light"
-    :title="isDark ? aria.dark : aria.light"
+    :aria-label="title"
+    :title="title"
+    class="flex min-h-11 cursor-pointer items-center gap-2 border-2 border-border bg-transparent text-[13px] font-medium leading-none text-muted-foreground transition-colors duration-150 ease-out hover:border-primary hover:text-foreground"
+    :class="compact ? 'size-11 justify-center px-0' : 'px-3 py-2.5'"
     @click="toggleTheme"
   >
-    <Icon
-      :name="isDark ? 'lucide:sun' : 'lucide:moon'"
-      class="size-[1.15rem]"
-      aria-hidden="true"
-    />
-    <span class="absolute h-px w-px overflow-hidden whitespace-nowrap border-0 p-0">{{ aria.label }}</span>
+    <span aria-hidden="true" class="text-base leading-none">◐</span>
+    <span v-if="!compact">{{ copy.label }}</span>
   </button>
 </template>

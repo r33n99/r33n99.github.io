@@ -1,107 +1,117 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
+/* ─────────────────────────────────────────────────────────────
+   Modernist — шесть ролей меняют значения между темами,
+   вся вёрстка ссылается только на переменные.
+   ───────────────────────────────────────────────────────────── */
 :root {
   color-scheme: light;
-  --radius: 1rem;
-  /* Молочная светлая тема (тёплый нейтрал, без «больничного» белого) */
-  --background: oklch(0.972 0.002 95);
-  --foreground: oklch(0.31 0.015 270);
-  --card: oklch(0.985 0.002 95);
-  --card-foreground: oklch(0.31 0.015 270);
-  --popover: oklch(0.99 0.01 95);
-  --popover-foreground: oklch(0.27 0.024 55);
-  --primary: oklch(0.63 0.23 25);
-  --primary-foreground: oklch(0.985 0.003 95);
-  --secondary: oklch(0.95 0.002 95);
-  --secondary-foreground: oklch(0.36 0.012 270);
-  --muted: oklch(0.95 0.002 95);
-  --muted-foreground: oklch(0.49 0.01 270);
-  --accent: oklch(0.58 0.065 175);
-  --accent-foreground: oklch(0.20 0.03 55);
-  --destructive: oklch(0.58 0.2 25);
-  --destructive-foreground: oklch(0.99 0.01 95);
-  --border: oklch(0.89 0.003 95);
-  --input: oklch(0.89 0.003 95);
-  --ring: oklch(0.63 0.23 25);
-  --backdrop-base: oklch(0.972 0.002 95);
-  --backdrop-grid: #d1d5db;
-  --backdrop-overlay-1: rgba(170, 170, 170, 0.08);
-  --backdrop-overlay-2: rgba(140, 140, 140, 0.06);
-  --backdrop-overlay-3: rgba(110, 110, 110, 0.05);
-  --backdrop-vignette: rgba(70, 70, 70, 0.05);
+
+  --bg: #f3f2f2;
+  --surface: #ffffff;
+  --text: #201e1d;
+  --dim: #6b6461;
+  --line: #d6d2d0;
+
+  --accent: #ec3013;
+  --accent-hover: #ff5a3c;
+  --accent-pressed: #c62509;
+  /* Шаг рампы для текста абзацного размера в акценте — на светлом это 600 */
+  --accent-quiet: #c62509;
+  --accent-wash: rgba(236, 48, 19, 0.05);
+  --accent-wash-strong: rgba(236, 48, 19, 0.1);
+  --on-accent: #ffffff;
+
+  --radius: 0px;
+
+  /* 20px → 56px и 40px → 72px между 390 и 1440 */
+  --pad-x: clamp(1.25rem, 3.9vw, 3.5rem);
+  --pad-y: clamp(2.5rem, 5vw, 4.5rem);
+
+  --ease-rule: cubic-bezier(0.2, 0.7, 0.1, 1);
 }
 
 .dark {
   color-scheme: dark;
-  /* Нейтральный почти чёрный без коричневого оттенка */
-  --background: oklch(0.13 0.004 260);
-  --foreground: oklch(0.96 0.01 260);
-  --card: oklch(0.18 0.005 260);
-  --card-foreground: oklch(0.96 0.01 260);
-  --popover: oklch(0.18 0.005 260);
-  --popover-foreground: oklch(0.96 0.01 260);
-  --primary: oklch(0.62 0.2 25);
-  --primary-foreground: oklch(0.14 0.01 260);
-  --secondary: oklch(0.23 0.006 260);
-  --secondary-foreground: oklch(0.92 0.012 260);
-  --muted: oklch(0.23 0.006 260);
-  --muted-foreground: oklch(0.72 0.01 260);
-  --accent: oklch(0.72 0.06 82);
-  --accent-foreground: oklch(0.14 0.01 260);
-  --destructive: oklch(0.62 0.2 25);
-  --destructive-foreground: oklch(0.98 0.01 95);
-  --border: oklch(0.36 0.008 260);
-  --input: oklch(0.30 0.008 260);
-  --ring: oklch(0.76 0.07 82);
-  --backdrop-base: oklch(0.12 0.004 260);
-  --backdrop-grid: #4b5563;
-  --backdrop-overlay-1: rgba(148, 163, 184, 0.08);
-  --backdrop-overlay-2: rgba(100, 116, 139, 0.07);
-  --backdrop-overlay-3: rgba(71, 85, 105, 0.06);
-  --backdrop-vignette: rgba(2, 6, 23, 0.5);
+
+  --bg: #161311;
+  --surface: #1c1817;
+  --text: #f3f2f2;
+  --dim: #9a918c;
+  --line: #302a27;
+
+  /* На тёмном абзацный акцент — шаг 400 (4.6:1), сам #ec3013 только заливки и крупный текст */
+  --accent-quiet: #ff6a4d;
+  --accent-wash: rgba(236, 48, 19, 0.05);
+  --accent-wash-strong: rgba(236, 48, 19, 0.1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --color-surface: var(--surface);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--text);
+  --color-muted-foreground: var(--dim);
+  --color-border: var(--line);
+  --color-input: var(--line);
+  --color-ring: var(--accent);
 
-  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --radius-sm: calc(var(--radius) - 8px);
-  --radius-md: calc(var(--radius) - 4px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 8px);
+  --color-primary: var(--accent);
+  --color-primary-foreground: var(--on-accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-pressed: var(--accent-pressed);
+  --color-accent-quiet: var(--accent-quiet);
+  --color-accent-wash: var(--accent-wash);
+
+  --font-sans: Archivo, "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+
+  /* Типошкала макета: десктоп 1440 → мобильный 390 */
+  --text-display: clamp(3.375rem, 9.2vw, 8.25rem);
+  --text-display--line-height: 0.9;
+  --text-display--letter-spacing: -0.045em;
+
+  --text-section: clamp(2.5rem, 4.45vw, 4rem);
+  --text-section--line-height: 1;
+  --text-section--letter-spacing: -0.035em;
+
+  --text-poster: clamp(2.375rem, 5.3vw, 4.75rem);
+  --text-poster--line-height: 0.95;
+  --text-poster--letter-spacing: -0.04em;
+
+  --text-contact: clamp(2.125rem, 6.1vw, 5.5rem);
+  --text-contact--line-height: 0.95;
+  --text-contact--letter-spacing: -0.04em;
+
+  --text-stat: clamp(3rem, 6.1vw, 5.5rem);
+  --text-stat--line-height: 0.9;
+  --text-stat--letter-spacing: -0.04em;
+
+  --text-cardtitle: clamp(1.625rem, 2.1vw, 1.875rem);
+  --text-cardtitle--line-height: 1.05;
+  --text-cardtitle--letter-spacing: -0.025em;
+
+  --text-row: clamp(1.625rem, 3.6vw, 3.25rem);
+  --text-row--line-height: 1;
+  --text-row--letter-spacing: -0.03em;
+
+  --text-mail: clamp(1.375rem, 3.9vw, 3.5rem);
+  --text-mail--line-height: 1.1;
+  --text-mail--letter-spacing: -0.03em;
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-
-  button,
-  [type="button"],
-  [type="submit"],
-  [type="reset"] {
-    border-radius: 0;
+  *,
+  *::before,
+  *::after {
+    border-color: var(--line);
   }
 
   html {
@@ -111,123 +121,254 @@
   body {
     @apply bg-background text-foreground antialiased;
     min-width: 320px;
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Фокус — всегда 2px акцентной рамкой с отступом, никогда браузерная синяя */
+  :focus {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
 
   ::selection {
-    background: color-mix(in oklch, var(--primary) 32%, transparent);
-    color: var(--foreground);
+    background: color-mix(in srgb, var(--accent) 30%, transparent);
+    color: var(--text);
+  }
+
+  /* Ноль скруглений — это правило системы, а не забытый сброс */
+  button,
+  input,
+  select,
+  textarea,
+  [type="button"],
+  [type="submit"],
+  [type="reset"] {
+    border-radius: 0;
+  }
+}
+
+@layer components {
+  .kicker {
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  .kicker-accent {
+    color: var(--accent-quiet);
+  }
+
+  /* Секционные отступы макета */
+  .section-pad {
+    padding: var(--pad-y) var(--pad-x);
+  }
+
+  .section-rule {
+    border-bottom: 2px solid var(--line);
+  }
+
+  /* Кнопки: метка всегда флеш-лефт, ничего не поднимается и не масштабируется */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    min-height: 44px;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 160ms ease-out, color 160ms ease-out,
+      border-color 160ms ease-out;
+  }
+
+  .btn-accent {
+    background: var(--accent);
+    color: var(--on-accent);
+    border: 2px solid var(--accent);
+    padding: 0.875rem 1.375rem;
+  }
+
+  .btn-accent:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+
+  .btn-accent:active {
+    background: var(--accent-pressed);
+    border-color: var(--accent-pressed);
+  }
+
+  .btn-outline {
+    border: 2px solid var(--text);
+    color: var(--text);
+    padding: 0.875rem 1.25rem;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent-quiet);
+    background: var(--accent-wash-strong);
+  }
+
+  .btn-quiet {
+    color: var(--dim);
+    padding: 0.875rem 0.25rem;
+  }
+
+  .btn-quiet:hover {
+    color: var(--text);
+  }
+
+  /* Тег — рамка 2px, аптайп, подсветка акцентом по ховеру */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
+    border: 2px solid var(--line);
+    padding: 0.5625rem 0.75rem;
+    transition: border-color 160ms ease-out, color 160ms ease-out;
+  }
+
+  .tag-hoverable:hover {
+    border-color: var(--accent);
+    color: var(--accent-quiet);
+  }
+
+  /* Ячейка модульной сетки: рамки рисуют только правая и нижняя грани,
+     внешние верх и лево задаёт контейнер — так линии не удваиваются */
+  .grid-frame {
+    border-top: 2px solid var(--line);
+    border-left: 2px solid var(--line);
+  }
+
+  .grid-cell {
+    border-right: 2px solid var(--line);
+    border-bottom: 2px solid var(--line);
   }
 }
 
 @layer utilities {
-  .section-shell {
-    @apply w-full border-t border-border/70;
+  .nums {
+    font-variant-numeric: tabular-nums;
   }
 
-  .section-shell-hero {
-    @apply border-t-0;
+  /* Motion A — линейка рисуется слева направо при входе в вьюпорт.
+     Стартовые состояния только под `.js`: без скрипта нечему их снять. */
+  .rule-draw {
+    transform-origin: left center;
   }
 
-  .section-shell-last {
-    @apply border-b border-border/70;
+  .js .rule-draw {
+    transform: scaleX(0);
   }
 
-  .section-container {
-    @apply mx-auto w-full max-w-screen-2xl border-x border-border;
+  .is-revealed .rule-draw {
+    animation: rule-draw 420ms var(--ease-rule) forwards;
   }
 
-  .glass-card {
-    @apply border border-border bg-card;
-    box-shadow: none;
+  /* Motion A — текст всплывает из-под линии, шаг задержки 60 ms */
+  .js .rise {
+    opacity: 0;
+    transform: translateY(24px);
   }
 
-  .dark .glass-card {
-    box-shadow: none;
+  .is-revealed .rise {
+    animation: rise 520ms var(--ease-rule) forwards;
+    animation-delay: calc(var(--rise-index, 0) * 60ms + 120ms);
   }
 
-  .lattice-mask {
-    mask-image: radial-gradient(circle at center, black 0%, transparent 72%);
+  /* Motion B — номера слегка параллаксят внутри своей карточки */
+  .parallax-num {
+    will-change: transform;
   }
 
-  .hero-reveal {
-    animation: hero-reveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  .hero-float {
-    animation: hero-float 7s ease-in-out infinite;
-  }
-
-  .hero-orbit {
-    animation: hero-orbit 6s ease-in-out infinite;
-  }
-
-  .hero-orbit-delayed {
-    animation: hero-orbit 7s ease-in-out 0.8s infinite;
-  }
-
-  .hero-aurora {
-    animation: hero-aurora 14s ease-in-out infinite alternate;
-  }
-
-  .animate-marquee {
-    animation: marquee 34s linear infinite;
-  }
-
-  .marquee-mask {
-    mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+  @supports (animation-timeline: view()) {
+    .parallax-num {
+      animation: parallax-num linear both;
+      animation-timeline: view();
+      animation-range: entry 10% exit 90%;
+    }
   }
 }
 
-@keyframes hero-reveal {
+@keyframes rule-draw {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(24px) scale(0.98);
+    transform: translateY(24px);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
-@keyframes hero-float {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
-
-  50% {
-    transform: translateY(-14px) rotate(-0.6deg);
-  }
-}
-
-@keyframes hero-orbit {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  50% {
-    transform: translate3d(10px, -12px, 0);
-  }
-}
-
-@keyframes hero-aurora {
+@keyframes parallax-num {
   from {
-    transform: translateX(-50%) scale(0.9);
+    transform: translateY(12px);
   }
 
   to {
-    transform: translateX(-42%) scale(1.12);
+    transform: translateY(-12px);
   }
 }
 
-@keyframes marquee {
-  from {
-    transform: translateX(0);
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 
-  to {
-    transform: translateX(-50%);
+  .rule-draw,
+  .js .rule-draw,
+  .is-revealed .rule-draw {
+    transform: scaleX(1);
+    animation: none;
+  }
+
+  .rise,
+  .js .rise,
+  .is-revealed .rise {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .parallax-num {
+    animation: none;
   }
 }
