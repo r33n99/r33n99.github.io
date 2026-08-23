@@ -4,7 +4,20 @@ withDefaults(defineProps<{ compact?: boolean }>(), { compact: false })
 const { language } = useLanguage()
 const { resolvedMode, toggleTheme } = useTheme()
 
-const isDark = computed(() => resolvedMode.value === 'dark')
+/**
+ * На сервере localStorage и matchMedia нет, поэтому resolvedMode там всегда 'light',
+ * а на клиенте useStorage читает значение уже в setup — расхождение ломало гидрацию.
+ * Видимая часть кнопки от темы не зависит (глиф и подпись одни и те же), так что
+ * aria-состояние и тайтл подставляем после монтирования: разметка сервера и первого
+ * клиентского рендера совпадает, дальше Vue обновляет атрибуты уже вне гидрации.
+ */
+const isMounted = ref(false)
+
+onMounted(() => {
+  isMounted.value = true
+})
+
+const isDark = computed(() => isMounted.value && resolvedMode.value === 'dark')
 
 const copy = computed(() =>
   language.value === 'ru'
@@ -12,7 +25,9 @@ const copy = computed(() =>
     : { label: 'Theme', light: 'Switch to light theme', dark: 'Switch to dark theme' },
 )
 
-const title = computed(() => (isDark.value ? copy.value.light : copy.value.dark))
+const title = computed(() =>
+  isMounted.value ? (isDark.value ? copy.value.light : copy.value.dark) : copy.value.label,
+)
 </script>
 
 <template>
