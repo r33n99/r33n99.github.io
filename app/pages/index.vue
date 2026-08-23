@@ -85,7 +85,7 @@
             <NuxtImg
               src="/images/avatar.jpg"
               :alt="t.about.photoAlt"
-              class="size-full object-cover grayscale"
+              class="size-full object-cover"
               sizes="390px lg:420px"
             />
           </div>
@@ -131,7 +131,7 @@
         <div
           v-for="(job, index) in t.workHistory"
           :key="job.company"
-          class="rise grid gap-3 border-b-2 border-border py-6 transition-colors duration-150 ease-out hover:bg-accent-wash md:grid-cols-[180px_300px_1fr] md:items-start md:gap-8 md:py-8 md:pr-7"
+          class="rise grid gap-3 border-b-2 border-border py-6 transition-colors duration-150 ease-out hover:bg-accent-wash xl:grid-cols-[180px_300px_1fr] xl:items-start xl:gap-8 xl:py-8 xl:pr-7"
           :style="{ '--rise-index': index + 1 }"
         >
           <p class="text-[15px] font-medium leading-[1.4] text-muted-foreground nums">{{ job.years }}</p>
@@ -141,7 +141,12 @@
               {{ job.role }}
             </p>
           </div>
-          <p class="text-[17px] leading-[1.5] text-muted-foreground">{{ job.desc }}</p>
+          <!-- Трёхколоночная сетка макета рассчитана на 1440. Раньше xl колонка 1fr
+               схлопывалась (на 768 — до 121px), строка росла до 500px, а дата висела
+               в пустом жёлобе, поэтому до xl строка просто складывается в колонку -->
+          <p class="text-[17px] leading-[1.5] text-muted-foreground xl:col-start-3 xl:row-start-1">
+            {{ job.desc }}
+          </p>
         </div>
       </div>
     </RevealOnScroll>
