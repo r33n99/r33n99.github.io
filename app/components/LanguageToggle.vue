@@ -16,7 +16,7 @@ const titles: Record<Language, string> = {
 
 <template>
   <div
-    class="flex overflow-hidden rounded-[20px] border-3 border-ink"
+    class="flex w-fit shrink-0 self-center overflow-hidden rounded-[20px] border-3 border-ink"
     role="group"
     aria-label="Language / Язык"
   >
@@ -26,7 +26,7 @@ const titles: Record<Language, string> = {
       type="button"
       :aria-pressed="language === option.value"
       :title="titles[option.value]"
-      class="min-h-11 cursor-pointer px-3 font-mono text-sm font-semibold leading-none transition-colors duration-300 ease-[var(--ease-comic)]"
+      class="min-h-11 cursor-pointer px-3 font-mono text-sm font-semibold leading-none transition-colors duration-[var(--dur-hover)] ease-[var(--ease-comic)]"
       :class="
         language === option.value
           ? 'bg-chip-bg text-chip-fg'

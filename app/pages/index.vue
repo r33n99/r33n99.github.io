@@ -281,7 +281,7 @@
           </h3>
           <p class="mb-5 mt-2.5 max-w-[52ch] text-note text-dim">{{ group.note }}</p>
           <ul class="flex flex-wrap gap-2.5">
-            <li v-for="item in group.items" :key="item" class="tag bg-bg">{{ item }}</li>
+            <li v-for="item in group.items" :key="item" class="tag tag-quiet">{{ item }}</li>
           </ul>
         </article>
       </div>

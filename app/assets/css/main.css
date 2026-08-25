@@ -38,6 +38,8 @@
   --halftone-opacity: 0.07;
 
   --ease-comic: cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* Одна длительность на все состояния наведения */
+  --dur-hover: 500ms;
 
   /* 18px → 44px и 28px → 64px между 390 и 1440 */
   --pad-x: clamp(1.125rem, 3.05vw, 2.75rem);
@@ -210,8 +212,10 @@
   /* Подъём при наведении: лист отрывается от стола, тень отъезжает.
      Нажатие схлопывает тень — лист прижали обратно. */
   .lift {
-    transition: transform 350ms var(--ease-comic), box-shadow 350ms var(--ease-comic),
-      background-color 350ms var(--ease-comic);
+    transition: transform var(--dur-hover) var(--ease-comic),
+      box-shadow var(--dur-hover) var(--ease-comic),
+      background-color var(--dur-hover) var(--ease-comic),
+      color var(--dur-hover) var(--ease-comic);
   }
 
   .lift:hover {
@@ -244,8 +248,10 @@
     border: 3px solid var(--ink);
     border-radius: var(--blob);
     box-shadow: 5px 6px 0 var(--ink);
-    transition: transform 300ms var(--ease-comic), box-shadow 300ms var(--ease-comic),
-      background-color 300ms var(--ease-comic);
+    transition: transform var(--dur-hover) var(--ease-comic),
+      box-shadow var(--dur-hover) var(--ease-comic),
+      background-color var(--dur-hover) var(--ease-comic),
+      color var(--dur-hover) var(--ease-comic);
   }
 
   .btn:hover {
@@ -288,7 +294,8 @@
     color: var(--dim);
     border-bottom: 3px dashed var(--dim);
     padding-bottom: 3px;
-    transition: color 300ms var(--ease-comic), border-color 300ms var(--ease-comic);
+    transition: color var(--dur-hover) var(--ease-comic),
+      border-color var(--dur-hover) var(--ease-comic);
   }
 
   .btn-dashed:hover {
@@ -308,7 +315,16 @@
     border: 3px solid var(--ink);
     border-radius: 18px;
     padding: 0.5625rem 0.75rem;
-    transition: transform 300ms var(--ease-comic), background-color 300ms var(--ease-comic);
+    transition: transform var(--dur-hover) var(--ease-comic),
+      background-color var(--dur-hover) var(--ease-comic),
+      color var(--dur-hover) var(--ease-comic);
+  }
+
+  /* Тег на панели берёт цвет бумаги. Живёт в слое компонентов, а не
+     утилитой `bg-bg`: утилита перебила бы заливку из :hover ниже,
+     и на ховере оставался бы тёмный текст на тёмном фоне. */
+  .tag-quiet {
+    background: var(--bg);
   }
 
   .tag:hover {
@@ -330,7 +346,8 @@
     font-family: var(--font-mono);
     font-weight: 600;
     line-height: 1;
-    transition: background-color 350ms var(--ease-comic), color 350ms var(--ease-comic);
+    transition: background-color var(--dur-hover) var(--ease-comic),
+      color var(--dur-hover) var(--ease-comic);
   }
 
   /* Роль в таймлайне — обведённая пилюля на подложке акцента */

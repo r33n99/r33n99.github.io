@@ -36,7 +36,7 @@ const title = computed(() =>
     :aria-checked="isDark"
     :aria-label="title"
     :title="title"
-    class="flex min-h-11 cursor-pointer items-center gap-2 border-3 border-ink bg-transparent font-body text-[17px] leading-none text-ink transition-[transform,background-color] duration-300 ease-[var(--ease-comic)] hover:rotate-[-3deg] hover:bg-[color-mix(in_srgb,var(--marker-yellow)_35%,transparent)]"
+    class="flex min-h-11 cursor-pointer items-center gap-2 border-3 border-ink bg-transparent font-body text-[17px] leading-none text-ink transition-[transform,background-color,color] duration-[var(--dur-hover)] ease-[var(--ease-comic)] hover:rotate-[-3deg] hover:bg-[color-mix(in_srgb,var(--marker-yellow)_35%,transparent)]"
     :class="compact ? 'size-11 justify-center rounded-full' : 'rounded-[20px] px-3.5 py-2'"
     @click="toggleTheme"
   >

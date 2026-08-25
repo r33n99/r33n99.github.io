@@ -4,11 +4,11 @@
 
     <RevealOnScroll as="section" class="section-pad">
       <nav aria-label="Breadcrumb" class="font-mono text-[13px] text-dim">
-        <NuxtLink to="/" class="transition-colors duration-300 hover:text-accent-text">
+        <NuxtLink to="/" class="transition-colors duration-[var(--dur-hover)] ease-[var(--ease-comic)] hover:text-accent-text">
           {{ t.home }}
         </NuxtLink>
         <span class="mx-2" aria-hidden="true">→</span>
-        <NuxtLink to="/#projects" class="transition-colors duration-300 hover:text-accent-text">
+        <NuxtLink to="/#projects" class="transition-colors duration-[var(--dur-hover)] ease-[var(--ease-comic)] hover:text-accent-text">
           {{ t.projects }}
         </NuxtLink>
         <span class="mx-2" aria-hidden="true">→</span>
@@ -24,7 +24,7 @@
         <h1 class="mt-5 font-hand text-heading">{{ title }}</h1>
 
         <ul class="mt-6 flex flex-wrap gap-2.5">
-          <li v-for="tag in entry.tags" :key="tag" class="tag bg-bg">{{ tag }}</li>
+          <li v-for="tag in entry.tags" :key="tag" class="tag tag-quiet">{{ tag }}</li>
         </ul>
 
         <p class="mt-7 max-w-[62ch] text-lead text-dim">{{ description }}</p>

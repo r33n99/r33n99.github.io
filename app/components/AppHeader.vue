@@ -82,7 +82,7 @@ onBeforeUnmount(() => {
           v-for="link in links"
           :key="link.href"
           :href="link.href"
-          class="rounded-xl px-3 py-2 text-ink transition-[background-color,transform] duration-250 ease-[var(--ease-comic)] hover:rotate-[-1.5deg] hover:bg-[color-mix(in_srgb,var(--accent)_14%,transparent)]"
+          class="rounded-xl px-3 py-2 text-ink transition-[background-color,transform,color] duration-[var(--dur-hover)] ease-[var(--ease-comic)] hover:rotate-[-1.5deg] hover:bg-[color-mix(in_srgb,var(--accent)_14%,transparent)]"
         >
           {{ link.label }}
         </a>
@@ -133,7 +133,8 @@ onBeforeUnmount(() => {
           {{ t.contact }}
         </a>
       </nav>
-      <div class="mt-5">
+      <!-- В колонке flex тянул переключатель на всю ширину — прижимаем к контенту и центрируем -->
+      <div class="mt-5 flex justify-center">
         <LanguageToggle />
       </div>
     </div>
