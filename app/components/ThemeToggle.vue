@@ -5,11 +5,10 @@ const { language } = useLanguage()
 const { resolvedMode, toggleTheme } = useTheme()
 
 /**
- * На сервере localStorage и matchMedia нет, поэтому resolvedMode там всегда 'light',
- * а на клиенте useStorage читает значение уже в setup — расхождение ломало гидрацию.
- * Видимая часть кнопки от темы не зависит (глиф и подпись одни и те же), так что
- * aria-состояние и тайтл подставляем после монтирования: разметка сервера и первого
- * клиентского рендера совпадает, дальше Vue обновляет атрибуты уже вне гидрации.
+ * На сервере нет localStorage и matchMedia, поэтому resolvedMode там всегда
+ * светлый, а на клиенте читается уже в setup. Видимая часть кнопки от темы
+ * не зависит, так что aria-состояние и тайтл подставляем после монтирования —
+ * разметка сервера и первого клиентского рендера совпадает.
  */
 const isMounted = ref(false)
 
@@ -37,11 +36,11 @@ const title = computed(() =>
     :aria-checked="isDark"
     :aria-label="title"
     :title="title"
-    class="flex min-h-11 cursor-pointer items-center gap-2 border-2 border-border bg-transparent text-[13px] font-medium leading-none text-muted-foreground transition-colors duration-150 ease-out hover:border-primary hover:text-foreground"
-    :class="compact ? 'size-11 justify-center px-0' : 'px-3 py-2.5'"
+    class="flex min-h-11 cursor-pointer items-center gap-2 border-3 border-ink bg-transparent font-body text-[17px] leading-none text-ink transition-[transform,background-color] duration-300 ease-[var(--ease-comic)] hover:rotate-[-3deg] hover:bg-[color-mix(in_srgb,var(--marker-yellow)_35%,transparent)]"
+    :class="compact ? 'size-11 justify-center rounded-full' : 'rounded-[20px] px-3.5 py-2'"
     @click="toggleTheme"
   >
-    <span aria-hidden="true" class="text-base leading-none">◐</span>
+    <span aria-hidden="true">◐</span>
     <span v-if="!compact">{{ copy.label }}</span>
   </button>
 </template>

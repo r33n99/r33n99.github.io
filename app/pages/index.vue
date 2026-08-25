@@ -1,115 +1,125 @@
 <template>
-  <main class="min-h-screen overflow-x-clip">
+  <main class="halftone relative min-h-screen overflow-x-clip">
     <AppHeader />
 
-    <!-- Hero: слева дисплей и тезисы, справа колонка цифр -->
-    <RevealOnScroll as="section" class="section-rule">
-      <div class="grid lg:grid-cols-[1fr_380px]">
-        <div class="px-[var(--pad-x)] pb-14 pt-12 lg:border-r-2 lg:border-border lg:pt-[72px]">
-          <p class="kicker rise">{{ t.heroKicker }}</p>
-          <h1 class="rise mt-5 text-display font-semibold" style="--rise-index: 1">
-            <span v-for="line in t.heroTitle" :key="line" class="block">{{ line }}</span>
+    <!-- Hero: реплика в пузыре, крупный рукописный заголовок, стикеры со счётом -->
+    <RevealOnScroll as="section" class="section-pad section-rule relative">
+      <div class="grid gap-11 xl:grid-cols-[1fr_340px] xl:items-start">
+        <div>
+          <p class="rise bubble inline-block px-5 py-3 text-lead">{{ t.heroBubble }}</p>
+
+          <h1 class="rise mt-6 font-hand text-display tracking-[-0.01em]">
+            <span class="inline-block -rotate-2">{{ t.heroTitle[0] }}</span><br>
+            <span
+              class="inline-block rotate-[1.2deg] text-accent [text-shadow:4px_4px_0_var(--ink)]"
+            >{{ t.heroTitle[1] }}</span>
           </h1>
 
-          <ul class="rise mt-8 flex flex-wrap gap-2" style="--rise-index: 2">
-            <li v-for="tag in heroTags" :key="tag" class="tag tag-hoverable">{{ tag }}</li>
+          <ul class="rise mt-8 flex flex-wrap gap-2.5">
+            <li v-for="tag in heroTags" :key="tag" class="tag">{{ tag }}</li>
           </ul>
 
-          <div class="mt-11 grid border-t-2 border-border sm:grid-cols-2">
+          <div class="mt-10 grid gap-4.5 sm:grid-cols-2">
             <div
-              v-for="(claim, index) in t.heroClaims"
-              :key="claim.number"
-              class="rise flex gap-3.5 py-3.5 sm:py-5"
-              :class="[
-                index === 3 ? '' : 'border-b-2 border-border',
-                index % 2 === 0 ? 'sm:border-r-2 sm:border-border sm:pr-6' : 'sm:pl-6',
-                index === 2 ? 'sm:border-b-0' : '',
-              ]"
-              :style="{ '--rise-index': index + 3 }"
+              v-for="principle in t.principles"
+              :key="principle.number"
+              class="rise panel panel-blob lift flex items-start gap-4 px-5 py-5"
             >
-              <span class="text-xs font-semibold leading-[1.4] text-primary nums">{{ claim.number }}</span>
-              <p class="m-0 text-base leading-[1.45]">{{ claim.text }}</p>
+              <span class="chip-num size-9.5 text-sm">{{ principle.number }}</span>
+              <p class="text-note">{{ principle.text }}</p>
             </div>
           </div>
 
-          <div class="rise mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap" style="--rise-index: 7">
+          <div class="rise mt-9 flex flex-wrap items-center gap-3.5">
             <a href="#experience" class="btn btn-accent">{{ t.heroCtaExperience }}</a>
-            <a href="#contact" class="btn btn-outline">{{ t.heroCtaContact }}</a>
-            <a :href="t.resumeHref" download class="btn btn-quiet">{{ t.heroCtaResume }} ↓</a>
+            <a href="#contact" class="btn btn-paper">{{ t.heroCtaContact }}</a>
+            <a :href="t.resumeHref" download class="btn-dashed">{{ t.heroCtaResume }} ↓</a>
           </div>
         </div>
 
-        <aside class="grid grid-cols-2 lg:grid-cols-1">
-          <div class="border-b-2 border-r-2 border-border px-[var(--pad-x)] py-8 lg:border-r-0 lg:px-10">
-            <p class="kicker">{{ t.stats.experience.label }}</p>
-            <p class="mt-3 text-stat font-semibold">
+        <aside class="flex flex-col gap-5.5 pt-3">
+          <!-- Motion B: стикеры медленно покачиваются, счётчики докручиваются один раз -->
+          <div
+            class="rise float-slow rounded-[var(--blob)] border-3 border-ink bg-marker-yellow px-6 py-6 text-[#23201e] shadow-[6px_7px_0_var(--ink)]"
+          >
+            <p class="font-mono text-[15px] uppercase leading-none tracking-[0.1em]">
+              {{ t.stats.experience.label }}
+            </p>
+            <p class="mt-2 font-hand text-stat font-bold">
               <InspiraNumberTicker
                 :value="3"
                 :decimal-places="0"
-                class="text-stat font-semibold tracking-[-0.04em] text-foreground"
-              />
-              <span class="text-primary">+</span>
+                class="font-hand text-stat font-bold tracking-normal text-[#23201e]"
+              />+
             </p>
-            <p class="mt-2 text-[15px] leading-[1.4] text-muted-foreground">{{ t.stats.experience.note }}</p>
+            <p class="mt-1 text-[20px] leading-[1.25]">{{ t.stats.experience.note }}</p>
           </div>
 
-          <div class="border-b-2 border-border px-[var(--pad-x)] py-8 lg:px-10">
-            <p class="kicker">{{ t.stats.releases.label }}</p>
-            <p class="mt-3 text-stat font-semibold">
+          <div
+            class="rise float-slower rounded-[var(--blob-alt)] border-3 border-ink bg-marker-mint px-6 py-6 text-[#23201e] shadow-[6px_7px_0_var(--ink)]"
+          >
+            <p class="font-mono text-[15px] uppercase leading-none tracking-[0.1em]">
+              {{ t.stats.releases.label }}
+            </p>
+            <p class="mt-2 font-hand text-stat font-bold">
               <InspiraNumberTicker
                 :value="15"
                 :decimal-places="0"
-                class="text-stat font-semibold tracking-[-0.04em] text-foreground"
-              />
-              <span class="text-primary">+</span>
+                class="font-hand text-stat font-bold tracking-normal text-[#23201e]"
+              />+
             </p>
-            <p class="mt-2 text-[15px] leading-[1.4] text-muted-foreground">{{ t.stats.releases.note }}</p>
+            <p class="mt-1 text-[20px] leading-[1.25]">{{ t.stats.releases.note }}</p>
           </div>
 
-          <div class="col-span-2 px-[var(--pad-x)] py-8 lg:col-span-1 lg:px-10">
-            <p class="kicker">{{ t.stats.format.label }}</p>
-            <p class="mt-3 text-[26px] font-semibold leading-[1.2] tracking-[-0.01em]">
+          <div class="rise rounded-3xl border-3 border-dashed border-ink bg-panel px-6 py-5.5">
+            <p class="label">{{ t.stats.format.label }}</p>
+            <p class="mt-2 font-hand text-[32px] font-bold leading-[1.05]">
               {{ t.stats.format.value }}
             </p>
-            <p class="mt-2.5 text-[15px] leading-[1.45] text-muted-foreground">{{ t.stats.format.note }}</p>
+            <p class="mt-2 text-[18px] leading-[1.3] text-dim">{{ t.stats.format.note }}</p>
           </div>
         </aside>
       </div>
     </RevealOnScroll>
 
-    <!-- Обо мне -->
-    <RevealOnScroll id="about" as="section" class="section-rule">
-      <div class="grid lg:grid-cols-[420px_1fr]">
-        <div class="px-[var(--pad-x)] pb-0 pt-[var(--pad-y)] lg:border-r-2 lg:border-border lg:pb-[var(--pad-y)]">
-          <div class="aspect-4/5 border-2 border-border bg-surface">
-            <NuxtImg
-              src="/images/avatar.jpg"
-              :alt="t.about.photoAlt"
-              class="size-full object-cover"
-              sizes="390px lg:420px"
-            />
-          </div>
+    <!-- Обо мне: фото как полароид с плёнкой, текст в речевом пузыре -->
+    <RevealOnScroll id="about" as="section" class="section-pad section-rule">
+      <div class="grid gap-12 xl:grid-cols-[400px_1fr]">
+        <div
+          class="rise panel relative -rotate-[1.6deg] rounded-[20px] px-4 pb-14 pt-4 shadow-[7px_8px_0_var(--ink)]"
+        >
+          <NuxtImg
+            src="/images/avatar.jpg"
+            :alt="t.about.photoAlt"
+            class="aspect-4/5 w-full rounded-xl border-3 border-ink object-cover"
+            sizes="360px xl:400px"
+          />
+          <p
+            class="absolute inset-x-0 bottom-3.5 text-center font-body text-[22px] leading-none text-dim"
+          >
+            {{ t.about.photoCaption }}
+          </p>
+          <!-- клочок малярной ленты сверху -->
+          <span
+            aria-hidden="true"
+            class="absolute -top-4 left-1/2 h-8 w-30 -translate-x-1/2 -rotate-4 border-2 border-[rgba(35,32,30,.35)] bg-[rgba(245,196,67,.75)]"
+          />
         </div>
 
-        <div class="section-pad">
-          <p class="kicker">{{ t.about.eyebrow }}</p>
-          <h2 class="rise mt-5 text-section font-semibold">{{ t.about.name }}</h2>
-          <p class="rise mt-7 max-w-[64ch] text-[19px] leading-[1.5]" style="--rise-index: 1">
-            {{ t.about.paragraph1 }}
-          </p>
-          <p
-            class="rise mt-5 max-w-[64ch] text-[19px] leading-[1.5] text-muted-foreground"
-            style="--rise-index: 2"
-          >
-            {{ t.about.paragraph2 }}
-          </p>
-          <div class="rise mt-9 flex flex-col gap-3 sm:flex-row" style="--rise-index: 3">
+        <div>
+          <p class="rise label">{{ t.about.eyebrow }}</p>
+          <h2 class="rise mt-4 font-hand text-heading">{{ t.about.name }}</h2>
+          <div class="rise bubble mt-6 max-w-[70ch] px-7 py-6 shadow-[6px_7px_0_var(--ink)]">
+            <p class="text-lead">{{ t.about.paragraph1 }}</p>
+            <p class="mt-4 text-lead text-dim">{{ t.about.paragraph2 }}</p>
+          </div>
+          <div class="rise mt-7 flex flex-wrap gap-3.5">
             <a :href="t.resumeHref" download class="btn btn-accent">{{ t.about.ctaResume }}</a>
             <a
               href="https://t.me/r33n_dev"
               target="_blank"
               rel="noreferrer"
-              class="btn border-2 border-border px-5 py-3.5 text-foreground hover:border-primary"
+              class="btn btn-paper"
             >
               {{ t.about.ctaTelegram }}
             </a>
@@ -118,7 +128,7 @@
       </div>
     </RevealOnScroll>
 
-    <!-- Опыт работы -->
+    <!-- Опыт: таймлайн с кружками годов на чернильной линии -->
     <RevealOnScroll id="experience" as="section" class="section-pad section-rule">
       <SectionHeading
         :eyebrow="t.workSection.eyebrow"
@@ -126,28 +136,28 @@
         :description="t.workSection.description"
       />
 
-      <div class="mt-8 md:mt-12">
-        <div class="rule-draw h-0.5 w-full bg-border" />
-        <div
-          v-for="(job, index) in t.workHistory"
+      <div class="relative mt-11 md:pl-[90px]">
+        <span
+          aria-hidden="true"
+          class="absolute bottom-9 left-[43px] top-6 hidden w-[3px] bg-line md:block"
+        />
+        <article
+          v-for="job in t.workHistory"
           :key="job.company"
-          class="rise grid gap-3 border-b-2 border-border py-6 transition-colors duration-150 ease-out hover:bg-accent-wash xl:grid-cols-[180px_300px_1fr] xl:items-start xl:gap-8 xl:py-8 xl:pr-7"
-          :style="{ '--rise-index': index + 1 }"
+          class="rise panel panel-blob lift relative mb-7 px-7 py-7 last:mb-0"
         >
-          <p class="text-[15px] font-medium leading-[1.4] text-muted-foreground nums">{{ job.years }}</p>
-          <div>
-            <p class="text-[30px] font-semibold leading-[1.1] tracking-[-0.02em]">{{ job.company }}</p>
-            <p class="mt-2.5 text-sm font-medium uppercase leading-none tracking-[0.1em] text-accent-quiet">
-              {{ job.role }}
-            </p>
+          <span
+            class="chip-num absolute -left-[93px] top-6 hidden size-[62px] bg-panel text-[15px] text-ink md:flex"
+          >
+            {{ job.from }}
+          </span>
+          <div class="flex flex-wrap items-baseline justify-between gap-6">
+            <h3 class="font-hand text-company">{{ job.company }}</h3>
+            <p class="font-mono text-[15px] leading-none text-dim">{{ job.years }}</p>
           </div>
-          <!-- Трёхколоночная сетка макета рассчитана на 1440. Раньше xl колонка 1fr
-               схлопывалась (на 768 — до 121px), строка росла до 500px, а дата висела
-               в пустом жёлобе, поэтому до xl строка просто складывается в колонку -->
-          <p class="text-[17px] leading-[1.5] text-muted-foreground xl:col-start-3 xl:row-start-1">
-            {{ job.desc }}
-          </p>
-        </div>
+          <p class="role-pill mt-3">{{ job.role }}</p>
+          <p class="mt-4 text-[21px] leading-[1.4] text-dim">{{ job.desc }}</p>
+        </article>
       </div>
     </RevealOnScroll>
 
@@ -159,108 +169,96 @@
         :description="t.projectsSection.description"
       />
 
-      <div class="mt-8 md:mt-12">
-        <div class="rule-draw h-0.5 w-full bg-border" />
-        <div class="grid border-l-2 border-border sm:grid-cols-2 xl:grid-cols-3">
-          <NuxtLink
-            v-for="(card, index) in projectCards"
-            :key="card.slug"
-            :to="`/projects/${card.slug}`"
-            class="rise grid-cell group flex flex-col gap-2.5 p-5 transition-colors duration-150 ease-out hover:bg-surface sm:min-h-[230px] sm:gap-3.5 sm:p-7"
-            :style="{ '--rise-index': index % 3 }"
-          >
-            <div class="flex items-center justify-between">
-              <span class="parallax-num text-[13px] font-semibold leading-none tracking-[0.1em] text-accent-quiet nums">
-                {{ card.index }}
-              </span>
-              <span class="text-[13px] font-medium leading-none text-muted-foreground nums">{{ card.period }}</span>
-            </div>
-            <p class="mt-2 text-cardtitle font-semibold">{{ card.title }}</p>
-            <p class="text-xs font-medium uppercase leading-none tracking-[0.12em] text-accent-quiet">
-              {{ card.category }}
-            </p>
-            <p class="text-base leading-[1.45] text-muted-foreground">{{ card.intro }}</p>
-            <span class="mt-auto flex items-center gap-2 text-sm font-semibold leading-none">
-              {{ t.readMore }}
-              <span
-                aria-hidden="true"
-                class="text-primary transition-transform duration-150 ease-out group-hover:translate-x-1.5"
-              >→</span>
+      <div class="mt-11 grid gap-6.5 sm:grid-cols-2 xl:grid-cols-3">
+        <NuxtLink
+          v-for="card in projectCards"
+          :key="card.slug"
+          :to="`/projects/${card.slug}`"
+          class="rise panel panel-blob lift group flex flex-col gap-3 px-7 py-6.5 text-ink hover:bg-paper-warm sm:min-h-[266px]"
+        >
+          <div class="flex items-center justify-between">
+            <span class="chip-num size-10.5 text-[15px] group-hover:bg-marker-yellow group-hover:text-[#23201e]">
+              {{ card.index }}
             </span>
-          </NuxtLink>
-        </div>
+            <span class="font-mono text-sm leading-none text-dim">{{ card.period }}</span>
+          </div>
+          <h3 class="mt-1.5 font-hand text-cardtitle">{{ card.title }}</h3>
+          <p class="font-mono text-[13px] leading-[1.3] text-accent-text">{{ card.category }}</p>
+          <p class="text-note text-dim">{{ card.intro }}</p>
+          <p class="mt-auto flex items-center gap-2.5 font-hand text-2xl font-bold">
+            {{ t.readMore }}
+            <span aria-hidden="true" class="nudge-x text-accent">→</span>
+          </p>
+        </NuxtLink>
       </div>
     </RevealOnScroll>
 
-    <!-- Пет-проекты -->
-    <RevealOnScroll id="pet-projects" as="section" class="section-pad section-rule">
+    <!-- Пет-проекты: мятная подложка, пунктирные рамки -->
+    <RevealOnScroll id="pet-projects" as="section" class="section-pad section-rule bg-tint">
       <SectionHeading
         :eyebrow="t.petSection.eyebrow"
         :title="t.petSection.title"
         :description="t.petSection.description"
-        tone="accent"
+        tone="mint"
       />
 
-      <div class="mt-8 md:mt-12">
-        <div class="rule-draw h-0.5 w-full bg-border" />
-        <div class="grid border-l-2 border-border sm:grid-cols-2 xl:grid-cols-3">
-          <NuxtLink
-            v-for="(card, index) in petCards"
-            :key="card.slug"
-            :to="`/projects/${card.slug}`"
-            class="rise grid-cell group flex flex-col gap-2.5 bg-accent-wash p-5 transition-colors duration-150 ease-out hover:bg-[var(--accent-wash-strong)] sm:min-h-[200px] sm:gap-3.5 sm:p-7"
-            :style="{ '--rise-index': index }"
-          >
-            <div class="flex items-center justify-between">
-              <span class="parallax-num text-[13px] font-semibold leading-none tracking-[0.1em] text-accent-quiet nums">
-                {{ card.index }}
-              </span>
-              <span class="text-[13px] font-medium leading-none text-muted-foreground nums">{{ card.period }}</span>
-            </div>
-            <p class="mt-2 text-cardtitle font-semibold">{{ card.title }}</p>
-            <p class="text-base leading-[1.45] text-muted-foreground">{{ card.intro }}</p>
-            <span class="mt-auto flex items-center gap-2 text-sm font-semibold leading-none">
-              {{ t.readMore }}
-              <span
-                aria-hidden="true"
-                class="text-primary transition-transform duration-150 ease-out group-hover:translate-x-1.5"
-              >→</span>
+      <div class="mt-10 grid gap-6.5 sm:grid-cols-2 xl:grid-cols-3">
+        <NuxtLink
+          v-for="card in petCards"
+          :key="card.slug"
+          :to="`/projects/${card.slug}`"
+          class="rise lift lift-cw flex flex-col gap-3 rounded-3xl border-3 border-dashed border-ink bg-panel px-7 py-6.5 text-ink sm:min-h-[220px]"
+        >
+          <div class="flex items-center justify-between">
+            <span class="chip-num size-10 bg-marker-mint text-sm text-[#23201e]">
+              {{ card.index }}
             </span>
-          </NuxtLink>
-        </div>
+            <span class="font-mono text-sm leading-none text-dim">{{ card.period }}</span>
+          </div>
+          <h3 class="mt-1 font-hand text-[clamp(1.625rem,2.5vw,2.25rem)] leading-[0.95]">
+            {{ card.title }}
+          </h3>
+          <p class="text-note text-dim">{{ card.intro }}</p>
+          <p class="mt-auto flex items-center gap-2.5 font-hand text-[22px] font-bold">
+            {{ t.readMore }}
+            <span aria-hidden="true" class="text-accent">→</span>
+          </p>
+        </NuxtLink>
       </div>
     </RevealOnScroll>
 
-    <!-- Лендинги — плакатная секция на глубоком шаге акцента -->
+    <!-- Лендинги: синяя лента с полутоном поверх -->
     <RevealOnScroll
       id="landings"
       as="section"
-      class="section-pad section-rule bg-poster-bg text-poster-text"
+      class="halftone halftone-light section-pad section-rule relative overflow-hidden bg-band text-[#fff7e6]"
     >
-      <SectionHeading
-        :eyebrow="t.landingsSection.eyebrow"
-        :title="t.landingsSection.title"
-        :description="t.landingsSection.description"
-        tone="poster"
-      />
+      <div class="relative">
+        <SectionHeading
+          :eyebrow="t.landingsSection.eyebrow"
+          :title="t.landingsSection.title"
+          :description="t.landingsSection.description"
+          tone="poster"
+        />
 
-      <div class="mt-8 md:mt-14">
-        <div class="rule-draw h-0.5 w-full bg-poster-line" />
-        <NuxtLink
-          v-for="(card, index) in landingCards"
-          :key="card.slug"
-          :to="`/projects/${card.slug}`"
-          class="rise grid items-center gap-2 border-b-2 border-poster-line py-5 text-poster-text transition-colors duration-150 ease-out hover:bg-white/5 md:grid-cols-[80px_1fr_220px_140px] md:gap-6 md:py-6 md:pr-7"
-          :style="{ '--rise-index': index + 1 }"
-        >
-          <!-- В колонку номер встаёт в строку с названием, в сетку — отдельной ячейкой -->
-          <span class="flex items-baseline gap-3 md:contents">
-            <span class="text-[15px] font-semibold leading-none text-poster-accent nums">{{ card.index }}</span>
-            <span class="text-row font-semibold">{{ card.title }}</span>
-          </span>
-          <span class="text-base leading-[1.4] text-poster-dim">{{ card.intro }}</span>
-          <span class="text-[15px] font-semibold leading-none md:text-right">{{ t.readMore }} →</span>
-        </NuxtLink>
+        <div class="mt-11 grid gap-6.5 sm:grid-cols-2 xl:grid-cols-3">
+          <NuxtLink
+            v-for="card in landingCards"
+            :key="card.slug"
+            :to="`/projects/${card.slug}`"
+            class="rise lift flex flex-col gap-3 rounded-[var(--blob-alt)] border-3 border-[#23201e] bg-[#fff7e6] px-7 py-6.5 text-[#23201e] shadow-[6px_7px_0_#23201e] hover:shadow-[11px_13px_0_#23201e] sm:min-h-[210px]"
+          >
+            <span class="font-mono text-sm leading-none text-[#6b625a]">{{ card.index }}</span>
+            <h3 class="font-hand text-[clamp(2rem,3.2vw,2.875rem)] leading-[0.95]">
+              {{ card.title }}
+            </h3>
+            <p class="text-note text-[#6b625a]">{{ card.intro }}</p>
+            <p class="mt-auto flex items-center gap-2.5 font-hand text-[22px] font-bold">
+              {{ t.watch }}
+              <span aria-hidden="true" class="nudge-x text-[#e4462c]">→</span>
+            </p>
+          </NuxtLink>
+        </div>
       </div>
     </RevealOnScroll>
 
@@ -272,63 +270,49 @@
         :description="t.stackSection.description"
       />
 
-      <div class="mt-8 md:mt-12">
-        <div class="rule-draw h-0.5 w-full bg-border" />
-        <div class="grid border-l-2 border-border lg:grid-cols-2">
-          <article
-            v-for="(group, index) in t.skills"
-            :key="group.title"
-            class="rise grid-cell p-5 sm:p-8"
-            :style="{ '--rise-index': index }"
-          >
-            <h3 class="text-[26px] font-semibold leading-[1.1] tracking-[-0.02em]">{{ group.title }}</h3>
-            <p class="mb-5 mt-3 max-w-[56ch] text-[15px] leading-[1.45] text-muted-foreground">
-              {{ group.note }}
-            </p>
-            <ul class="flex flex-wrap gap-2">
-              <li
-                v-for="item in group.items"
-                :key="item"
-                class="tag tag-hoverable normal-case tracking-[0.04em] text-foreground"
-              >
-                {{ item }}
-              </li>
-            </ul>
-          </article>
-        </div>
+      <div class="mt-11 grid gap-6.5 lg:grid-cols-2">
+        <article
+          v-for="group in t.skills"
+          :key="group.title"
+          class="rise panel panel-blob px-8 py-7"
+        >
+          <h3 class="font-hand text-[clamp(2rem,2.9vw,2.625rem)] leading-none">
+            {{ group.title }}
+          </h3>
+          <p class="mb-5 mt-2.5 max-w-[52ch] text-note text-dim">{{ group.note }}</p>
+          <ul class="flex flex-wrap gap-2.5">
+            <li v-for="item in group.items" :key="item" class="tag bg-bg">{{ item }}</li>
+          </ul>
+        </article>
       </div>
     </RevealOnScroll>
 
     <!-- Контакты -->
-    <RevealOnScroll id="contact" as="footer" class="px-[var(--pad-x)] pb-14 pt-[var(--pad-y)]">
-      <p class="kicker">{{ t.contactSection.eyebrow }}</p>
-      <h2 class="rise mt-6 max-w-[24ch] text-contact font-semibold">{{ t.contactSection.title }}</h2>
-      <p class="rise mt-6 max-w-[62ch] text-[19px] leading-[1.5] text-muted-foreground" style="--rise-index: 1">
-        {{ t.contactSection.description }}
-      </p>
+    <RevealOnScroll id="contact" as="footer" class="section-pad">
+      <div class="rise panel max-w-[1000px] rounded-[36px_36px_36px_10px] px-11 py-10 shadow-[8px_9px_0_var(--ink)]">
+        <p class="label">{{ t.contactSection.eyebrow }}</p>
+        <h2 class="mt-4 max-w-[20ch] font-hand text-shout">{{ t.contactSection.title }}</h2>
+        <p class="mt-4 max-w-[58ch] text-lead text-dim">{{ t.contactSection.description }}</p>
+      </div>
 
-      <div class="mt-8 md:mt-13">
-        <div class="rule-draw h-0.5 w-full bg-border" />
+      <div class="mt-8 grid max-w-[1000px] gap-4.5 sm:grid-cols-2">
         <a
-          v-for="(link, index) in contactLinks"
+          v-for="link in contactLinks"
           :key="link.id"
           :href="link.href"
           :target="link.external ? '_blank' : undefined"
           :rel="link.external ? 'noreferrer' : undefined"
-          class="rise grid min-h-11 grid-cols-[1fr_auto] items-center gap-4 border-b-2 border-border py-4 transition-colors duration-150 ease-out hover:bg-accent-wash md:grid-cols-[180px_1fr_40px] md:items-baseline md:gap-6 md:py-6 md:pr-7"
-          :style="{ '--rise-index': index }"
+          class="rise panel panel-blob lift flex min-h-11 items-center justify-between gap-5 px-6 py-5 text-ink hover:bg-paper-warm"
         >
-          <span class="flex flex-col gap-1.5 md:contents">
-            <span class="kicker text-[11px] tracking-[0.18em] md:text-xs">{{ t.contactLabels[link.id] }}</span>
-            <span
-              class="text-[19px] font-semibold leading-[1.1] tracking-[-0.02em] md:text-[34px] md:leading-[1.05] md:tracking-[-0.025em]"
-            >
+          <span class="flex flex-col gap-1">
+            <span class="font-mono text-[13px] uppercase leading-none tracking-[0.12em] text-dim">
+              {{ t.contactLabels[link.id] }}
+            </span>
+            <span class="font-hand text-[clamp(1.5rem,2.4vw,2.125rem)] font-bold leading-none">
               {{ link.value }}
             </span>
           </span>
-          <span aria-hidden="true" class="text-lg font-semibold leading-none text-primary md:text-xl md:text-right">
-            →
-          </span>
+          <span aria-hidden="true" class="font-hand text-[26px] font-bold text-accent">→</span>
         </a>
       </div>
     </RevealOnScroll>
@@ -340,6 +324,7 @@ import { useHead, useSeoMeta } from 'nuxt/app'
 import type { ProjectEntry } from '~/composables/useProjects'
 
 type Language = 'ru' | 'en'
+type ContactId = 'email' | 'telegram' | 'github' | 'gitlab'
 
 interface SectionCopy {
   eyebrow: string
@@ -347,19 +332,18 @@ interface SectionCopy {
   description: string
 }
 
-interface HeroClaim {
+interface Principle {
   number: string
   text: string
 }
 
 interface WorkHistoryRow {
+  from: string
   years: string
   company: string
   role: string
   desc: string
 }
-
-type ContactId = 'email' | 'telegram' | 'github' | 'gitlab'
 
 interface SkillGroup {
   title: string
@@ -374,9 +358,9 @@ interface StatCopy {
 
 interface PageText {
   seo: { title: string; description: string }
-  heroKicker: string
-  heroTitle: string[]
-  heroClaims: HeroClaim[]
+  heroBubble: string
+  heroTitle: [string, string]
+  principles: Principle[]
   heroCtaExperience: string
   heroCtaContact: string
   heroCtaResume: string
@@ -394,6 +378,7 @@ interface PageText {
     ctaResume: string
     ctaTelegram: string
     photoAlt: string
+    photoCaption: string
   }
   workSection: SectionCopy
   workHistory: WorkHistoryRow[]
@@ -404,6 +389,7 @@ interface PageText {
   contactSection: SectionCopy
   contactLabels: Record<ContactId, string>
   readMore: string
+  watch: string
   skills: SkillGroup[]
 }
 
@@ -418,9 +404,9 @@ const pageText: Record<Language, PageText> = {
       description:
         'Frontend (Vue/Nuxt/TypeScript): сложные продуктовые сценарии, white label, карты и производительность. Удалённо / гибрид / офис, full-time.',
     },
-    heroKicker: 'Привет! Я Ринат',
+    heroBubble: 'Привет! Я Ринат 👋',
     heroTitle: ['Frontend', 'Developer'],
-    heroClaims: [
+    principles: [
       { number: '01', text: 'Сложные сценарии довожу до стабильных релизов, а не до «потом поправим»' },
       { number: '02', text: 'Карты, каталоги, кабинеты — где много состояний и мало права на ошибку' },
       { number: '03', text: 'Скорость и метрики так, чтобы это заметил пользователь, а не только Lighthouse' },
@@ -449,20 +435,23 @@ const pageText: Record<Language, PageText> = {
       ctaResume: 'Скачать резюме',
       ctaTelegram: 'Написать в Telegram',
       photoAlt: 'Ринат Ражапов',
+      photoCaption: 'Ринат, где-то в 2026',
     },
     workSection: {
       eyebrow: 'Опыт',
       title: 'Опыт работы',
-      description: 'Ключевые позиции и компании. Подробные продуктовые кейсы — в разделе «Проекты».',
+      description: 'Ключевые позиции и компании. Продуктовые кейсы — в разделе «Проекты».',
     },
     workHistory: [
       {
+        from: '2024',
         years: 'Апрель 2024 — Февраль 2026',
         company: 'TrustyOne',
         role: 'Frontend Developer',
         desc: 'Full-cycle решения для travel и event-сектора: DLI, Eventner, Inspiritaly, Travel 2025. Архитектура с нуля, API-контракты с backend, тестирование и CI/CD, оптимизация Core Web Vitals. Менторство джунов и приоритизация бэклога.',
       },
       {
+        from: '2022',
         years: 'Ноябрь 2022 — Январь 2024',
         company: 'Paleo Studio',
         role: 'Frontend Developer',
@@ -473,25 +462,25 @@ const pageText: Record<Language, PageText> = {
       eyebrow: 'Работы',
       title: 'Проекты',
       description:
-        'Краткий обзор продуктов, в которых я вёл frontend: от booking flow и маркетплейсов до карт и операторских панелей.',
+        'Продукты, в которых я вёл frontend: booking flow, маркетплейсы, карты и операторские панели.',
     },
     petSection: {
       eyebrow: 'Личное / эксперименты',
       title: 'Пет-проекты',
       description:
-        'Небольшие проекты для себя: расширение для браузера, конвертер Figma в Vue и CRM для лидов. Во всех трёх — интеграция с Gemini API: пробую AI-инструменты вне рабочих задач.',
+        'Расширение для браузера, конвертер Figma в Vue, CRM для лидов с Gemini API, а также магазин и сервис трансферов, собранные для себя на свежем React 19 и Next.js 15.',
     },
     landingsSection: {
       eyebrow: 'Витрина',
       title: 'Сайты-визитки и лендинги',
       description:
-        'Одностраничники для небольшого бизнеса на чистых HTML, CSS и JavaScript — без фреймворков и сборки. Акцент на типографике, анимациях по скроллу и адаптиве.',
+        'Одностраничники на чистых HTML, CSS и JS — без фреймворков. Типографика, анимации по скроллу, адаптив.',
     },
     stackSection: {
       eyebrow: 'Навыки',
       title: 'Стек шире, чем UI-библиотека',
       description:
-        'Реальный рабочий стек: frontend-архитектура, Vue/React экосистемы, тестирование, интеграции, tg-боты, CI/CD и продуктовая оптимизация.',
+        'Frontend-архитектура, Vue/React, тестирование, интеграции, боты, CI/CD и продуктовая оптимизация.',
     },
     contactSection: {
       eyebrow: 'Контакты',
@@ -499,13 +488,9 @@ const pageText: Record<Language, PageText> = {
       description:
         'Готов подключиться к Vue/Nuxt проекту, усилить архитектуру, стабилизировать релизы и довести интерфейс до хороших метрик.',
     },
-    contactLabels: {
-      email: 'Почта',
-      telegram: 'Telegram',
-      github: 'GitHub',
-      gitlab: 'GitLab',
-    },
+    contactLabels: { email: 'Почта', telegram: 'Telegram', github: 'GitHub', gitlab: 'GitLab' },
     readMore: 'Подробнее',
+    watch: 'Смотреть',
     skills: [
       {
         title: 'Frontend Core',
@@ -515,17 +500,17 @@ const pageText: Record<Language, PageText> = {
       {
         title: 'State & UI',
         note: 'Стейт-менеджмент и UI-слой продуктовых интерфейсов.',
-        items: ['Pinia', 'Vuex', 'Redux', 'Zustand', 'Tailwind CSS', 'SCSS', 'PostCSS', 'PrimeVue', 'Vuetify', 'Quasar', 'Inspira UI'],
+        items: ['Pinia', 'Vuex', 'Redux', 'Zustand', 'Tailwind CSS', 'SCSS', 'PostCSS', 'PrimeVue', 'Vuetify', 'Quasar'],
       },
       {
         title: 'Quality',
         note: 'Тестирование и предсказуемая поставка вместо ручных прогонов.',
-        items: ['Playwright', 'Vitest', 'Jest', 'Визуальная регрессия', 'ESLint', 'Prettier', 'Husky', 'Lint-staged'],
+        items: ['Playwright', 'Vitest', 'Jest', 'Визуальная регрессия', 'ESLint', 'Prettier', 'Husky'],
       },
       {
         title: 'Integrations',
         note: 'Платежи, CRM, карты, мониторинг и CI/CD.',
-        items: ['REST API', 'Swagger', 'Postman', 'Stripe', 'Zoho CRM', 'Mapbox GL', 'Telegram bots', 'Sentry', 'Docker', 'Bitbucket Pipelines'],
+        items: ['REST API', 'Swagger', 'Stripe', 'Zoho CRM', 'Mapbox GL', 'Telegram bots', 'Sentry', 'Docker'],
       },
     ],
   },
@@ -535,9 +520,9 @@ const pageText: Record<Language, PageText> = {
       description:
         'Frontend (Vue/Nuxt/TypeScript): complex product flows, white label, maps and performance. Remote / hybrid / office, full-time.',
     },
-    heroKicker: "Hi! I'm Rinat",
+    heroBubble: "Hi! I'm Rinat 👋",
     heroTitle: ['Frontend', 'Developer'],
-    heroClaims: [
+    principles: [
       { number: '01', text: 'I take complex flows all the way to stable releases, not to "we will fix it later"' },
       { number: '02', text: 'Maps, catalogues and dashboards — heavy state and little room for mistakes' },
       { number: '03', text: 'Performance users actually feel in the UI, not only in a Lighthouse score' },
@@ -566,20 +551,23 @@ const pageText: Record<Language, PageText> = {
       ctaResume: 'Download resume',
       ctaTelegram: 'Message on Telegram',
       photoAlt: 'Rinat Razhapov',
+      photoCaption: 'Rinat, somewhere in 2026',
     },
     workSection: {
       eyebrow: 'Experience',
       title: 'Employment',
-      description: 'Key roles and companies. Detailed product write-ups live in the Work section.',
+      description: 'Key roles and companies. Product write-ups live in the Work section.',
     },
     workHistory: [
       {
+        from: '2024',
         years: 'April 2024 — February 2026',
         company: 'TrustyOne',
         role: 'Frontend Developer',
         desc: 'Full-cycle work for travel and event products: DLI, Eventner, Inspiritaly, Travel 2025. Architecture from scratch, API contracts with backend, testing and CI/CD, Core Web Vitals. Mentoring juniors and backlog prioritisation.',
       },
       {
+        from: '2022',
         years: 'November 2022 — January 2024',
         company: 'Paleo Studio',
         role: 'Frontend Developer',
@@ -590,25 +578,25 @@ const pageText: Record<Language, PageText> = {
       eyebrow: 'Work',
       title: 'Projects',
       description:
-        'A short overview of the products where I owned the frontend: booking flows, marketplaces, maps and operator tooling.',
+        'Products where I owned the frontend: booking flows, marketplaces, maps and operator tooling.',
     },
     petSection: {
       eyebrow: 'Personal / experiments',
       title: 'Pet projects',
       description:
-        'Small side projects: a browser extension, a Figma-to-Vue converter and a lead CRM. All three integrate the Gemini API — trying AI tooling outside of work tasks.',
+        'A browser extension, a Figma-to-Vue converter, a lead CRM on the Gemini API, plus a shop and a transfer service built for myself on React 19 and Next.js 15.',
     },
     landingsSection: {
       eyebrow: 'Showcase',
       title: 'Landing pages and business-card sites',
       description:
-        'Single-page sites for small businesses in plain HTML, CSS and JavaScript — no frameworks, no build step. Focused on typography, scroll-driven animation and responsive layout.',
+        'Single-page sites in plain HTML, CSS and JS — no frameworks. Typography, scroll-driven animation, responsive layout.',
     },
     stackSection: {
       eyebrow: 'Skills',
       title: 'A stack wider than a UI library',
       description:
-        'The real working stack: frontend architecture, the Vue/React ecosystems, testing, integrations, Telegram bots, CI/CD and product optimisation.',
+        'Frontend architecture, Vue/React, testing, integrations, bots, CI/CD and product optimisation.',
     },
     contactSection: {
       eyebrow: 'Contact',
@@ -616,13 +604,9 @@ const pageText: Record<Language, PageText> = {
       description:
         'I can join a Vue/Nuxt project, strengthen the architecture, stabilise releases and bring the interface to solid metrics.',
     },
-    contactLabels: {
-      email: 'Email',
-      telegram: 'Telegram',
-      github: 'GitHub',
-      gitlab: 'GitLab',
-    },
+    contactLabels: { email: 'Email', telegram: 'Telegram', github: 'GitHub', gitlab: 'GitLab' },
     readMore: 'Read more',
+    watch: 'Take a look',
     skills: [
       {
         title: 'Frontend Core',
@@ -632,17 +616,17 @@ const pageText: Record<Language, PageText> = {
       {
         title: 'State & UI',
         note: 'State management and the UI layer of product interfaces.',
-        items: ['Pinia', 'Vuex', 'Redux', 'Zustand', 'Tailwind CSS', 'SCSS', 'PostCSS', 'PrimeVue', 'Vuetify', 'Quasar', 'Inspira UI'],
+        items: ['Pinia', 'Vuex', 'Redux', 'Zustand', 'Tailwind CSS', 'SCSS', 'PostCSS', 'PrimeVue', 'Vuetify', 'Quasar'],
       },
       {
         title: 'Quality',
         note: 'Testing and predictable delivery instead of manual run-throughs.',
-        items: ['Playwright', 'Vitest', 'Jest', 'Visual regression', 'ESLint', 'Prettier', 'Husky', 'Lint-staged'],
+        items: ['Playwright', 'Vitest', 'Jest', 'Visual regression', 'ESLint', 'Prettier', 'Husky'],
       },
       {
         title: 'Integrations',
         note: 'Payments, CRM, maps, monitoring and CI/CD.',
-        items: ['REST API', 'Swagger', 'Postman', 'Stripe', 'Zoho CRM', 'Mapbox GL', 'Telegram bots', 'Sentry', 'Docker', 'Bitbucket Pipelines'],
+        items: ['REST API', 'Swagger', 'Stripe', 'Zoho CRM', 'Mapbox GL', 'Telegram bots', 'Sentry', 'Docker'],
       },
     ],
   },
@@ -678,7 +662,7 @@ const landingCards = computed(() =>
     .filter((entry) => entry.category === 'landing')
     .map((entry) => ({
       ...toCard(entry),
-      // В плакатной строке живёт только имя бренда — уточнение уже несёт описание рядом
+      // В витрине живёт только имя бренда — уточнение несёт описание рядом
       title: toCard(entry).title.split('—')[0]?.trim() ?? '',
     })),
 )

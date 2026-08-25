@@ -26,8 +26,8 @@ export default {
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
           rel: 'stylesheet',
-          // Archivo несёт латиницу, Golos Text — кириллицу; стек в --font-sans идёт именно в этом порядке
-          href: 'https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Golos+Text:wght@400;500;600;700&display=swap',
+          // Caveat — заголовки, Neucha — текст, JetBrains Mono — метки; все три с кириллицей
+          href: 'https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Neucha&family=JetBrains+Mono:wght@400;600&display=swap',
         },
       ],
       meta: [
@@ -38,12 +38,12 @@ export default {
         },
         {
           name: 'theme-color',
-          content: '#f3f2f2',
+          content: '#fbf3e4',
           media: '(prefers-color-scheme: light)',
         },
         {
           name: 'theme-color',
-          content: '#161311',
+          content: '#1e1b19',
           media: '(prefers-color-scheme: dark)',
         },
         { property: 'og:title', content: 'Ринат Ражапов - Frontend Developer' },

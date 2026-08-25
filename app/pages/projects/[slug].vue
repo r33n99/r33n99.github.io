@@ -1,50 +1,39 @@
 <template>
-  <main class="min-h-screen overflow-x-clip">
+  <main class="halftone relative min-h-screen overflow-x-clip">
     <AppHeader />
 
-    <section class="section-pad">
-      <nav aria-label="Breadcrumb" class="text-sm text-muted-foreground">
-        <NuxtLink to="/" class="transition-colors duration-150 ease-out hover:text-foreground">
+    <RevealOnScroll as="section" class="section-pad">
+      <nav aria-label="Breadcrumb" class="font-mono text-[13px] text-dim">
+        <NuxtLink to="/" class="transition-colors duration-300 hover:text-accent-text">
           {{ t.home }}
         </NuxtLink>
-        <span class="mx-2 text-border" aria-hidden="true">→</span>
-        <NuxtLink to="/#projects" class="transition-colors duration-150 ease-out hover:text-foreground">
+        <span class="mx-2" aria-hidden="true">→</span>
+        <NuxtLink to="/#projects" class="transition-colors duration-300 hover:text-accent-text">
           {{ t.projects }}
         </NuxtLink>
-        <span class="mx-2 text-border" aria-hidden="true">→</span>
-        <span class="font-medium text-foreground">{{ title }}</span>
+        <span class="mx-2" aria-hidden="true">→</span>
+        <span class="text-ink">{{ title }}</span>
       </nav>
 
-      <article class="mt-10">
-        <div class="flex items-center justify-between">
-          <span class="text-[13px] font-semibold leading-none tracking-[0.1em] text-accent-quiet nums">
-            {{ entry.index }}
-          </span>
-          <span class="text-[13px] font-medium leading-none text-muted-foreground nums">{{ period }}</span>
+      <article class="rise panel panel-blob mt-8 max-w-[1000px] px-8 py-8 sm:px-11 sm:py-10">
+        <div class="flex items-center justify-between gap-4">
+          <span class="chip-num size-12 text-base">{{ entry.index }}</span>
+          <span class="font-mono text-sm leading-none text-dim">{{ period }}</span>
         </div>
 
-        <h1 class="mt-5 text-section font-semibold">{{ title }}</h1>
+        <h1 class="mt-5 font-hand text-heading">{{ title }}</h1>
 
-        <ul class="mt-7 flex flex-wrap gap-2">
-          <li v-for="tag in entry.tags" :key="tag" class="tag normal-case tracking-[0.04em] text-foreground">
-            {{ tag }}
-          </li>
+        <ul class="mt-6 flex flex-wrap gap-2.5">
+          <li v-for="tag in entry.tags" :key="tag" class="tag bg-bg">{{ tag }}</li>
         </ul>
 
-        <p class="mt-9 max-w-[72ch] text-[19px] leading-[1.5] text-muted-foreground">
-          {{ description }}
-        </p>
+        <p class="mt-7 max-w-[62ch] text-lead text-dim">{{ description }}</p>
 
-        <div v-if="entry.previewImage" class="mt-10 border-2 border-border bg-surface">
-          <img
-            :src="entry.previewImage"
-            :alt="title"
-            class="h-auto w-full object-cover grayscale"
-            loading="lazy"
-          >
+        <div v-if="entry.previewImage" class="mt-8 overflow-hidden rounded-2xl border-3 border-ink">
+          <img :src="entry.previewImage" :alt="title" class="h-auto w-full object-cover" loading="lazy">
         </div>
 
-        <div v-if="entry.websiteUrl || entry.codeUrl" class="mt-10 flex flex-col gap-3 sm:flex-row">
+        <div v-if="entry.websiteUrl || entry.codeUrl" class="mt-8 flex flex-wrap gap-3.5">
           <a
             v-if="entry.websiteUrl"
             :href="entry.websiteUrl"
@@ -59,24 +48,18 @@
             :href="entry.codeUrl"
             target="_blank"
             rel="noreferrer"
-            class="btn btn-outline"
+            class="btn btn-paper"
           >
             {{ t.code }}
           </a>
         </div>
-
-        <div class="mt-14">
-          <div class="h-0.5 w-full bg-border" />
-          <NuxtLink
-            to="/#projects"
-            class="flex min-h-11 items-center gap-2 py-5 text-lg font-semibold transition-colors duration-150 ease-out hover:text-accent-quiet"
-          >
-            <span aria-hidden="true" class="text-primary">←</span>
-            {{ t.back }}
-          </NuxtLink>
-        </div>
       </article>
-    </section>
+
+      <NuxtLink to="/#projects" class="btn btn-paper mt-8">
+        <span aria-hidden="true">←</span>
+        {{ t.back }}
+      </NuxtLink>
+    </RevealOnScroll>
   </main>
 </template>
 

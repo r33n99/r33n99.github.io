@@ -67,42 +67,38 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <header
-    class="sticky top-0 z-50 w-full border-b-2 border-border bg-background"
-  >
-    <div
-      class="flex items-center justify-between gap-8 px-[var(--pad-x)] py-4 lg:py-5"
-    >
-      <NuxtLink
-        to="/"
-        class="text-[17px] font-bold leading-none tracking-[-0.01em] lg:text-xl"
-        @click="closeMenu"
-      >
-        reen<span class="text-primary">.</span>cv
+  <header class="sticky top-0 z-40 border-b-3 border-ink bg-bg">
+    <div class="flex items-center justify-between gap-7 px-[var(--pad-x)] py-3.5 lg:py-4">
+      <NuxtLink to="/" class="flex flex-col gap-[3px]" @click="closeMenu">
+        <span class="font-hand text-[28px] font-bold leading-none lg:text-[34px]">
+          reen<span class="text-accent">.</span>cv
+        </span>
+        <!-- Motion B: подчёркивание дорисовывается слева направо при загрузке -->
+        <span class="ink-draw h-1 rounded bg-accent" aria-hidden="true" />
       </NuxtLink>
 
-      <nav class="hidden items-center gap-7 text-sm font-medium leading-none text-muted-foreground lg:flex">
+      <nav class="hidden items-center gap-1.5 font-body text-[19px] leading-none lg:flex">
         <a
           v-for="link in links"
           :key="link.href"
           :href="link.href"
-          class="transition-colors duration-150 ease-out hover:text-foreground"
+          class="rounded-xl px-3 py-2 text-ink transition-[background-color,transform] duration-250 ease-[var(--ease-comic)] hover:rotate-[-1.5deg] hover:bg-[color-mix(in_srgb,var(--accent)_14%,transparent)]"
         >
           {{ link.label }}
         </a>
       </nav>
 
-      <div class="hidden items-center gap-3 lg:flex">
+      <div class="hidden items-center gap-2.5 lg:flex">
         <ThemeToggle />
         <LanguageToggle />
-        <a href="/#contact" class="btn btn-accent text-sm">{{ t.contact }}</a>
+        <a href="/#contact" class="btn btn-accent text-[22px]">{{ t.contact }}</a>
       </div>
 
       <div class="flex items-center gap-2 lg:hidden">
         <ThemeToggle compact />
         <button
           type="button"
-          class="grid size-11 cursor-pointer place-items-center bg-primary text-lg font-semibold leading-none text-primary-foreground"
+          class="grid size-11 cursor-pointer place-items-center rounded-[14px] border-3 border-ink bg-accent font-hand text-[22px] font-bold leading-none text-on-accent"
           :aria-label="isMenuOpen ? t.close : t.menu"
           :aria-expanded="isMenuOpen"
           aria-controls="mobile-menu"
@@ -116,22 +112,22 @@ onBeforeUnmount(() => {
     <div
       v-if="isMenuOpen"
       id="mobile-menu"
-      class="border-t-2 border-border bg-background px-[var(--pad-x)] pb-6 pt-5 lg:hidden"
+      class="border-t-3 border-ink bg-bg px-[var(--pad-x)] pb-6 pt-5 lg:hidden"
     >
-      <p class="kicker">{{ t.menuTitle }}</p>
-      <nav class="mt-4 flex flex-col border-t-2 border-border">
+      <p class="label">{{ t.menuTitle }}</p>
+      <nav class="mt-4 flex flex-col gap-2.5">
         <a
           v-for="link in links"
           :key="link.href"
           :href="link.href"
-          class="flex min-h-11 items-center border-b-2 border-border py-3 text-base font-semibold transition-colors duration-150 ease-out hover:text-accent-quiet"
+          class="panel panel-blob lift flex min-h-11 items-center px-5 py-3 font-hand text-2xl font-bold"
           @click="closeMenu"
         >
           {{ link.label }}
         </a>
         <a
           href="/#contact"
-          class="flex min-h-11 items-center border-b-2 border-border py-3 text-base font-semibold text-accent-quiet"
+          class="btn btn-accent mt-1 justify-start"
           @click="closeMenu"
         >
           {{ t.contact }}

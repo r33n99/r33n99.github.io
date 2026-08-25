@@ -153,8 +153,8 @@ const projectsData: ProjectEntry[] = [
   },
   {
     slug: 'lago-transfer',
-    index: '08',
-    category: 'work',
+    index: '04',
+    category: 'pet',
     titleRu: 'Lago Transfer',
     titleEn: 'Lago Transfer',
     introRu: 'Сервис бронирования трансферов: Next.js 15, React 19, Zustand.',
@@ -172,8 +172,8 @@ const projectsData: ProjectEntry[] = [
   },
   {
     slug: 'nova-shop',
-    index: '09',
-    category: 'work',
+    index: '05',
+    category: 'pet',
     titleRu: 'Nova Shop',
     titleEn: 'Nova Shop',
     introRu: 'Интернет-магазин: React 19, Vite, Ant Design, Zustand.',

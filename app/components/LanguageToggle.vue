@@ -15,18 +15,22 @@ const titles: Record<Language, string> = {
 </script>
 
 <template>
-  <div class="flex border-2 border-border" role="group" aria-label="Language / Язык">
+  <div
+    class="flex overflow-hidden rounded-[20px] border-3 border-ink"
+    role="group"
+    aria-label="Language / Язык"
+  >
     <button
       v-for="option in options"
       :key="option.value"
       type="button"
       :aria-pressed="language === option.value"
       :title="titles[option.value]"
-      class="min-h-11 cursor-pointer px-3 text-[13px] font-semibold leading-none transition-colors duration-150 ease-out"
+      class="min-h-11 cursor-pointer px-3 font-mono text-sm font-semibold leading-none transition-colors duration-300 ease-[var(--ease-comic)]"
       :class="
         language === option.value
-          ? 'bg-primary text-primary-foreground'
-          : 'bg-transparent text-muted-foreground hover:text-foreground'
+          ? 'bg-chip-bg text-chip-fg'
+          : 'bg-transparent text-dim hover:text-ink'
       "
       @click="setLanguage(option.value)"
     >

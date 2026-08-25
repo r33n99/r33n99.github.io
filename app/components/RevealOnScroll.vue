@@ -1,39 +1,51 @@
 <script setup lang="ts">
 /**
- * Motion A: при входе секции в вьюпорт её 2px-линейки рисуются слева направо,
- * затем текст всплывает из-под линии. Всё на transform/opacity — без layout shift.
- * Сам компонент только ставит класс `is-revealed`, анимации живут в main.css.
+ * Motion A: кадры комикса выкладываются на стол — панель входит снизу
+ * с недолётом и микро-масштабом. Компонент только ставит класс `in`,
+ * сама анимация живёт в main.css.
+ *
+ * Шаг задержки берётся из порядкового номера панели внутри блока
+ * (0…5 × 70 ms), как в макете: соседи не съезжают лавиной.
  */
 const props = withDefaults(
-  defineProps<{ as?: string; threshold?: number }>(),
-  { as: 'div', threshold: 0.12 },
+  defineProps<{ as?: string; threshold?: number; stagger?: number }>(),
+  { as: 'div', threshold: 0.08, stagger: 6 },
 )
 
 const target = ref<HTMLElement | null>(null)
-const isRevealed = ref(false)
 
 let observer: IntersectionObserver | null = null
 
 onMounted(() => {
-  if (!target.value) return
+  const root = target.value
+  if (!root) return
+
+  const panels = [...root.querySelectorAll<HTMLElement>('.rise')]
+  const items = root.classList.contains('rise') ? [root, ...panels] : panels
+
+  if (!items.length) return
 
   if (!('IntersectionObserver' in window)) {
-    isRevealed.value = true
+    items.forEach((el) => el.classList.add('in'))
     return
   }
 
+  items.forEach((el, index) => {
+    el.style.transitionDelay = `${(index % props.stagger) * 70}ms`
+  })
+
   observer = new IntersectionObserver(
     (entries) => {
-      if (entries.some((entry) => entry.isIntersecting)) {
-        isRevealed.value = true
-        observer?.disconnect()
-        observer = null
-      }
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return
+        entry.target.classList.add('in')
+        observer?.unobserve(entry.target)
+      })
     },
-    { threshold: props.threshold, rootMargin: '0px 0px -8% 0px' },
+    { rootMargin: '0px 0px -8% 0px', threshold: props.threshold },
   )
 
-  observer.observe(target.value)
+  items.forEach((el) => observer?.observe(el))
 })
 
 onBeforeUnmount(() => {
@@ -43,7 +55,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <component :is="as" ref="target" :class="{ 'is-revealed': isRevealed }">
+  <component :is="as" ref="target">
     <slot />
   </component>
 </template>
