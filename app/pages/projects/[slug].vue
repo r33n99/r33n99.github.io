@@ -15,7 +15,7 @@
         <span class="text-ink">{{ title }}</span>
       </nav>
 
-      <article class="rise panel panel-blob mt-8 max-w-[1000px] px-8 py-8 sm:px-11 sm:py-10">
+      <article class="rise panel panel-blob mt-8 max-w-[1920px] px-8 py-8 sm:px-11 sm:py-10">
         <div class="flex items-center justify-between gap-4">
           <span class="chip-num size-12 text-base">{{ entry.index }}</span>
           <span class="font-mono text-sm leading-none text-dim">{{ period }}</span>

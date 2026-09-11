@@ -365,7 +365,7 @@
   }
 
   .section-pad {
-    padding: var(--pad-y) var(--pad-x);
+    padding: var(--pad-y) var(--pad-x); 
   }
 
   .section-rule {

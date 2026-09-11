@@ -421,8 +421,8 @@ const pageText: Record<Language, PageText> = {
       releases: { label: 'Релизы', note: 'проектов и релизов' },
       format: {
         label: 'Формат',
-        value: 'Удалённо / гибрид / офис',
-        note: 'Full-time, комфортно в распределённых командах',
+        value: 'Удалённо или гибрид / офис в Бишкеке',
+        note: 'full-time, part-time и контракт.',
       },
     },
     about: {
@@ -435,7 +435,7 @@ const pageText: Record<Language, PageText> = {
       ctaResume: 'Скачать резюме',
       ctaTelegram: 'Написать в Telegram',
       photoAlt: 'Ринат Ражапов',
-      photoCaption: 'Ринат, где-то в 2026',
+      photoCaption: 'Это я, где-то в 2026',
     },
     workSection: {
       eyebrow: 'Опыт',
