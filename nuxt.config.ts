@@ -22,13 +22,10 @@ export default {
       favicon: '/favicon.ico',
       title: 'Frontend Developer',
       link: [
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        {
-          rel: 'stylesheet',
-          // Caveat — заголовки, Neucha — текст, JetBrains Mono — метки; все три с кириллицей
-          href: 'https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Neucha&family=JetBrains+Mono:wght@400;600&display=swap',
-        },
+        // Caveat — заголовки, Neucha — текст, JetBrains Mono — метки; @font-face в main.css.
+        // Предзагружаем только кириллицу заголовков и текста — она нужна первому экрану
+        { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/neucha-cyrillic.woff2', crossorigin: '' },
+        { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/caveat-cyrillic.woff2', crossorigin: '' },
       ],
       meta: [
         {

@@ -3,34 +3,35 @@
     <AppHeader />
 
     <!-- Hero: реплика в пузыре, крупный рукописный заголовок, стикеры со счётом -->
-    <RevealOnScroll as="section" class="section-pad section-rule relative">
+    <section class="section-pad section-rule relative">
       <div class="grid gap-11 xl:grid-cols-[1fr_340px] xl:items-start">
         <div>
-          <p class="rise bubble inline-block px-5 py-3 text-lead">{{ t.heroBubble }}</p>
+          <p class="rise-now bubble inline-block px-5 py-3 text-lead">{{ t.heroBubble }}</p>
 
-          <h1 class="rise mt-6 font-hand text-display tracking-[-0.01em]">
+          <h1 class="rise-now [--rise-delay:70ms] mt-6 font-hand text-display tracking-[-0.01em]">
             <span class="inline-block -rotate-2">{{ t.heroTitle[0] }}</span><br>
             <span
               class="inline-block rotate-[1.2deg] text-accent [text-shadow:4px_4px_0_var(--ink)]"
             >{{ t.heroTitle[1] }}</span>
           </h1>
 
-          <ul class="rise mt-8 flex flex-wrap gap-2.5">
+          <ul class="rise-now [--rise-delay:140ms] mt-8 flex flex-wrap gap-2.5">
             <li v-for="tag in heroTags" :key="tag" class="tag">{{ tag }}</li>
           </ul>
 
           <div class="mt-10 grid gap-4.5 sm:grid-cols-2">
             <div
-              v-for="principle in t.principles"
+              v-for="(principle, index) in t.principles"
               :key="principle.number"
-              class="rise panel panel-blob lift flex items-start gap-4 px-5 py-5"
+              class="rise-now panel panel-blob lift flex items-start gap-4 px-5 py-5"
+              :style="{ '--rise-delay': `${210 + index * 70}ms` }"
             >
               <span class="chip-num size-9.5 text-sm">{{ principle.number }}</span>
               <p class="text-note">{{ principle.text }}</p>
             </div>
           </div>
 
-          <div class="rise mt-9 flex flex-wrap items-center gap-3.5">
+          <div class="rise-now [--rise-delay:350ms] mt-9 flex flex-wrap items-center gap-3.5">
             <a href="#experience" class="btn btn-accent">{{ t.heroCtaExperience }}</a>
             <a href="#contact" class="btn btn-paper">{{ t.heroCtaContact }}</a>
             <a :href="t.resumeHref" download class="btn-dashed">{{ t.heroCtaResume }} ↓</a>
@@ -40,7 +41,7 @@
         <aside class="flex flex-col gap-5.5 pt-3">
           <!-- Motion B: стикеры медленно покачиваются, счётчики докручиваются один раз -->
           <div
-            class="rise float-slow rounded-[var(--blob)] border-3 border-ink bg-marker-yellow px-6 py-6 text-[#23201e] shadow-[6px_7px_0_var(--ink)]"
+            class="rise-now float-slow rounded-[var(--blob)] border-3 border-ink bg-marker-yellow px-6 py-6 text-[#23201e] shadow-[6px_7px_0_var(--ink)]"
           >
             <p class="font-mono text-[15px] uppercase leading-none tracking-[0.1em]">
               {{ t.stats.experience.label }}
@@ -56,7 +57,7 @@
           </div>
 
           <div
-            class="rise float-slower rounded-[var(--blob-alt)] border-3 border-ink bg-marker-mint px-6 py-6 text-[#23201e] shadow-[6px_7px_0_var(--ink)]"
+            class="rise-now float-slower [--rise-delay:70ms] rounded-[var(--blob-alt)] border-3 border-ink bg-marker-mint px-6 py-6 text-[#23201e] shadow-[6px_7px_0_var(--ink)]"
           >
             <p class="font-mono text-[15px] uppercase leading-none tracking-[0.1em]">
               {{ t.stats.releases.label }}
@@ -71,7 +72,7 @@
             <p class="mt-1 text-[20px] leading-[1.25]">{{ t.stats.releases.note }}</p>
           </div>
 
-          <div class="rise rounded-3xl border-3 border-dashed border-ink bg-panel px-6 py-5.5">
+          <div class="rise-now [--rise-delay:140ms] rounded-3xl border-3 border-dashed border-ink bg-panel px-6 py-5.5">
             <p class="label">{{ t.stats.format.label }}</p>
             <p class="mt-2 font-hand text-[32px] font-bold leading-[1.05]">
               {{ t.stats.format.value }}
@@ -80,7 +81,7 @@
           </div>
         </aside>
       </div>
-    </RevealOnScroll>
+    </section>
 
     <!-- Обо мне: фото как полароид с плёнкой, текст в речевом пузыре -->
     <RevealOnScroll id="about" as="section" class="section-pad section-rule">
