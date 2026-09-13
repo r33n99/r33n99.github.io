@@ -30,7 +30,14 @@
         <p class="mt-7 max-w-[62ch] text-lead text-dim">{{ description }}</p>
 
         <div v-if="entry.previewImage" class="mt-8 overflow-hidden rounded-2xl border-3 border-ink">
-          <img :src="entry.previewImage" :alt="title" class="h-auto w-full object-cover" loading="lazy">
+          <NuxtImg
+            :src="entry.previewImage"
+            :alt="title"
+            class="h-auto w-full object-cover"
+            format="webp"
+            sizes="480px sm:720px lg:1200px xl:1600px"
+            loading="lazy"
+          />
         </div>
 
         <div v-if="entry.websiteUrl || entry.codeUrl" class="mt-8 flex flex-wrap gap-3.5">

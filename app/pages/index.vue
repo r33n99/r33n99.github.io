@@ -415,7 +415,7 @@ const pageText: Record<Language, PageText> = {
     heroCtaExperience: 'Смотреть опыт',
     heroCtaContact: 'Связаться',
     heroCtaResume: 'Скачать резюме',
-    resumeHref: '/cv-ru.pdf',
+    resumeHref: '/cv/cv-ru.pdf',
     stats: {
       experience: { label: 'Опыт', note: 'года в продакшене' },
       releases: { label: 'Релизы', note: 'проектов и релизов' },
@@ -531,7 +531,7 @@ const pageText: Record<Language, PageText> = {
     heroCtaExperience: 'View experience',
     heroCtaContact: 'Get in touch',
     heroCtaResume: 'Download resume',
-    resumeHref: '/cv-en.pdf',
+    resumeHref: '/cv/cv-en.pdf',
     stats: {
       experience: { label: 'Experience', note: 'years in production' },
       releases: { label: 'Delivery', note: 'projects and releases' },
