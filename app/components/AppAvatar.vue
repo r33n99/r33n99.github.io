@@ -22,7 +22,7 @@ const imageError = ref(false)
   >
     <img
       v-if="!imageError"
-      src="/avatar.jpg"
+      src="/avatar.png"
       :alt="alt"
       class="size-full object-cover"
       @error="imageError = true"

@@ -89,8 +89,8 @@
         <div
           class="rise panel relative -rotate-[1.6deg] rounded-[20px] px-4 pb-14 pt-4 shadow-[7px_8px_0_var(--ink)]"
         >
-          <NuxtImg
-            src="/images/avatar.jpg"
+          <NuxtImg    
+            src="/images/avatar.png"
             :alt="t.about.photoAlt"
             class="aspect-4/5 w-full rounded-xl border-3 border-ink object-cover"
             sizes="360px xl:400px"
