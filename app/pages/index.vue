@@ -11,7 +11,7 @@
           <h1 class="rise-now [--rise-delay:70ms] mt-6 font-hand text-display tracking-[-0.01em]">
             <span class="inline-block -rotate-2">{{ t.heroTitle[0] }}</span><br>
             <span
-              class="inline-block rotate-[1.2deg] text-accent [text-shadow:4px_4px_0_var(--ink)]"
+              class="inline-block rotate-[1.2deg] text-[clamp(1.75rem,7.8vw,7.25rem)] text-accent [text-shadow:4px_4px_0_var(--ink)]"
             >{{ t.heroTitle[1] }}</span>
           </h1>
 
@@ -48,7 +48,7 @@
             </p>
             <p class="mt-2 font-hand text-stat font-bold">
               <InspiraNumberTicker
-                :value="3"
+                :value="4"
                 :decimal-places="0"
                 class="font-hand text-stat font-bold tracking-normal text-[#23201e]"
               />+
@@ -396,17 +396,17 @@ interface PageText {
 
 const { language } = useLanguage()
 
-const heroTags = ['#TypeScript', '#Vue', '#Nuxt', '#React', '#Next', '#Node.js']
+const heroTags = ['#TypeScript', '#React', '#Next.js', '#Vue', '#Nuxt', '#Node.js']
 
 const pageText: Record<Language, PageText> = {
   ru: {
     seo: {
-      title: 'Frontend Developer',
+      title: 'Vue & React Frontend Developer — Ринат Ражапов',
       description:
-        'Frontend (Vue/Nuxt/TypeScript): сложные продуктовые сценарии, white label, карты и производительность. Удалённо / гибрид / офис, full-time.',
+        'Frontend-разработчик с 4+ годами опыта: React, Next.js, Vue, Nuxt и TypeScript. SSR-приложения, сложная бизнес-логика, тестирование и CI/CD.',
     },
     heroBubble: 'Привет! Я Ринат 👋',
-    heroTitle: ['Frontend', 'Developer'],
+    heroTitle: ['Vue + React', 'Frontend Developer'],
     principles: [
       { number: '01', text: 'Сложные сценарии довожу до стабильных релизов, а не до «потом поправим»' },
       { number: '02', text: 'Карты, каталоги, кабинеты — где много состояний и мало права на ошибку' },
@@ -418,7 +418,7 @@ const pageText: Record<Language, PageText> = {
     heroCtaResume: 'Скачать резюме',
     resumeHref: '/cv/cv-ru.pdf',
     stats: {
-      experience: { label: 'Опыт', note: 'года в продакшене' },
+      experience: { label: 'Опыт', note: 'года в продакшене с Vue и React' },
       releases: { label: 'Релизы', note: 'проектов и релизов' },
       format: {
         label: 'Формат',
@@ -430,9 +430,9 @@ const pageText: Record<Language, PageText> = {
       eyebrow: 'Обо мне',
       name: 'Ринат Ражапов',
       paragraph1:
-        'Работаю frontend-инженером над продуктами с реальными метриками: беру сложные сценарии, упрощаю UX и довожу интерфейсы до стабильного продакшна.',
+        'Frontend-разработчик с 4+ годами опыта в Vue/Nuxt и React/Next.js. Беру сложные продуктовые сценарии, упрощаю UX и довожу интерфейсы до стабильного продакшна.',
       paragraph2:
-        'Сильная сторона — системная работа с архитектурой, качеством и скоростью релизов: типизация, контракты с backend, регрессии и предсказуемая поставка.',
+        'Запускаю SSR-приложения с нуля и системно работаю с архитектурой, типизацией, API-контрактами, тестированием, CI/CD и скоростью релизов.',
       ctaResume: 'Скачать резюме',
       ctaTelegram: 'Написать в Telegram',
       photoAlt: 'Ринат Ражапов',
@@ -457,6 +457,13 @@ const pageText: Record<Language, PageText> = {
         company: 'Paleo Studio',
         role: 'Frontend Developer',
         desc: 'Логистическая платформа на Vue 2 + Vuetify, личный кабинет Silkway Rally с динамическими таблицами и графиками, портал ночного клуба, конструктор контента для админ-панели, браузерное расширение.',
+      },
+      {
+        from: '2021',
+        years: 'Июнь 2021 — Август 2022',
+        company: 'Freelance',
+        role: 'Frontend Developer · React / Next.js',
+        desc: 'Разрабатывал и поддерживал клиентские веб-приложения и лендинги для малого бизнеса и частных заказчиков. Собирал адаптивные интерфейсы и переиспользуемые компоненты на React, Next.js и TypeScript, настраивал SSR/SSG и маршрутизацию, интегрировал REST API, формы и валидацию, React Query и Zustand.',
       },
     ],
     projectsSection: {
@@ -487,7 +494,7 @@ const pageText: Record<Language, PageText> = {
       eyebrow: 'Контакты',
       title: 'Нужен frontend-разработчик в команду?',
       description:
-        'Готов подключиться к Vue/Nuxt проекту, усилить архитектуру, стабилизировать релизы и довести интерфейс до хороших метрик.',
+        'Готов подключиться к React/Next.js или Vue/Nuxt проекту, усилить архитектуру, стабилизировать релизы и довести интерфейс до хороших метрик.',
     },
     contactLabels: { email: 'Почта', telegram: 'Telegram', github: 'GitHub', gitlab: 'GitLab' },
     readMore: 'Подробнее',
@@ -495,18 +502,28 @@ const pageText: Record<Language, PageText> = {
     skills: [
       {
         title: 'Frontend Core',
-        note: 'Основной опыт во Vue-экосистеме, при необходимости быстро переключаюсь на React.',
-        items: ['Vue 3 Composition API', 'Nuxt 3/4', 'Vue 2', 'React', 'TypeScript', 'JavaScript ES6+', 'Node.js'],
+        note: 'Типизированный frontend и серверный JavaScript для продуктовых приложений.',
+        items: ['TypeScript', 'JavaScript ES6+', 'Node.js', 'REST API', 'Swagger', 'Vite', 'Webpack'],
+      },
+      {
+        title: 'React & Next.js',
+        note: 'SSR/SSG-приложения, компонентная архитектура, формы и управление состоянием.',
+        items: ['React 19', 'Next.js App Router', 'Server Components', 'Client Components', 'TanStack Query', 'Zustand', 'React Hook Form', 'Zod'],
+      },
+      {
+        title: 'Vue & Nuxt',
+        note: 'Коммерческая разработка на Vue 2/3 и Nuxt с SSR и сложной бизнес-логикой.',
+        items: ['Vue 3 Composition API', 'Nuxt 3/4', 'Vue 2', 'Pinia', 'Vuex', 'Vue Router', 'VueUse'],
       },
       {
         title: 'State & UI',
         note: 'Стейт-менеджмент и UI-слой продуктовых интерфейсов.',
-        items: ['Pinia', 'Vuex', 'Redux', 'Zustand', 'Tailwind CSS', 'SCSS', 'PostCSS', 'PrimeVue', 'Vuetify', 'Quasar'],
+        items: ['Tailwind CSS', 'CSS Modules', 'styled-components', 'SCSS', 'PostCSS', 'PrimeVue', 'Vuetify', 'Quasar', 'Inspira UI'],
       },
       {
         title: 'Quality',
         note: 'Тестирование и предсказуемая поставка вместо ручных прогонов.',
-        items: ['Playwright', 'Vitest', 'Jest', 'Визуальная регрессия', 'ESLint', 'Prettier', 'Husky'],
+        items: ['Playwright', 'Vitest', 'Jest', 'React Testing Library', 'Vue Test Utils', 'Визуальная регрессия', 'ESLint', 'Prettier', 'Husky'],
       },
       {
         title: 'Integrations',
@@ -517,12 +534,12 @@ const pageText: Record<Language, PageText> = {
   },
   en: {
     seo: {
-      title: 'Frontend Developer',
+      title: 'Vue & React Frontend Developer — Rinat Razhapov',
       description:
-        'Frontend (Vue/Nuxt/TypeScript): complex product flows, white label, maps and performance. Remote / hybrid / office, full-time.',
+        'Frontend developer with 4+ years of experience in React, Next.js, Vue, Nuxt and TypeScript. SSR applications, complex business logic, testing and CI/CD.',
     },
     heroBubble: "Hi! I'm Rinat 👋",
-    heroTitle: ['Frontend', 'Developer'],
+    heroTitle: ['Vue + React', 'Frontend Developer'],
     principles: [
       { number: '01', text: 'I take complex flows all the way to stable releases, not to "we will fix it later"' },
       { number: '02', text: 'Maps, catalogues and dashboards — heavy state and little room for mistakes' },
@@ -534,7 +551,7 @@ const pageText: Record<Language, PageText> = {
     heroCtaResume: 'Download resume',
     resumeHref: '/cv/cv-en.pdf',
     stats: {
-      experience: { label: 'Experience', note: 'years in production' },
+      experience: { label: 'Experience', note: 'years in production with Vue and React' },
       releases: { label: 'Delivery', note: 'projects and releases' },
       format: {
         label: 'Format',
@@ -546,9 +563,9 @@ const pageText: Record<Language, PageText> = {
       eyebrow: 'About',
       name: 'Rinat Razhapov',
       paragraph1:
-        'I work as a frontend engineer on products with real metrics: I take on complex scenarios, simplify the UX and bring interfaces to stable production.',
+        'Frontend developer with 4+ years of experience in Vue/Nuxt and React/Next.js. I take on complex product scenarios, simplify the UX and bring interfaces to stable production.',
       paragraph2:
-        'My strong side is systematic work on architecture, quality and release speed: typing, backend contracts, regression safety and predictable delivery.',
+        'I launch SSR applications from scratch and work systematically with architecture, typing, API contracts, testing, CI/CD and release speed.',
       ctaResume: 'Download resume',
       ctaTelegram: 'Message on Telegram',
       photoAlt: 'Rinat Razhapov',
@@ -573,6 +590,13 @@ const pageText: Record<Language, PageText> = {
         company: 'Paleo Studio',
         role: 'Frontend Developer',
         desc: 'A logistics platform on Vue 2 + Vuetify, the Silkway Rally account area with dynamic tables and charts, a nightclub portal, a content builder for the admin panel and a browser extension.',
+      },
+      {
+        from: '2021',
+        years: 'June 2021 — August 2022',
+        company: 'Freelance',
+        role: 'Frontend Developer · React / Next.js',
+        desc: 'Built and maintained client web applications and landing pages for small businesses and private clients. Created responsive interfaces and reusable components with React, Next.js and TypeScript, configured SSR/SSG and routing, and integrated REST APIs, forms and validation, React Query and Zustand.',
       },
     ],
     projectsSection: {
@@ -603,7 +627,7 @@ const pageText: Record<Language, PageText> = {
       eyebrow: 'Contact',
       title: 'Need a frontend developer on your team?',
       description:
-        'I can join a Vue/Nuxt project, strengthen the architecture, stabilise releases and bring the interface to solid metrics.',
+        'I can join a React/Next.js or Vue/Nuxt project, strengthen the architecture, stabilise releases and bring the interface to solid metrics.',
     },
     contactLabels: { email: 'Email', telegram: 'Telegram', github: 'GitHub', gitlab: 'GitLab' },
     readMore: 'Read more',
@@ -611,18 +635,28 @@ const pageText: Record<Language, PageText> = {
     skills: [
       {
         title: 'Frontend Core',
-        note: 'My main experience is in the Vue ecosystem, and I switch to React quickly when needed.',
-        items: ['Vue 3 Composition API', 'Nuxt 3/4', 'Vue 2', 'React', 'TypeScript', 'JavaScript ES6+', 'Node.js'],
+        note: 'Typed frontend and server-side JavaScript for product applications.',
+        items: ['TypeScript', 'JavaScript ES6+', 'Node.js', 'REST API', 'Swagger', 'Vite', 'Webpack'],
+      },
+      {
+        title: 'React & Next.js',
+        note: 'SSR/SSG applications, component architecture, forms and state management.',
+        items: ['React 19', 'Next.js App Router', 'Server Components', 'Client Components', 'TanStack Query', 'Zustand', 'React Hook Form', 'Zod'],
+      },
+      {
+        title: 'Vue & Nuxt',
+        note: 'Commercial Vue 2/3 and Nuxt development with SSR and complex business logic.',
+        items: ['Vue 3 Composition API', 'Nuxt 3/4', 'Vue 2', 'Pinia', 'Vuex', 'Vue Router', 'VueUse'],
       },
       {
         title: 'State & UI',
         note: 'State management and the UI layer of product interfaces.',
-        items: ['Pinia', 'Vuex', 'Redux', 'Zustand', 'Tailwind CSS', 'SCSS', 'PostCSS', 'PrimeVue', 'Vuetify', 'Quasar'],
+        items: ['Tailwind CSS', 'CSS Modules', 'styled-components', 'SCSS', 'PostCSS', 'PrimeVue', 'Vuetify', 'Quasar', 'Inspira UI'],
       },
       {
         title: 'Quality',
         note: 'Testing and predictable delivery instead of manual run-throughs.',
-        items: ['Playwright', 'Vitest', 'Jest', 'Visual regression', 'ESLint', 'Prettier', 'Husky'],
+        items: ['Playwright', 'Vitest', 'Jest', 'React Testing Library', 'Vue Test Utils', 'Visual regression', 'ESLint', 'Prettier', 'Husky'],
       },
       {
         title: 'Integrations',
