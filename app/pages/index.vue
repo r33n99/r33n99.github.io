@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import PortfolioHeader from '~/components/PortfolioHeader.vue'
 
 const { projects } = useProjects()
-const { language, toggleLanguage } = useLanguage()
+const { language } = useLanguage()
 const ru = computed(() => language.value === 'ru')
 const selectedSlugs = ['vdvoem', 'smenaos', 'dli-deluxe-limo-italy', 'eventner', 'inspiritaly', 'travel-2025']
 const selected = projects.filter(p => selectedSlugs.includes(p.slug))
 const otherProjects = projects.filter(p => !selectedSlugs.includes(p.slug))
 const root = ref<HTMLElement>()
 const menuOpen = ref(false)
-const menuButton = ref<HTMLButtonElement>()
-const mobileMenu = ref<HTMLElement>()
 const reduced = ref(false)
 const name = computed(() => ru.value ? ['Ринат', 'Ражапов'] : ['Rinat', 'Razhapov'])
 const skillGroups = [
@@ -26,32 +25,6 @@ const jobs = [
 ]
 let observer: IntersectionObserver | undefined
 let dispose = () => {}
-let savedOverflow = ''
-
-function closeMenu() { menuOpen.value = false }
-
-function trapMenuFocus(event: KeyboardEvent) {
-  if (!menuOpen.value || event.key !== 'Tab') return
-  const elements = [menuButton.value, ...Array.from(mobileMenu.value?.querySelectorAll<HTMLAnchorElement>('a') ?? [])].filter(Boolean) as HTMLElement[]
-  const first = elements[0]!
-  const last = elements[elements.length - 1]!
-  if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus() }
-  else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
-}
-
-watch(menuOpen, async open => {
-  if (!import.meta.client) return
-  if (open) {
-    savedOverflow = document.documentElement.style.overflow
-    document.documentElement.style.overflow = 'hidden'
-    await nextTick()
-    mobileMenu.value?.querySelector('a')?.focus()
-  } else {
-    document.documentElement.style.overflow = savedOverflow
-    menuButton.value?.focus({ preventScroll: true })
-  }
-})
-
 function moveSurface(event: PointerEvent) {
   if (reduced.value || event.pointerType !== 'mouse') return
   const el = event.currentTarget as HTMLElement
@@ -73,8 +46,6 @@ onMounted(() => {
   const updatePreference = () => { reduced.value = media.matches }
   updatePreference()
   media.addEventListener('change', updatePreference)
-  const onResize = () => { if (window.innerWidth > 800 && menuOpen.value) closeMenu() }
-  window.addEventListener('resize', onResize)
   // Content stays visible. The observer only starts a brief image animation.
   observer = new IntersectionObserver(entries => {
     for (const entry of entries) {
@@ -84,9 +55,9 @@ onMounted(() => {
     }
   }, { threshold: .08 })
   root.value?.querySelectorAll('.project-preview').forEach(el => observer!.observe(el))
-  dispose = () => { media.removeEventListener('change', updatePreference); window.removeEventListener('resize', onResize) }
+  dispose = () => { media.removeEventListener('change', updatePreference) }
 })
-onBeforeUnmount(() => { observer?.disconnect(); dispose(); if (menuOpen.value) document.documentElement.style.overflow = savedOverflow })
+onBeforeUnmount(() => { observer?.disconnect(); dispose() })
 useSeoMeta({
   title: computed(() => ru.value ? 'Ринат Ражапов — веб, мобильные приложения и SaaS' : 'Rinat Razhapov — web, mobile apps and SaaS'),
   description: computed(() => ru.value ? 'Разрабатываю веб-приложения, мобильные приложения и SaaS-сервисы на Vue, React и TypeScript. 4+ года опыта. Удалённо / гибрид либо офис в городе Бишкек.' : 'Web applications, mobile apps and SaaS products with Vue, React and TypeScript. 4+ years of experience. Remote / hybrid or office-based in Bishkek.'),
@@ -94,29 +65,9 @@ useSeoMeta({
 </script>
 
 <template>
-  <main ref="root" class="portfolio" :class="{ 'reduce-motion': reduced, 'menu-open': menuOpen }" @keydown.esc="closeMenu" @keydown="trapMenuFocus">
+  <main ref="root" class="portfolio" :class="{ 'reduce-motion': reduced, 'menu-open': menuOpen }">
     <a class="skip-link" href="#projects">{{ ru ? 'Перейти к проектам' : 'Skip to projects' }}</a>
-    <header class="site-header">
-      <div class="header-inner page-width">
-      <a href="#" class="wordmark" :aria-label="ru ? 'В начало' : 'Back to top'" @click="closeMenu">r33n<span>.</span></a>
-      <nav class="desktop-nav" :aria-label="ru ? 'Основная навигация' : 'Main navigation'">
-        <a href="#projects">{{ ru ? 'Проекты' : 'Projects' }}</a>
-        <a href="#experience">{{ ru ? 'Опыт' : 'Experience' }}</a>
-        <a href="#contact">{{ ru ? 'Связаться' : 'Contact' }}</a>
-      </nav>
-      <button class="language" :inert="menuOpen || undefined" @click="toggleLanguage" :aria-label="ru ? 'Switch to English' : 'Переключить на русский'">{{ ru ? 'EN' : 'RU' }}</button>
-      <button ref="menuButton" class="menu-toggle" :aria-label="menuOpen ? (ru ? 'Закрыть меню' : 'Close menu') : (ru ? 'Открыть меню' : 'Open menu')" :aria-expanded="menuOpen" aria-controls="concept-mobile-nav" @click="menuOpen = !menuOpen"><span/><span/></button>
-      </div>
-      <Transition name="menu">
-      <nav v-if="menuOpen" ref="mobileMenu" id="concept-mobile-nav" class="mobile-nav" :aria-label="ru ? 'Мобильная навигация' : 'Mobile navigation'">
-        <a href="#projects" @click="menuOpen = false">{{ ru ? 'Проекты' : 'Projects' }}</a>
-        <a href="#experience" @click="menuOpen = false">{{ ru ? 'Опыт' : 'Experience' }}</a>
-        <a href="#other-projects" @click="menuOpen = false">{{ ru ? 'Другие работы' : 'More work' }}</a>
-        <a href="#contact" @click="menuOpen = false">{{ ru ? 'Связаться' : 'Contact' }}</a>
-        <a class="menu-telegram" href="https://t.me/r33n_dev" target="_blank" rel="noreferrer" @click="closeMenu">Telegram · @r33n_dev</a>
-      </nav>
-      </Transition>
-    </header>
+    <PortfolioHeader @menu-change="menuOpen = $event" />
 
     <section class="hero page-width" :inert="menuOpen || undefined">
       <div class="hero-copy">
@@ -188,14 +139,9 @@ useSeoMeta({
 .page-width { width: min(100% - 96px,1440px); margin-inline: auto; }
 .skip-link { position: absolute; top: -100px; padding: 12px; background: white; z-index: 99; }.skip-link:focus { top: 12px; }
 .portfolio { --header-height: 89px; padding-top: var(--header-height); }
-.site-header { position: fixed; inset: 0 0 auto; height: var(--header-height); background: var(--paper); border-bottom: 1px solid var(--rule); z-index: 50; }
-.header-inner { position: relative; z-index: 2; height: 100%; display: flex; align-items: center; gap: 32px; }
 .portfolio section[id], .portfolio footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
-.wordmark { font-size: 32px; font-weight: 700; letter-spacing: -2px; }.wordmark span { color: var(--muted); }
-.desktop-nav { display: flex; margin-left: auto; gap: 32px; font-size: 15px; }
-.desktop-nav a,.plain-link,.project-meta a,.contact-links a { text-decoration: underline !important; text-decoration-color: transparent !important; text-underline-offset: 5px; transition: text-decoration-color .25s; }
-.desktop-nav a:hover,.plain-link:hover,.project-meta a:hover,.contact-links a:hover { text-decoration-color: currentColor !important; }
-.language,.menu-toggle { border: 0; background: transparent; font-size: 14px !important; min-height: 44px; padding: 8px; }.menu-toggle,.mobile-nav { display: none; }
+.plain-link,.project-meta a,.contact-links a { text-decoration: underline !important; text-decoration-color: transparent !important; text-underline-offset: 5px; transition: text-decoration-color .25s; }
+.plain-link:hover,.project-meta a:hover,.contact-links a:hover { text-decoration-color: currentColor !important; }
 .hero { display: grid; grid-template-columns: 1fr 340px; align-items: center; gap: 100px; padding-block: 58px 64px; }
 .eyebrow { font-family: 'JetBrains Mono',monospace; font-size: 13px; color: var(--muted); }
 h1 { margin-block: 24px 28px !important; font-size: clamp(72px,8.5vw,124px); line-height: .98; letter-spacing: -.055em; }
@@ -238,7 +184,7 @@ h1 { margin-block: 24px 28px !important; font-size: clamp(72px,8.5vw,124px); lin
 @keyframes letter-in { from { transform: translateY(110%) rotate(5deg); } to { transform: none; } }
 @keyframes image-open { from { clip-path: inset(42% 0 42%); transform: scale(1.045); } to { clip-path: inset(0); transform: scale(1); } }
 @media(max-width:1100px) { .hero { grid-template-columns: 1fr 270px; gap: 50px; }.job { grid-template-columns: .8fr 1.6fr; gap: 12px 30px; }.job-date { grid-column: 2; text-align: left; }.stack { grid-template-columns: .8fr 1.6fr; gap: 30px; } }
-@media(max-width:800px) { .page-width { width: calc(100% - 40px); }.portfolio { --header-height: 74px; }.header-inner { gap: 14px; }.desktop-nav { display: none; }.language { margin-left: auto; }.menu-toggle { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 44px; height: 44px; }.menu-toggle span { display: block; width: 24px; height: 2px; background: currentColor; transition: transform .3s var(--ease); }.menu-open .menu-toggle span:first-child { transform: translateY(4px) rotate(45deg); }.menu-open .menu-toggle span:last-child { transform: translateY(-4px) rotate(-45deg); }.mobile-nav { position: fixed; inset: 0; height: 100dvh; z-index: 1; display: flex; flex-direction: column; justify-content: center; gap: 20px; background: var(--paper); padding: calc(var(--header-height) + 24px) 28px 32px; overflow-y: auto; }.mobile-nav>a { font-size: clamp(30px, 7vw, 48px); line-height: 1.2; letter-spacing: -.035em; }.mobile-nav .menu-telegram { font-size: 16px; letter-spacing: 0; margin-top: auto; }.mobile-nav>a:first-child { margin-top: auto; }.menu-enter-active,.menu-leave-active { transition: clip-path .45s var(--ease); }.menu-enter-from,.menu-leave-to { clip-path: inset(0 0 100%); }.hero { grid-template-columns: 1fr 180px; gap: 28px; padding-block: 36px 42px; }h1 { font-size: clamp(56px,9.5vw,84px); }.hero-description { font-size: 18px; }.hero-actions { gap: 18px; }.project-grid { gap: 32px 24px; }.section-heading h2 { font-size: 28px; }.project-heading h3 { font-size: 22px; }.project-description { font-size: 15px; }.project-meta>span { width: 100%; }.job { gap: 14px 24px; }.job-description { font-size: 15px; }.contact-layout { gap: 32px; }.other-projects { grid-template-columns: 1fr; } }
+@media(max-width:800px) { .page-width { width: calc(100% - 40px); }.portfolio { --header-height: 74px; }.hero { grid-template-columns: 1fr 180px; gap: 28px; padding-block: 36px 42px; }h1 { font-size: clamp(56px,9.5vw,84px); }.hero-description { font-size: 18px; }.hero-actions { gap: 18px; }.project-grid { gap: 32px 24px; }.section-heading h2 { font-size: 28px; }.project-heading h3 { font-size: 22px; }.project-description { font-size: 15px; }.project-meta>span { width: 100%; }.job { gap: 14px 24px; }.job-description { font-size: 15px; }.contact-layout { gap: 32px; }.other-projects { grid-template-columns: 1fr; } }
 @media(max-width:600px) { .hero { grid-template-columns: 1fr; gap: 26px; }.hero-copy { position: relative; }h1 { font-size: clamp(66px,15vw,90px); }.hero-description { font-size: 18px; max-width: 35ch; }.portrait { width: 100%; }.portrait-crop { width: 100%; aspect-ratio: 1.14; }.portrait img { object-position: 50% 44%; }.hero-facts { font-size: 13px; margin-top: 20px; }.solid-link { padding: 12px 17px; }.hero-actions { gap: 16px; font-size: 14px; }.work,.more-work,.experience { padding-block: 28px; }.section-heading { margin-bottom: 24px; }.project-grid { grid-template-columns: 1fr; gap: 30px; }.project-heading { margin-top: 15px; }.project-preview { aspect-ratio: 1.8; }.project-meta>span { width: auto; }.job { grid-template-columns: 1fr; gap: 12px; padding-block: 22px; }.job-date { grid-column: 1; }.stack { grid-template-columns: 1fr; gap: 14px; }.contact-layout { grid-template-columns: 1fr; gap: 30px; padding-block: 32px; }.contact-links { flex-direction: row; flex-wrap: wrap; gap: 14px 24px; }.colophon { flex-wrap: wrap; gap: 10px 20px; font-size: 11px; }.colophon>span:nth-child(2) { display: none; } }
 .reduce-motion *,.reduce-motion *::before,.reduce-motion *::after { animation: none !important; transition: none !important; }
 @media(prefers-reduced-motion:reduce) { .portfolio *,.portfolio *::before,.portfolio *::after { animation: none !important; transition: none !important; } }
