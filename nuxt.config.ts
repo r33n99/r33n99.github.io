@@ -31,22 +31,22 @@ export default {
         {
           name: 'description',
           content:
-            'Frontend Developer c 3+ годами коммерческого опыта: Vue, Nuxt, TypeScript, сложная бизнес-логика, тестирование и Core Web Vitals.',
+            'Разрабатываю веб-приложения, мобильные приложения и SaaS-сервисы на Vue, React и TypeScript. 4+ года опыта.',
         },
         {
           name: 'theme-color',
-          content: '#fbf3e4',
+          content: '#ffffff',
           media: '(prefers-color-scheme: light)',
         },
         {
           name: 'theme-color',
-          content: '#1e1b19',
+          content: '#ffffff',
           media: '(prefers-color-scheme: dark)',
         },
         { property: 'og:title', content: 'Ринат Ражапов - Frontend Developer' },
         {
           property: 'og:description',
-          content: 'Vue/Nuxt разработка, TravelTech/EventTech, TypeScript, тестирование и продуктовая frontend-архитектура.',
+          content: 'Веб-приложения, мобильные приложения и SaaS. Vue, Nuxt, React, Next.js и TypeScript.',
         },
         { property: 'og:type', content: 'website' },
       ],
@@ -55,6 +55,7 @@ export default {
   nitro: {
     routeRules: {
       '/projects': { redirect: '/' },
+      '/concept': { redirect: '/' },
     },
     prerender: {
       crawlLinks: true,

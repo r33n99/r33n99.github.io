@@ -1,722 +1,245 @@
+<script setup lang="ts">
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+
+const { projects } = useProjects()
+const { language, toggleLanguage } = useLanguage()
+const ru = computed(() => language.value === 'ru')
+const selectedSlugs = ['vdvoem', 'smenaos', 'dli-deluxe-limo-italy', 'eventner', 'inspiritaly', 'travel-2025']
+const selected = projects.filter(p => selectedSlugs.includes(p.slug))
+const otherProjects = projects.filter(p => !selectedSlugs.includes(p.slug))
+const root = ref<HTMLElement>()
+const menuOpen = ref(false)
+const menuButton = ref<HTMLButtonElement>()
+const mobileMenu = ref<HTMLElement>()
+const reduced = ref(false)
+const name = computed(() => ru.value ? ['Ринат', 'Ражапов'] : ['Rinat', 'Razhapov'])
+const skillGroups = [
+  { label: ['Frontend', 'Frontend'], description: ['Продуктовые интерфейсы, SSR и типизация.', 'Product interfaces, SSR and type safety.'], items: ['TypeScript', 'Vue 3 / Nuxt 4', 'React 19 / Next.js', 'Pinia', 'TanStack Query', 'Tailwind CSS', 'shadcn/ui'] },
+  { label: ['Мобильные приложения', 'Mobile apps'], description: ['Веб-интерфейс и нативные возможности Android.', 'Web interfaces and native Android capabilities.'], items: ['Capacitor 8', 'Android', 'Geolocation', 'Local Notifications', 'Mobile-first UI'] },
+  { label: ['Данные и интеграции', 'Data and integrations'], description: ['Авторизация, изоляция данных и серверные API.', 'Authentication, data isolation and server APIs.'], items: ['Node.js', 'Supabase Auth', 'PostgreSQL', 'RLS / RPC', 'Realtime', 'Storage', 'REST API', 'Gemini / Search Grounding'] },
+  { label: ['Качество и доставка', 'Quality and delivery'], description: ['Валидация, проверки и стабильные релизы.', 'Validation, verification and reliable releases.'], items: ['Zod', 'React Hook Form', 'Vitest', 'Playwright', 'CI/CD', 'Core Web Vitals'] },
+]
+const jobs = [
+  { company: 'TrustyOne', date: ['Апрель 2024 — Февраль 2026', 'April 2024 — February 2026'], description: ['Travel и EventTech. Архитектура с нуля, бронирования, API-контракты, тестирование и CI/CD.', 'Travel and EventTech. Architecture, booking flows, API contracts, testing and CI/CD.'] },
+  { company: 'Paleo Studio', date: ['Ноябрь 2022 — Январь 2024', 'November 2022 — January 2024'], description: ['Логистические платформы, кабинеты, динамические таблицы и графики на Vue.', 'Logistics platforms, accounts, dynamic tables and charts with Vue.'] },
+  { company: 'Freelance', date: ['Июнь 2021 — Август 2022', 'June 2021 — August 2022'], description: ['Клиентские приложения и лендинги на React и Next.js. SSR, REST API, формы и валидация.', 'Client apps and landing pages with React and Next.js. SSR, REST APIs, forms and validation.'] },
+]
+let observer: IntersectionObserver | undefined
+let dispose = () => {}
+let savedOverflow = ''
+
+function closeMenu() { menuOpen.value = false }
+
+function trapMenuFocus(event: KeyboardEvent) {
+  if (!menuOpen.value || event.key !== 'Tab') return
+  const elements = [menuButton.value, ...Array.from(mobileMenu.value?.querySelectorAll<HTMLAnchorElement>('a') ?? [])].filter(Boolean) as HTMLElement[]
+  const first = elements[0]!
+  const last = elements[elements.length - 1]!
+  if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus() }
+  else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
+}
+
+watch(menuOpen, async open => {
+  if (!import.meta.client) return
+  if (open) {
+    savedOverflow = document.documentElement.style.overflow
+    document.documentElement.style.overflow = 'hidden'
+    await nextTick()
+    mobileMenu.value?.querySelector('a')?.focus()
+  } else {
+    document.documentElement.style.overflow = savedOverflow
+    menuButton.value?.focus({ preventScroll: true })
+  }
+})
+
+function moveSurface(event: PointerEvent) {
+  if (reduced.value || event.pointerType !== 'mouse') return
+  const el = event.currentTarget as HTMLElement
+  const rect = el.getBoundingClientRect()
+  const x = (event.clientX - rect.left) / rect.width - .5
+  const y = (event.clientY - rect.top) / rect.height - .5
+  el.style.setProperty('--rx', `${-y * 4}deg`)
+  el.style.setProperty('--ry', `${x * 4}deg`)
+  el.style.setProperty('--image-x', `${x * 6}px`)
+  el.style.setProperty('--image-y', `${y * 6}px`)
+}
+function resetSurface(event: PointerEvent) {
+  const el = event.currentTarget as HTMLElement
+  for (const key of ['--rx', '--ry']) el.style.setProperty(key, '0deg')
+  for (const key of ['--image-x', '--image-y']) el.style.setProperty(key, '0px')
+}
+onMounted(() => {
+  const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+  const updatePreference = () => { reduced.value = media.matches }
+  updatePreference()
+  media.addEventListener('change', updatePreference)
+  const onResize = () => { if (window.innerWidth > 800 && menuOpen.value) closeMenu() }
+  window.addEventListener('resize', onResize)
+  // Content stays visible. The observer only starts a brief image animation.
+  observer = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue
+      if (!reduced.value) entry.target.classList.add('image-arrived')
+      observer?.unobserve(entry.target)
+    }
+  }, { threshold: .08 })
+  root.value?.querySelectorAll('.project-preview').forEach(el => observer!.observe(el))
+  dispose = () => { media.removeEventListener('change', updatePreference); window.removeEventListener('resize', onResize) }
+})
+onBeforeUnmount(() => { observer?.disconnect(); dispose(); if (menuOpen.value) document.documentElement.style.overflow = savedOverflow })
+useSeoMeta({
+  title: computed(() => ru.value ? 'Ринат Ражапов — веб, мобильные приложения и SaaS' : 'Rinat Razhapov — web, mobile apps and SaaS'),
+  description: computed(() => ru.value ? 'Разрабатываю веб-приложения, мобильные приложения и SaaS-сервисы на Vue, React и TypeScript. 4+ года опыта. Удалённо / гибрид либо офис в городе Бишкек.' : 'Web applications, mobile apps and SaaS products with Vue, React and TypeScript. 4+ years of experience. Remote / hybrid or office-based in Bishkek.'),
+})
+</script>
+
 <template>
-  <main class="halftone relative min-h-screen overflow-x-clip">
-    <AppHeader />
-
-    <!-- Hero: реплика в пузыре, крупный рукописный заголовок, стикеры со счётом -->
-    <section class="section-pad section-rule relative">
-      <div class="grid gap-11 xl:grid-cols-[1fr_340px] xl:items-start">
-        <div>
-          <p class="rise-now bubble inline-block px-5 py-3 text-lead">{{ t.heroBubble }}</p>
-
-          <h1 class="rise-now [--rise-delay:70ms] mt-6 font-hand text-display tracking-[-0.01em]">
-            <span class="inline-block -rotate-2">{{ t.heroTitle[0] }}</span><br>
-            <span
-              class="inline-block rotate-[1.2deg] text-[clamp(1.75rem,7.8vw,7.25rem)] text-accent [text-shadow:4px_4px_0_var(--ink)]"
-            >{{ t.heroTitle[1] }}</span>
-          </h1>
-
-          <ul class="rise-now [--rise-delay:140ms] mt-8 flex flex-wrap gap-2.5">
-            <li v-for="tag in heroTags" :key="tag" class="tag">{{ tag }}</li>
-          </ul>
-
-          <div class="mt-10 grid gap-4.5 sm:grid-cols-2">
-            <div
-              v-for="(principle, index) in t.principles"
-              :key="principle.number"
-              class="rise-now panel panel-blob lift flex items-start gap-4 px-5 py-5"
-              :style="{ '--rise-delay': `${210 + index * 70}ms` }"
-            >
-              <span class="chip-num size-9.5 text-sm">{{ principle.number }}</span>
-              <p class="text-note">{{ principle.text }}</p>
-            </div>
-          </div>
-
-          <div class="rise-now [--rise-delay:350ms] mt-9 flex flex-wrap items-center gap-3.5">
-            <a href="#experience" class="btn btn-accent">{{ t.heroCtaExperience }}</a>
-            <a href="#contact" class="btn btn-paper">{{ t.heroCtaContact }}</a>
-            <a :href="t.resumeHref" download class="btn-dashed">{{ t.heroCtaResume }} ↓</a>
-          </div>
-        </div>
-
-        <aside class="flex flex-col gap-5.5 pt-3">
-          <!-- Motion B: стикеры медленно покачиваются, счётчики докручиваются один раз -->
-          <div
-            class="rise-now float-slow rounded-[var(--blob)] border-3 border-ink bg-marker-yellow px-6 py-6 text-[#23201e] shadow-[6px_7px_0_var(--ink)]"
-          >
-            <p class="font-mono text-[15px] uppercase leading-none tracking-[0.1em]">
-              {{ t.stats.experience.label }}
-            </p>
-            <p class="mt-2 font-hand text-stat font-bold">
-              <InspiraNumberTicker
-                :value="4"
-                :decimal-places="0"
-                class="font-hand text-stat font-bold tracking-normal text-[#23201e]"
-              />+
-            </p>
-            <p class="mt-1 text-[20px] leading-[1.25]">{{ t.stats.experience.note }}</p>
-          </div>
-
-          <div
-            class="rise-now float-slower [--rise-delay:70ms] rounded-[var(--blob-alt)] border-3 border-ink bg-marker-mint px-6 py-6 text-[#23201e] shadow-[6px_7px_0_var(--ink)]"
-          >
-            <p class="font-mono text-[15px] uppercase leading-none tracking-[0.1em]">
-              {{ t.stats.releases.label }}
-            </p>
-            <p class="mt-2 font-hand text-stat font-bold">
-              <InspiraNumberTicker
-                :value="15"
-                :decimal-places="0"
-                class="font-hand text-stat font-bold tracking-normal text-[#23201e]"
-              />+
-            </p>
-            <p class="mt-1 text-[20px] leading-[1.25]">{{ t.stats.releases.note }}</p>
-          </div>
-
-          <div class="rise-now [--rise-delay:140ms] rounded-3xl border-3 border-dashed border-ink bg-panel px-6 py-5.5">
-            <p class="label">{{ t.stats.format.label }}</p>
-            <p class="mt-2 font-hand text-[32px] font-bold leading-[1.05]">
-              {{ t.stats.format.value }}
-            </p>
-            <p class="mt-2 text-[18px] leading-[1.3] text-dim">{{ t.stats.format.note }}</p>
-          </div>
-        </aside>
+  <main ref="root" class="portfolio" :class="{ 'reduce-motion': reduced, 'menu-open': menuOpen }" @keydown.esc="closeMenu" @keydown="trapMenuFocus">
+    <a class="skip-link" href="#projects">{{ ru ? 'Перейти к проектам' : 'Skip to projects' }}</a>
+    <header class="site-header">
+      <div class="header-inner page-width">
+      <a href="#" class="wordmark" :aria-label="ru ? 'В начало' : 'Back to top'" @click="closeMenu">r33n<span>.</span></a>
+      <nav class="desktop-nav" :aria-label="ru ? 'Основная навигация' : 'Main navigation'">
+        <a href="#projects">{{ ru ? 'Проекты' : 'Projects' }}</a>
+        <a href="#experience">{{ ru ? 'Опыт' : 'Experience' }}</a>
+        <a href="#contact">{{ ru ? 'Связаться' : 'Contact' }}</a>
+      </nav>
+      <button class="language" :inert="menuOpen || undefined" @click="toggleLanguage" :aria-label="ru ? 'Switch to English' : 'Переключить на русский'">{{ ru ? 'EN' : 'RU' }}</button>
+      <button ref="menuButton" class="menu-toggle" :aria-label="menuOpen ? (ru ? 'Закрыть меню' : 'Close menu') : (ru ? 'Открыть меню' : 'Open menu')" :aria-expanded="menuOpen" aria-controls="concept-mobile-nav" @click="menuOpen = !menuOpen"><span/><span/></button>
       </div>
+      <Transition name="menu">
+      <nav v-if="menuOpen" ref="mobileMenu" id="concept-mobile-nav" class="mobile-nav" :aria-label="ru ? 'Мобильная навигация' : 'Mobile navigation'">
+        <a href="#projects" @click="menuOpen = false">{{ ru ? 'Проекты' : 'Projects' }}</a>
+        <a href="#experience" @click="menuOpen = false">{{ ru ? 'Опыт' : 'Experience' }}</a>
+        <a href="#other-projects" @click="menuOpen = false">{{ ru ? 'Другие работы' : 'More work' }}</a>
+        <a href="#contact" @click="menuOpen = false">{{ ru ? 'Связаться' : 'Contact' }}</a>
+        <a class="menu-telegram" href="https://t.me/r33n_dev" target="_blank" rel="noreferrer" @click="closeMenu">Telegram · @r33n_dev</a>
+      </nav>
+      </Transition>
+    </header>
+
+    <section class="hero page-width" :inert="menuOpen || undefined">
+      <div class="hero-copy">
+        <p class="eyebrow">Frontend developer · {{ ru ? 'Бишкек' : 'Bishkek' }}</p>
+        <h1 :key="language" :aria-label="name.join(' ')">
+          <span v-for="(line, row) in name" :key="line" class="name-line" aria-hidden="true"><span v-for="(letter, index) in line" :key="index" class="letter" :style="{ '--delay': `${row * 120 + index * 35}ms` }">{{ letter }}</span></span>
+        </h1>
+        <p class="hero-description">{{ ru ? 'Vue, React и TypeScript. Разрабатываю веб-приложения, мобильные приложения и SaaS-сервисы.' : 'Vue, React and TypeScript. I build web applications, mobile apps and SaaS products.' }}</p>
+        <div class="hero-actions">
+          <a href="https://t.me/r33n_dev" target="_blank" rel="noreferrer" class="solid-link">{{ ru ? 'Написать в Telegram' : 'Get in touch on Telegram' }}</a>
+          <a :href="ru ? '/cv/cv-ru.pdf' : '/cv/cv-en.pdf'" download class="plain-link">{{ ru ? 'Скачать резюме' : 'Download résumé' }} <span>PDF</span></a>
+        </div>
+        <p class="hero-facts">{{ ru ? '4+ года опыта · Удалённо / гибрид либо офис в городе Бишкек' : '4+ years of experience · Remote / hybrid or office-based in Bishkek' }}</p>
+      </div>
+      <figure class="portrait" @pointermove="moveSurface" @pointerleave="resetSurface">
+        <div class="portrait-crop"><img src="/images/avatar.png" :alt="ru ? 'Мой портрет' : 'My portrait'" width="1086" height="1448" fetchpriority="high"></div>
+      </figure>
     </section>
 
-    <!-- Обо мне: фото как полароид с плёнкой, текст в речевом пузыре -->
-    <RevealOnScroll id="about" as="section" class="section-pad section-rule">
-      <div class="grid gap-12 xl:grid-cols-[400px_1fr]">
-        <div
-          class="rise panel relative -rotate-[1.6deg] rounded-[20px] px-4 pb-14 pt-4 shadow-[7px_8px_0_var(--ink)]"
-        >
-          <NuxtImg    
-            src="/images/avatar.png"
-            :alt="t.about.photoAlt"
-            class="aspect-4/5 w-full rounded-xl border-3 border-ink object-cover"
-            sizes="360px xl:400px"
-          />
-          <p
-            class="absolute inset-x-0 bottom-3.5 text-center font-body text-[22px] leading-none text-dim"
-          >
-            {{ t.about.photoCaption }}
-          </p>
-          <!-- клочок малярной ленты сверху -->
-          <span
-            aria-hidden="true"
-            class="absolute -top-4 left-1/2 h-8 w-30 -translate-x-1/2 -rotate-4 border-2 border-[rgba(35,32,30,.35)] bg-[rgba(245,196,67,.75)]"
-          />
-        </div>
-
-        <div>
-          <p class="rise label">{{ t.about.eyebrow }}</p>
-          <h2 class="rise mt-4 font-hand text-heading">{{ t.about.name }}</h2>
-          <div class="rise bubble mt-6 max-w-[70ch] px-7 py-6 shadow-[6px_7px_0_var(--ink)]">
-            <p class="text-lead">{{ t.about.paragraph1 }}</p>
-            <p class="mt-4 text-lead text-dim">{{ t.about.paragraph2 }}</p>
-          </div>
-          <div class="rise mt-7 flex flex-wrap gap-3.5">
-            <a :href="t.resumeHref" download class="btn btn-accent">{{ t.about.ctaResume }}</a>
-            <a
-              href="https://t.me/r33n_dev"
-              target="_blank"
-              rel="noreferrer"
-              class="btn btn-paper"
-            >
-              {{ t.about.ctaTelegram }}
-            </a>
-          </div>
-        </div>
-      </div>
-    </RevealOnScroll>
-
-    <!-- Опыт: таймлайн с кружками годов на чернильной линии -->
-    <RevealOnScroll id="experience" as="section" class="section-pad section-rule">
-      <SectionHeading
-        :eyebrow="t.workSection.eyebrow"
-        :title="t.workSection.title"
-        :description="t.workSection.description"
-      />
-
-      <div class="relative mt-11 md:pl-[90px]">
-        <span
-          aria-hidden="true"
-          class="absolute bottom-9 left-[43px] top-6 hidden w-[3px] bg-line md:block"
-        />
-        <article
-          v-for="job in t.workHistory"
-          :key="job.company"
-          class="rise panel panel-blob lift relative mb-7 px-7 py-7 last:mb-0"
-        >
-          <span
-            class="chip-num absolute -left-[93px] top-6 hidden size-[62px] bg-panel text-[15px] text-ink md:flex"
-          >
-            {{ job.from }}
-          </span>
-          <div class="flex flex-wrap items-baseline justify-between gap-6">
-            <h3 class="font-hand text-company">{{ job.company }}</h3>
-            <p class="font-mono text-[15px] leading-none text-dim">{{ job.years }}</p>
-          </div>
-          <p class="role-pill mt-3">{{ job.role }}</p>
-          <p class="mt-4 text-[21px] leading-[1.4] text-dim">{{ job.desc }}</p>
+    <section id="projects" class="work page-width" :inert="menuOpen || undefined">
+      <div class="section-heading"><h2>{{ ru ? 'Избранные проекты' : 'Selected projects' }}</h2><p>{{ ru ? 'Мобильные приложения · SaaS · Web' : 'Mobile apps · SaaS · Web' }}</p></div>
+      <div class="project-grid">
+        <article v-for="project in selected" :key="project.slug" class="project">
+          <a class="project-preview" :class="{ 'has-mobile-screens': project.previewLayout === 'mobile' }" :href="project.websiteUrl || `/projects/${project.slug}`" :target="project.websiteUrl ? '_blank' : undefined" :rel="project.websiteUrl ? 'noreferrer' : undefined" :aria-label="`${ru ? 'Открыть' : 'Visit'} ${ru ? project.titleRu : project.titleEn}`" @pointermove="moveSurface" @pointerleave="resetSurface">
+            <div v-if="project.previewLayout === 'mobile'" class="mobile-preview"><img v-for="(shot, i) in project.previewImages?.slice(0, 2)" :key="shot" :src="shot" :alt="`${ru ? project.titleRu : project.titleEn} — ${i === 0 ? (ru ? 'Главная' : 'Home') : (ru ? 'Напоминания' : 'Reminders')}`" loading="lazy"></div>
+            <img v-else :src="project.previewImage" :alt="ru ? project.titleRu : project.titleEn" loading="lazy">
+          </a>
+          <div class="project-heading"><h3><a :href="project.websiteUrl || `/projects/${project.slug}`" :target="project.websiteUrl ? '_blank' : undefined" :rel="project.websiteUrl ? 'noreferrer' : undefined">{{ ru ? project.titleRu : project.titleEn }}</a></h3><span v-if="project.status === 'in-progress'" class="project-status">{{ ru ? 'В разработке' : 'In development' }}</span><span class="project-period">{{ ru ? project.periodRu : project.periodEn }}</span></div>
+          <p class="project-description">{{ ru ? project.introRu : project.introEn }}</p>
+          <div class="project-meta"><span>{{ project.tags.join(' · ') }}</span></div>
+          <div class="project-actions"><a v-if="project.websiteUrl" class="project-open" :href="project.websiteUrl" target="_blank" rel="noreferrer">{{ ru ? (project.previewLayout === 'mobile' ? 'Открыть приложение' : 'Открыть сайт') : (project.previewLayout === 'mobile' ? 'Open app' : 'Visit website') }}</a><NuxtLink v-else class="project-open" :to="`/projects/${project.slug}`">{{ ru ? 'О проекте' : 'About the project' }}</NuxtLink><a v-if="project.codeUrl" :href="project.codeUrl" target="_blank" rel="noreferrer">{{ ru ? 'Код проекта' : 'Source code' }}</a></div>
         </article>
       </div>
-    </RevealOnScroll>
+    </section>
+    <section id="other-projects" class="more-work page-width" :inert="menuOpen || undefined">
+        <div class="section-heading"><h2>{{ ru ? 'Другие работы' : 'More work' }}</h2><p>{{ ru ? 'Пет-проекты, сервисы и лендинги' : 'Side projects, services and landing pages' }}</p></div>
+        <div class="other-projects"><NuxtLink v-for="project in otherProjects" :key="project.slug" :to="`/projects/${project.slug}`"><span>{{ ru ? project.titleRu : project.titleEn }}</span><span class="other-category">{{ project.tags.slice(0, 2).join(' / ') }}</span></NuxtLink></div>
+    </section>
 
-    <!-- Проекты -->
-    <RevealOnScroll id="projects" as="section" class="section-pad section-rule">
-      <SectionHeading
-        :eyebrow="t.projectsSection.eyebrow"
-        :title="t.projectsSection.title"
-        :description="t.projectsSection.description"
-      />
+    <section id="experience" class="experience page-width" :inert="menuOpen || undefined">
+      <div class="section-heading"><h2>{{ ru ? 'Опыт работы' : 'Experience' }}</h2><a :href="ru ? '/cv/cv-ru.pdf' : '/cv/cv-en.pdf'" download class="plain-link">{{ ru ? 'Полное резюме' : 'Full résumé' }} <span>PDF</span></a></div>
+      <article v-for="job in jobs" :key="job.company" class="job">
+        <div><h3>{{ job.company }}</h3><p class="job-role">Frontend Developer</p></div>
+        <p class="job-description">{{ job.description[ru ? 0 : 1] }}</p>
+        <p class="job-date">{{ job.date[ru ? 0 : 1] }}</p>
+      </article>
+    </section>
+    <section id="stack" class="skills page-width" :inert="menuOpen || undefined">
+      <div class="section-heading"><h2>{{ ru ? 'Технологии и инструменты' : 'Technologies and tools' }}</h2></div>
+      <div class="skill-grid"><article v-for="group in skillGroups" :key="group.label[0]"><h3>{{ group.label[ru ? 0 : 1] }}</h3><p>{{ group.description[ru ? 0 : 1] }}</p><ul><li v-for="item in group.items" :key="item">{{ item }}</li></ul></article></div>
+    </section>
 
-      <div class="mt-11 grid gap-6.5 sm:grid-cols-2 xl:grid-cols-3">
-        <NuxtLink
-          v-for="card in projectCards"
-          :key="card.slug"
-          :to="`/projects/${card.slug}`"
-          class="rise panel panel-blob lift group flex flex-col gap-3 px-7 py-6.5 text-ink hover:bg-paper-warm sm:min-h-[266px]"
-        >
-          <div class="flex items-center justify-between">
-            <span class="chip-num size-10.5 text-[15px] group-hover:bg-marker-yellow group-hover:text-[#23201e]">
-              {{ card.index }}
-            </span>
-            <span class="font-mono text-sm leading-none text-dim">{{ card.period }}</span>
-          </div>
-          <h3 class="mt-1.5 font-hand text-cardtitle">{{ card.title }}</h3>
-          <p class="font-mono text-[13px] leading-[1.3] text-accent-text">{{ card.category }}</p>
-          <p class="text-note text-dim">{{ card.intro }}</p>
-          <p class="mt-auto flex items-center gap-2.5 font-hand text-2xl font-bold">
-            {{ t.readMore }}
-            <span aria-hidden="true" class="nudge-x text-accent">→</span>
-          </p>
-        </NuxtLink>
+    <footer id="contact" class="contact" :inert="menuOpen || undefined">
+      <div class="page-width contact-layout">
+        <div><p class="eyebrow">{{ ru ? 'Контакт' : 'Contact' }}</p><h2>{{ ru ? 'Обсудим вашу задачу.' : 'Let’s talk about your project.' }}</h2><a href="mailto:rinni499@gmail.com" class="contact-email">rinni499@gmail.com</a></div>
+        <div class="contact-links"><a href="https://t.me/r33n_dev" target="_blank" rel="noreferrer">Telegram</a><a href="https://github.com/r33n99" target="_blank" rel="noreferrer">GitHub</a><a href="https://gitlab.com/r33n99" target="_blank" rel="noreferrer">GitLab</a><a :href="ru ? '/cv/cv-ru.pdf' : '/cv/cv-en.pdf'" download>{{ ru ? 'Резюме / PDF' : 'Résumé / PDF' }}</a></div>
       </div>
-    </RevealOnScroll>
-
-    <!-- Пет-проекты: мятная подложка, пунктирные рамки -->
-    <RevealOnScroll id="pet-projects" as="section" class="section-pad section-rule bg-tint">
-      <SectionHeading
-        :eyebrow="t.petSection.eyebrow"
-        :title="t.petSection.title"
-        :description="t.petSection.description"
-        tone="mint"
-      />
-
-      <div class="mt-10 grid gap-6.5 sm:grid-cols-2 xl:grid-cols-3">
-        <NuxtLink
-          v-for="card in petCards"
-          :key="card.slug"
-          :to="`/projects/${card.slug}`"
-          class="rise lift lift-cw flex flex-col gap-3 rounded-3xl border-3 border-dashed border-ink bg-panel px-7 py-6.5 text-ink sm:min-h-[220px]"
-        >
-          <div class="flex items-center justify-between">
-            <span class="chip-num size-10 bg-marker-mint text-sm text-[#23201e]">
-              {{ card.index }}
-            </span>
-            <span class="font-mono text-sm leading-none text-dim">{{ card.period }}</span>
-          </div>
-          <h3 class="mt-1 font-hand text-[clamp(1.625rem,2.5vw,2.25rem)] leading-[0.95]">
-            {{ card.title }}
-          </h3>
-          <p class="text-note text-dim">{{ card.intro }}</p>
-          <p class="mt-auto flex items-center gap-2.5 font-hand text-[22px] font-bold">
-            {{ t.readMore }}
-            <span aria-hidden="true" class="text-accent">→</span>
-          </p>
-        </NuxtLink>
-      </div>
-    </RevealOnScroll>
-
-    <!-- Лендинги: синяя лента с полутоном поверх -->
-    <RevealOnScroll
-      id="landings"
-      as="section"
-      class="halftone halftone-light section-pad section-rule relative overflow-hidden bg-band text-[#fff7e6]"
-    >
-      <div class="relative">
-        <SectionHeading
-          :eyebrow="t.landingsSection.eyebrow"
-          :title="t.landingsSection.title"
-          :description="t.landingsSection.description"
-          tone="poster"
-        />
-
-        <div class="mt-11 grid gap-6.5 sm:grid-cols-2 xl:grid-cols-3">
-          <NuxtLink
-            v-for="card in landingCards"
-            :key="card.slug"
-            :to="`/projects/${card.slug}`"
-            class="rise lift flex flex-col gap-3 rounded-[var(--blob-alt)] border-3 border-[#23201e] bg-[#fff7e6] px-7 py-6.5 text-[#23201e] shadow-[6px_7px_0_#23201e] hover:shadow-[11px_13px_0_#23201e] sm:min-h-[210px]"
-          >
-            <span class="font-mono text-sm leading-none text-[#6b625a]">{{ card.index }}</span>
-            <h3 class="font-hand text-[clamp(2rem,3.2vw,2.875rem)] leading-[0.95]">
-              {{ card.title }}
-            </h3>
-            <p class="text-note text-[#6b625a]">{{ card.intro }}</p>
-            <p class="mt-auto flex items-center gap-2.5 font-hand text-[22px] font-bold">
-              {{ t.watch }}
-              <span aria-hidden="true" class="nudge-x text-[#e4462c]">→</span>
-            </p>
-          </NuxtLink>
-        </div>
-      </div>
-    </RevealOnScroll>
-
-    <!-- Навыки -->
-    <RevealOnScroll id="stack" as="section" class="section-pad section-rule">
-      <SectionHeading
-        :eyebrow="t.stackSection.eyebrow"
-        :title="t.stackSection.title"
-        :description="t.stackSection.description"
-      />
-
-      <div class="mt-11 grid gap-6.5 lg:grid-cols-2">
-        <article
-          v-for="group in t.skills"
-          :key="group.title"
-          class="rise panel panel-blob px-8 py-7"
-        >
-          <h3 class="font-hand text-[clamp(2rem,2.9vw,2.625rem)] leading-none">
-            {{ group.title }}
-          </h3>
-          <p class="mb-5 mt-2.5 max-w-[52ch] text-note text-dim">{{ group.note }}</p>
-          <ul class="flex flex-wrap gap-2.5">
-            <li v-for="item in group.items" :key="item" class="tag tag-quiet">{{ item }}</li>
-          </ul>
-        </article>
-      </div>
-    </RevealOnScroll>
-
-    <!-- Контакты -->
-    <RevealOnScroll id="contact" as="footer" class="section-pad">
-      <div class="rise panel max-w-[1000px] rounded-[36px_36px_36px_10px] px-11 py-10 shadow-[8px_9px_0_var(--ink)]">
-        <p class="label">{{ t.contactSection.eyebrow }}</p>
-        <h2 class="mt-4 max-w-[20ch] font-hand text-shout">{{ t.contactSection.title }}</h2>
-        <p class="mt-4 max-w-[58ch] text-lead text-dim">{{ t.contactSection.description }}</p>
-      </div>
-
-      <div class="mt-8 grid max-w-[1000px] gap-4.5 sm:grid-cols-2">
-        <a
-          v-for="link in contactLinks"
-          :key="link.id"
-          :href="link.href"
-          :target="link.external ? '_blank' : undefined"
-          :rel="link.external ? 'noreferrer' : undefined"
-          class="rise panel panel-blob lift flex min-h-11 items-center justify-between gap-5 px-6 py-5 text-ink hover:bg-paper-warm"
-        >
-          <span class="flex flex-col gap-1">
-            <span class="font-mono text-[13px] uppercase leading-none tracking-[0.12em] text-dim">
-              {{ t.contactLabels[link.id] }}
-            </span>
-            <span class="font-hand text-[clamp(1.5rem,2.4vw,2.125rem)] font-bold leading-none">
-              {{ link.value }}
-            </span>
-          </span>
-          <span aria-hidden="true" class="font-hand text-[26px] font-bold text-accent">→</span>
-        </a>
-      </div>
-    </RevealOnScroll>
+      <div class="page-width colophon"><span>r33n</span><span>{{ ru ? 'Удалённо / гибрид либо офис в городе Бишкек' : 'Remote / hybrid or office-based in Bishkek' }}</span><a href="#">{{ ru ? 'Наверх' : 'Back to top' }}</a></div>
+    </footer>
   </main>
 </template>
 
-<script setup lang="ts">
-import { useHead, useSeoMeta } from 'nuxt/app'
-import type { ProjectEntry } from '~/composables/useProjects'
-
-type Language = 'ru' | 'en'
-type ContactId = 'email' | 'telegram' | 'github' | 'gitlab'
-
-interface SectionCopy {
-  eyebrow: string
-  title: string
-  description: string
-}
-
-interface Principle {
-  number: string
-  text: string
-}
-
-interface WorkHistoryRow {
-  from: string
-  years: string
-  company: string
-  role: string
-  desc: string
-}
-
-interface SkillGroup {
-  title: string
-  note: string
-  items: string[]
-}
-
-interface StatCopy {
-  label: string
-  note: string
-}
-
-interface PageText {
-  seo: { title: string; description: string }
-  heroBubble: string
-  heroTitle: [string, string]
-  principles: Principle[]
-  heroCtaExperience: string
-  heroCtaContact: string
-  heroCtaResume: string
-  resumeHref: string
-  stats: {
-    experience: StatCopy
-    releases: StatCopy
-    format: StatCopy & { value: string }
-  }
-  about: {
-    eyebrow: string
-    name: string
-    paragraph1: string
-    paragraph2: string
-    ctaResume: string
-    ctaTelegram: string
-    photoAlt: string
-    photoCaption: string
-  }
-  workSection: SectionCopy
-  workHistory: WorkHistoryRow[]
-  projectsSection: SectionCopy
-  petSection: SectionCopy
-  landingsSection: SectionCopy
-  stackSection: SectionCopy
-  contactSection: SectionCopy
-  contactLabels: Record<ContactId, string>
-  readMore: string
-  watch: string
-  skills: SkillGroup[]
-}
-
-const { language } = useLanguage()
-
-const heroTags = ['#TypeScript', '#React', '#Next.js', '#Vue', '#Nuxt', '#Node.js']
-
-const pageText: Record<Language, PageText> = {
-  ru: {
-    seo: {
-      title: 'Vue & React Frontend Developer — Ринат Ражапов',
-      description:
-        'Frontend-разработчик с 4+ годами опыта: React, Next.js, Vue, Nuxt и TypeScript. SSR-приложения, сложная бизнес-логика, тестирование и CI/CD.',
-    },
-    heroBubble: 'Привет! Я Ринат 👋',
-    heroTitle: ['Vue + React', 'Frontend Developer'],
-    principles: [
-      { number: '01', text: 'Сложные сценарии довожу до стабильных релизов, а не до «потом поправим»' },
-      { number: '02', text: 'Карты, каталоги, кабинеты — где много состояний и мало права на ошибку' },
-      { number: '03', text: 'Скорость и метрики так, чтобы это заметил пользователь, а не только Lighthouse' },
-      { number: '04', text: 'Код и архитектура так, чтобы через полгода в проект не страшно заходить' },
-    ],
-    heroCtaExperience: 'Смотреть опыт',
-    heroCtaContact: 'Связаться',
-    heroCtaResume: 'Скачать резюме',
-    resumeHref: '/cv/cv-ru.pdf',
-    stats: {
-      experience: { label: 'Опыт', note: 'года в продакшене с Vue и React' },
-      releases: { label: 'Релизы', note: 'проектов и релизов' },
-      format: {
-        label: 'Формат',
-        value: 'Удалённо или гибрид / офис в Бишкеке',
-        note: 'full-time, part-time и контракт.',
-      },
-    },
-    about: {
-      eyebrow: 'Обо мне',
-      name: 'Ринат Ражапов',
-      paragraph1:
-        'Frontend-разработчик с 4+ годами опыта в Vue/Nuxt и React/Next.js. Беру сложные продуктовые сценарии, упрощаю UX и довожу интерфейсы до стабильного продакшна.',
-      paragraph2:
-        'Запускаю SSR-приложения с нуля и системно работаю с архитектурой, типизацией, API-контрактами, тестированием, CI/CD и скоростью релизов.',
-      ctaResume: 'Скачать резюме',
-      ctaTelegram: 'Написать в Telegram',
-      photoAlt: 'Ринат Ражапов',
-      photoCaption: 'Это я, где-то в 2026',
-    },
-    workSection: {
-      eyebrow: 'Опыт',
-      title: 'Опыт работы',
-      description: 'Ключевые позиции и компании. Продуктовые кейсы — в разделе «Проекты».',
-    },
-    workHistory: [
-      {
-        from: '2024',
-        years: 'Апрель 2024 — Февраль 2026',
-        company: 'TrustyOne',
-        role: 'Frontend Developer',
-        desc: 'Full-cycle решения для travel и event-сектора: DLI, Eventner, Inspiritaly, Travel 2025. Архитектура с нуля, API-контракты с backend, тестирование и CI/CD, оптимизация Core Web Vitals. Менторство джунов и приоритизация бэклога.',
-      },
-      {
-        from: '2022',
-        years: 'Ноябрь 2022 — Январь 2024',
-        company: 'Paleo Studio',
-        role: 'Frontend Developer',
-        desc: 'Логистическая платформа на Vue 2 + Vuetify, личный кабинет Silkway Rally с динамическими таблицами и графиками, портал ночного клуба, конструктор контента для админ-панели, браузерное расширение.',
-      },
-      {
-        from: '2021',
-        years: 'Июнь 2021 — Август 2022',
-        company: 'Freelance',
-        role: 'Frontend Developer · React / Next.js',
-        desc: 'Разрабатывал и поддерживал клиентские веб-приложения и лендинги для малого бизнеса и частных заказчиков. Собирал адаптивные интерфейсы и переиспользуемые компоненты на React, Next.js и TypeScript, настраивал SSR/SSG и маршрутизацию, интегрировал REST API, формы и валидацию, React Query и Zustand.',
-      },
-    ],
-    projectsSection: {
-      eyebrow: 'Работы',
-      title: 'Проекты',
-      description:
-        'Продукты, в которых я вёл frontend: booking flow, маркетплейсы, карты и операторские панели.',
-    },
-    petSection: {
-      eyebrow: 'Личное / эксперименты',
-      title: 'Пет-проекты',
-      description:
-        'Расширение для браузера, конвертер Figma в Vue, CRM для лидов с Gemini API, а также магазин и сервис трансферов, собранные для себя на свежем React 19 и Next.js 15.',
-    },
-    landingsSection: {
-      eyebrow: 'Витрина',
-      title: 'Сайты-визитки и лендинги',
-      description:
-        'Одностраничники на чистых HTML, CSS и JS — без фреймворков. Типографика, анимации по скроллу, адаптив.',
-    },
-    stackSection: {
-      eyebrow: 'Навыки',
-      title: 'Стек шире, чем UI-библиотека',
-      description:
-        'Frontend-архитектура, Vue/React, тестирование, интеграции, боты, CI/CD и продуктовая оптимизация.',
-    },
-    contactSection: {
-      eyebrow: 'Контакты',
-      title: 'Нужен frontend-разработчик в команду?',
-      description:
-        'Готов подключиться к React/Next.js или Vue/Nuxt проекту, усилить архитектуру, стабилизировать релизы и довести интерфейс до хороших метрик.',
-    },
-    contactLabels: { email: 'Почта', telegram: 'Telegram', github: 'GitHub', gitlab: 'GitLab' },
-    readMore: 'Подробнее',
-    watch: 'Смотреть',
-    skills: [
-      {
-        title: 'Frontend Core',
-        note: 'Типизированный frontend и серверный JavaScript для продуктовых приложений.',
-        items: ['TypeScript', 'JavaScript ES6+', 'Node.js', 'REST API', 'Swagger', 'Vite', 'Webpack'],
-      },
-      {
-        title: 'React & Next.js',
-        note: 'SSR/SSG-приложения, компонентная архитектура, формы и управление состоянием.',
-        items: ['React 19', 'Next.js App Router', 'Server Components', 'Client Components', 'TanStack Query', 'Zustand', 'React Hook Form', 'Zod'],
-      },
-      {
-        title: 'Vue & Nuxt',
-        note: 'Коммерческая разработка на Vue 2/3 и Nuxt с SSR и сложной бизнес-логикой.',
-        items: ['Vue 3 Composition API', 'Nuxt 3/4', 'Vue 2', 'Pinia', 'Vuex', 'Vue Router', 'VueUse'],
-      },
-      {
-        title: 'State & UI',
-        note: 'Стейт-менеджмент и UI-слой продуктовых интерфейсов.',
-        items: ['Tailwind CSS', 'CSS Modules', 'styled-components', 'SCSS', 'PostCSS', 'PrimeVue', 'Vuetify', 'Quasar', 'Inspira UI'],
-      },
-      {
-        title: 'Quality',
-        note: 'Тестирование и предсказуемая поставка вместо ручных прогонов.',
-        items: ['Playwright', 'Vitest', 'Jest', 'React Testing Library', 'Vue Test Utils', 'Визуальная регрессия', 'ESLint', 'Prettier', 'Husky'],
-      },
-      {
-        title: 'Integrations',
-        note: 'Платежи, CRM, карты, мониторинг и CI/CD.',
-        items: ['REST API', 'Swagger', 'Stripe', 'Zoho CRM', 'Mapbox GL', 'Telegram bots', 'Sentry', 'Docker'],
-      },
-    ],
-  },
-  en: {
-    seo: {
-      title: 'Vue & React Frontend Developer — Rinat Razhapov',
-      description:
-        'Frontend developer with 4+ years of experience in React, Next.js, Vue, Nuxt and TypeScript. SSR applications, complex business logic, testing and CI/CD.',
-    },
-    heroBubble: "Hi! I'm Rinat 👋",
-    heroTitle: ['Vue + React', 'Frontend Developer'],
-    principles: [
-      { number: '01', text: 'I take complex flows all the way to stable releases, not to "we will fix it later"' },
-      { number: '02', text: 'Maps, catalogues and dashboards — heavy state and little room for mistakes' },
-      { number: '03', text: 'Performance users actually feel in the UI, not only in a Lighthouse score' },
-      { number: '04', text: 'Code and architecture you can walk back into six months later without fear' },
-    ],
-    heroCtaExperience: 'View experience',
-    heroCtaContact: 'Get in touch',
-    heroCtaResume: 'Download resume',
-    resumeHref: '/cv/cv-en.pdf',
-    stats: {
-      experience: { label: 'Experience', note: 'years in production with Vue and React' },
-      releases: { label: 'Delivery', note: 'projects and releases' },
-      format: {
-        label: 'Format',
-        value: 'Remote / hybrid / office',
-        note: 'Full-time, comfortable in distributed teams',
-      },
-    },
-    about: {
-      eyebrow: 'About',
-      name: 'Rinat Razhapov',
-      paragraph1:
-        'Frontend developer with 4+ years of experience in Vue/Nuxt and React/Next.js. I take on complex product scenarios, simplify the UX and bring interfaces to stable production.',
-      paragraph2:
-        'I launch SSR applications from scratch and work systematically with architecture, typing, API contracts, testing, CI/CD and release speed.',
-      ctaResume: 'Download resume',
-      ctaTelegram: 'Message on Telegram',
-      photoAlt: 'Rinat Razhapov',
-      photoCaption: 'Rinat, somewhere in 2026',
-    },
-    workSection: {
-      eyebrow: 'Experience',
-      title: 'Employment',
-      description: 'Key roles and companies. Product write-ups live in the Work section.',
-    },
-    workHistory: [
-      {
-        from: '2024',
-        years: 'April 2024 — February 2026',
-        company: 'TrustyOne',
-        role: 'Frontend Developer',
-        desc: 'Full-cycle work for travel and event products: DLI, Eventner, Inspiritaly, Travel 2025. Architecture from scratch, API contracts with backend, testing and CI/CD, Core Web Vitals. Mentoring juniors and backlog prioritisation.',
-      },
-      {
-        from: '2022',
-        years: 'November 2022 — January 2024',
-        company: 'Paleo Studio',
-        role: 'Frontend Developer',
-        desc: 'A logistics platform on Vue 2 + Vuetify, the Silkway Rally account area with dynamic tables and charts, a nightclub portal, a content builder for the admin panel and a browser extension.',
-      },
-      {
-        from: '2021',
-        years: 'June 2021 — August 2022',
-        company: 'Freelance',
-        role: 'Frontend Developer · React / Next.js',
-        desc: 'Built and maintained client web applications and landing pages for small businesses and private clients. Created responsive interfaces and reusable components with React, Next.js and TypeScript, configured SSR/SSG and routing, and integrated REST APIs, forms and validation, React Query and Zustand.',
-      },
-    ],
-    projectsSection: {
-      eyebrow: 'Work',
-      title: 'Projects',
-      description:
-        'Products where I owned the frontend: booking flows, marketplaces, maps and operator tooling.',
-    },
-    petSection: {
-      eyebrow: 'Personal / experiments',
-      title: 'Pet projects',
-      description:
-        'A browser extension, a Figma-to-Vue converter, a lead CRM on the Gemini API, plus a shop and a transfer service built for myself on React 19 and Next.js 15.',
-    },
-    landingsSection: {
-      eyebrow: 'Showcase',
-      title: 'Landing pages and business-card sites',
-      description:
-        'Single-page sites in plain HTML, CSS and JS — no frameworks. Typography, scroll-driven animation, responsive layout.',
-    },
-    stackSection: {
-      eyebrow: 'Skills',
-      title: 'A stack wider than a UI library',
-      description:
-        'Frontend architecture, Vue/React, testing, integrations, bots, CI/CD and product optimisation.',
-    },
-    contactSection: {
-      eyebrow: 'Contact',
-      title: 'Need a frontend developer on your team?',
-      description:
-        'I can join a React/Next.js or Vue/Nuxt project, strengthen the architecture, stabilise releases and bring the interface to solid metrics.',
-    },
-    contactLabels: { email: 'Email', telegram: 'Telegram', github: 'GitHub', gitlab: 'GitLab' },
-    readMore: 'Read more',
-    watch: 'Take a look',
-    skills: [
-      {
-        title: 'Frontend Core',
-        note: 'Typed frontend and server-side JavaScript for product applications.',
-        items: ['TypeScript', 'JavaScript ES6+', 'Node.js', 'REST API', 'Swagger', 'Vite', 'Webpack'],
-      },
-      {
-        title: 'React & Next.js',
-        note: 'SSR/SSG applications, component architecture, forms and state management.',
-        items: ['React 19', 'Next.js App Router', 'Server Components', 'Client Components', 'TanStack Query', 'Zustand', 'React Hook Form', 'Zod'],
-      },
-      {
-        title: 'Vue & Nuxt',
-        note: 'Commercial Vue 2/3 and Nuxt development with SSR and complex business logic.',
-        items: ['Vue 3 Composition API', 'Nuxt 3/4', 'Vue 2', 'Pinia', 'Vuex', 'Vue Router', 'VueUse'],
-      },
-      {
-        title: 'State & UI',
-        note: 'State management and the UI layer of product interfaces.',
-        items: ['Tailwind CSS', 'CSS Modules', 'styled-components', 'SCSS', 'PostCSS', 'PrimeVue', 'Vuetify', 'Quasar', 'Inspira UI'],
-      },
-      {
-        title: 'Quality',
-        note: 'Testing and predictable delivery instead of manual run-throughs.',
-        items: ['Playwright', 'Vitest', 'Jest', 'React Testing Library', 'Vue Test Utils', 'Visual regression', 'ESLint', 'Prettier', 'Husky'],
-      },
-      {
-        title: 'Integrations',
-        note: 'Payments, CRM, maps, monitoring and CI/CD.',
-        items: ['REST API', 'Swagger', 'Stripe', 'Zoho CRM', 'Mapbox GL', 'Telegram bots', 'Sentry', 'Docker'],
-      },
-    ],
-  },
-}
-
-const t = computed(() => pageText[language.value])
-
-const { projects: projectsList } = useProjects()
-
-function toCard(entry: ProjectEntry) {
-  const isRu = language.value === 'ru'
-
-  return {
-    slug: entry.slug,
-    index: entry.index,
-    title: isRu ? entry.titleRu : entry.titleEn,
-    intro: isRu ? entry.introRu : entry.introEn,
-    period: isRu ? entry.periodRu : entry.periodEn,
-    category: entry.tags.slice(0, 3).join(' · '),
-  }
-}
-
-const projectCards = computed(() =>
-  projectsList.filter((entry) => entry.category === 'work').map(toCard),
-)
-
-const petCards = computed(() =>
-  projectsList.filter((entry) => entry.category === 'pet').map(toCard),
-)
-
-const landingCards = computed(() =>
-  projectsList
-    .filter((entry) => entry.category === 'landing')
-    .map((entry) => ({
-      ...toCard(entry),
-      // В витрине живёт только имя бренда — уточнение несёт описание рядом
-      title: toCard(entry).title.split('—')[0]?.trim() ?? '',
-    })),
-)
-
-const contactLinks: { id: ContactId; value: string; href: string; external: boolean }[] = [
-  { id: 'email', value: 'rinni499@gmail.com', href: 'mailto:rinni499@gmail.com', external: false },
-  { id: 'telegram', value: '@r33n_dev', href: 'https://t.me/r33n_dev', external: true },
-  { id: 'github', value: 'github.com/r33n99', href: 'https://github.com/r33n99', external: true },
-  { id: 'gitlab', value: 'gitlab.com/r33n99', href: 'https://gitlab.com/r33n99', external: true },
-]
-
-useHead(() => ({
-  htmlAttrs: {
-    lang: language.value,
-  },
-}))
-
-useSeoMeta({
-  title: computed(() => t.value.seo.title),
-  description: computed(() => t.value.seo.description),
-})
-</script>
+<style scoped>
+.portfolio { --paper: #fff; --ink: #191919; --muted: #646464; --rule: #e4e4e4; --ease: cubic-bezier(.22,1,.36,1); color-scheme: light; background: var(--paper); color: var(--ink); font: 400 17px/1.5 Arial, Helvetica, sans-serif; }
+.portfolio h1,.portfolio h2,.portfolio h3 { font-family: Arial, Helvetica, sans-serif; font-weight: 500; text-wrap: initial; }
+.portfolio a { color: inherit; text-decoration: none; }
+.portfolio button { font: inherit; cursor: pointer; }
+.portfolio :focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
+.page-width { width: min(100% - 96px,1440px); margin-inline: auto; }
+.skip-link { position: absolute; top: -100px; padding: 12px; background: white; z-index: 99; }.skip-link:focus { top: 12px; }
+.portfolio { --header-height: 89px; padding-top: var(--header-height); }
+.site-header { position: fixed; inset: 0 0 auto; height: var(--header-height); background: var(--paper); border-bottom: 1px solid var(--rule); z-index: 50; }
+.header-inner { position: relative; z-index: 2; height: 100%; display: flex; align-items: center; gap: 32px; }
+.portfolio section[id], .portfolio footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
+.wordmark { font-size: 32px; font-weight: 700; letter-spacing: -2px; }.wordmark span { color: var(--muted); }
+.desktop-nav { display: flex; margin-left: auto; gap: 32px; font-size: 15px; }
+.desktop-nav a,.plain-link,.project-meta a,.contact-links a { text-decoration: underline !important; text-decoration-color: transparent !important; text-underline-offset: 5px; transition: text-decoration-color .25s; }
+.desktop-nav a:hover,.plain-link:hover,.project-meta a:hover,.contact-links a:hover { text-decoration-color: currentColor !important; }
+.language,.menu-toggle { border: 0; background: transparent; font-size: 14px !important; min-height: 44px; padding: 8px; }.menu-toggle,.mobile-nav { display: none; }
+.hero { display: grid; grid-template-columns: 1fr 340px; align-items: center; gap: 100px; padding-block: 58px 64px; }
+.eyebrow { font-family: 'JetBrains Mono',monospace; font-size: 13px; color: var(--muted); }
+h1 { margin-block: 24px 28px !important; font-size: clamp(72px,8.5vw,124px); line-height: .98; letter-spacing: -.055em; }
+.name-line { display: block; overflow: clip; padding-bottom: 8px; }.letter { display: inline-block; animation: letter-in .8s var(--ease) var(--delay) backwards; }
+.hero-description { max-width: 48ch; font-size: 21px; line-height: 1.5; letter-spacing: -.02em; }
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; margin-top: 28px; font-size: 15px; }
+.solid-link { display: inline-flex; padding: 14px 21px; background: var(--ink); color: white !important; border-radius: 3px; transition: transform .3s var(--ease),background .25s; }.solid-link:hover { background: #3b3b3b; transform: translateY(-3px); }
+.plain-link span { font-family: 'JetBrains Mono',monospace; font-size: 11px; margin-left: 6px; color: var(--muted); }
+.hero-facts { margin-top: 24px; color: var(--muted); font-size: 14px; }
+.portrait { margin: 0; transform: perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)); transition: transform .6s var(--ease); }
+.portrait-crop { aspect-ratio: .82; overflow: hidden; border-radius: 3px; }.portrait img { display: block; width: 100%; height: 100%; object-fit: cover; transform: scale(1.02) translate(var(--image-x,0px),var(--image-y,0px)); transition: transform .7s var(--ease); }
+.section-heading { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 12px 30px; margin-bottom: 30px; }.section-heading h2 { font-size: 34px; line-height: 1.15; letter-spacing: -.04em; }.section-heading>p { font-size: 13px; color: var(--muted); }
+.work { padding-block: 38px 36px; border-top: 1px solid var(--ink); }
+.project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 32px; }.project { min-width: 0; }
+.project-preview { display: block; position: relative; overflow: hidden; aspect-ratio: 1.92; background: #f1f1f1; border-radius: 3px; transform: perspective(1200px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)); transition: transform .65s var(--ease); }
+.project-preview img { display: block; width: 100%; height: 100%; object-fit: contain; transition: transform .8s var(--ease); }.project-preview:hover img { transform: scale(1.025) translate(var(--image-x,0px),var(--image-y,0px)); }.image-arrived img { animation: image-open .85s var(--ease); }
+.project-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 16px; font-size: 13px; }
+.project-actions a { display: inline-flex; align-items: center; min-height: 44px; }
+.project-actions .project-open { padding: 0 16px; background: var(--ink); color: white; border-radius: 3px; transition: background .25s; }
+.project-actions .project-open:hover { background: #444; }
+.project-actions>a:not(.project-open) { text-decoration: underline; text-underline-offset: 4px; }
+.project-status { font-size: 11px; color: #555; padding: 3px 8px; background: #f0f0f0; border-radius: 3px; margin-left: auto; }
+.mobile-preview { display: flex; justify-content: center; align-items: center; gap: 24px; height: 100%; padding: 20px; background: #efeeeb; }
+.mobile-preview img { width: auto; height: 100%; aspect-ratio: 390 / 844; border-radius: 10px; box-shadow: 0 4px 18px #00000010; }
+.skills { padding-block: 38px 42px; border-top: 1px solid var(--ink); }
+.skill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px 48px; }
+.skill-grid h3 { font-size: 23px; letter-spacing: -.02em; }
+.skill-grid p { margin-top: 8px; color: var(--muted); font-size: 15px; }
+.skill-grid ul { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 16px; list-style: none; padding: 0; }
+.skill-grid li { font-size: 14px; }
+@media(max-width:600px) { .skills { padding-block: 28px; }.skill-grid { grid-template-columns: 1fr; gap: 28px; }.mobile-preview { padding: 12px; gap: 12px; }.mobile-preview img { border-radius: 6px; } }
+.project-heading { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px 20px; margin-top: 19px; }.project-heading h3 { font-size: 25px; line-height: 1.2; letter-spacing: -.025em; }.project-heading h3 a:hover { text-decoration: underline; text-underline-offset: 5px; }.project-period { flex-shrink: 0; font-family: 'JetBrains Mono',monospace; font-size: 11px; color: var(--muted); }
+.project-description { margin-top: 10px; font-size: 16px; color: #505050; }.project-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; margin-top: 12px; color: var(--muted); font-size: 12px; }
+.more-work { padding-block: 38px 36px; border-top: 1px solid var(--ink); }
+.other-projects { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; padding-bottom: 12px; }.other-projects a { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px 20px; padding-block: 14px; border-top: 1px solid var(--rule); font-size: 15px; }.other-projects a:hover>span:first-child { text-decoration: underline; text-underline-offset: 4px; }.other-category { font-size: 11px; color: var(--muted); }
+.experience { padding-block: 38px 42px; border-top: 1px solid var(--ink); }.experience .plain-link { font-size: 14px; }
+.job { display: grid; grid-template-columns: .8fr 1.4fr .75fr; gap: 40px; padding-block: 24px; border-top: 1px solid var(--rule); }.job h3 { font-size: 24px; letter-spacing: -.03em; }.job-role { font-size: 12px; color: var(--muted); margin-top: 4px; }.job-description { font-size: 16px; color: #505050; }.job-date { font-family: 'JetBrains Mono',monospace; font-size: 11px; line-height: 1.8; color: var(--muted); text-align: right; }
+.stack { display: grid; grid-template-columns: .8fr 2.15fr; gap: 40px; border-top: 1px solid var(--rule); padding-top: 24px; }.stack h3 { font-size: 24px; letter-spacing: -.03em; }.stack p { font-size: 16px; color: #505050; }
+.contact { background: #191919; color: #fff; }.contact-layout { display: grid; grid-template-columns: 1fr auto; gap: 60px; align-items: center; padding-block: 46px 40px; }.contact .eyebrow { color: #b6b6b6; }.contact h2 { font-size: clamp(30px,4vw,52px); line-height: 1.15; letter-spacing: -.04em; margin-block: 16px 20px; }.contact-email { font-size: clamp(20px,2.3vw,30px); letter-spacing: -.02em; text-decoration: underline !important; text-underline-offset: 6px; text-decoration-thickness: 1px !important; }.contact-links { display: flex; flex-direction: column; align-items: start; gap: 12px; font-size: 15px; }.colophon { border-top: 1px solid #444; display: flex; justify-content: space-between; gap: 20px; padding-block: 18px; font-size: 12px; color: #b6b6b6; }
+@keyframes letter-in { from { transform: translateY(110%) rotate(5deg); } to { transform: none; } }
+@keyframes image-open { from { clip-path: inset(42% 0 42%); transform: scale(1.045); } to { clip-path: inset(0); transform: scale(1); } }
+@media(max-width:1100px) { .hero { grid-template-columns: 1fr 270px; gap: 50px; }.job { grid-template-columns: .8fr 1.6fr; gap: 12px 30px; }.job-date { grid-column: 2; text-align: left; }.stack { grid-template-columns: .8fr 1.6fr; gap: 30px; } }
+@media(max-width:800px) { .page-width { width: calc(100% - 40px); }.portfolio { --header-height: 74px; }.header-inner { gap: 14px; }.desktop-nav { display: none; }.language { margin-left: auto; }.menu-toggle { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 44px; height: 44px; }.menu-toggle span { display: block; width: 24px; height: 2px; background: currentColor; transition: transform .3s var(--ease); }.menu-open .menu-toggle span:first-child { transform: translateY(4px) rotate(45deg); }.menu-open .menu-toggle span:last-child { transform: translateY(-4px) rotate(-45deg); }.mobile-nav { position: fixed; inset: 0; height: 100dvh; z-index: 1; display: flex; flex-direction: column; justify-content: center; gap: 20px; background: var(--paper); padding: calc(var(--header-height) + 24px) 28px 32px; overflow-y: auto; }.mobile-nav>a { font-size: clamp(30px, 7vw, 48px); line-height: 1.2; letter-spacing: -.035em; }.mobile-nav .menu-telegram { font-size: 16px; letter-spacing: 0; margin-top: auto; }.mobile-nav>a:first-child { margin-top: auto; }.menu-enter-active,.menu-leave-active { transition: clip-path .45s var(--ease); }.menu-enter-from,.menu-leave-to { clip-path: inset(0 0 100%); }.hero { grid-template-columns: 1fr 180px; gap: 28px; padding-block: 36px 42px; }h1 { font-size: clamp(56px,9.5vw,84px); }.hero-description { font-size: 18px; }.hero-actions { gap: 18px; }.project-grid { gap: 32px 24px; }.section-heading h2 { font-size: 28px; }.project-heading h3 { font-size: 22px; }.project-description { font-size: 15px; }.project-meta>span { width: 100%; }.job { gap: 14px 24px; }.job-description { font-size: 15px; }.contact-layout { gap: 32px; }.other-projects { grid-template-columns: 1fr; } }
+@media(max-width:600px) { .hero { grid-template-columns: 1fr; gap: 26px; }.hero-copy { position: relative; }h1 { font-size: clamp(66px,15vw,90px); }.hero-description { font-size: 18px; max-width: 35ch; }.portrait { width: 100%; }.portrait-crop { width: 100%; aspect-ratio: 1.14; }.portrait img { object-position: 50% 44%; }.hero-facts { font-size: 13px; margin-top: 20px; }.solid-link { padding: 12px 17px; }.hero-actions { gap: 16px; font-size: 14px; }.work,.more-work,.experience { padding-block: 28px; }.section-heading { margin-bottom: 24px; }.project-grid { grid-template-columns: 1fr; gap: 30px; }.project-heading { margin-top: 15px; }.project-preview { aspect-ratio: 1.8; }.project-meta>span { width: auto; }.job { grid-template-columns: 1fr; gap: 12px; padding-block: 22px; }.job-date { grid-column: 1; }.stack { grid-template-columns: 1fr; gap: 14px; }.contact-layout { grid-template-columns: 1fr; gap: 30px; padding-block: 32px; }.contact-links { flex-direction: row; flex-wrap: wrap; gap: 14px 24px; }.colophon { flex-wrap: wrap; gap: 10px 20px; font-size: 11px; }.colophon>span:nth-child(2) { display: none; } }
+.reduce-motion *,.reduce-motion *::before,.reduce-motion *::after { animation: none !important; transition: none !important; }
+@media(prefers-reduced-motion:reduce) { .portfolio *,.portfolio *::before,.portfolio *::after { animation: none !important; transition: none !important; } }
+</style>

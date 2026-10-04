@@ -11,12 +11,53 @@ export interface ProjectEntry {
   periodRu: string
   periodEn: string
   previewImage: string
+  previewImages?: string[]
+  previewLayout?: 'mobile'
+  status?: 'in-progress'
   websiteUrl: string
   tags: string[]
   codeUrl: string
 }
 
 const projectsData: ProjectEntry[] = [
+  {
+    slug: 'vdvoem',
+    index: '16',
+    category: 'pet',
+    titleRu: 'Вдвоём',
+    titleEn: 'Vdvoem',
+    introRu: 'Мобильное приложение для пары: общие события, напоминания, хотелки и лента. Android на Capacitor.',
+    introEn: 'An app for couples: shared events, reminders, wish lists and an activity feed. Android with Capacitor.',
+    descriptionRu: 'Разрабатываю mobile-first приложение для пары с Android-оболочкой на Capacitor 8. Реализованы вход и объединение аккаунтов по приглашению, счётчик отношений, общие и личные напоминания, календарь, хотелки и лента действий партнёра. События рядом используют геолокацию и серверную афишу; Gemini с Google Search Grounding служит запасным источником. Supabase отвечает за Auth, PostgreSQL, RLS, RPC, Storage и Realtime. Локальные уведомления Android работают через Capacitor. Продукт находится в разработке; на превью — работающий локальный интерфейс с тестовой парой.',
+    descriptionEn: 'A mobile-first app for couples with an Android shell built on Capacitor 8. Features include authentication and invitation-based pairing, a relationship counter, shared and private reminders, a calendar, wish lists and partner activity. Nearby events use geolocation and server-side event sources, with Gemini and Google Search Grounding as a fallback. Supabase handles Auth, PostgreSQL, RLS, RPC, Storage and Realtime. Android local notifications use Capacitor. In development; the previews show the running local app with a test couple.',
+    periodRu: '2026 — сейчас',
+    periodEn: '2026 — ongoing',
+    status: 'in-progress',
+    previewImage: '/images/projects/vdvoem-home.png',
+    previewImages: ['/images/projects/vdvoem-home.png', '/images/projects/vdvoem-reminders.png', '/images/projects/vdvoem-calendar.png'],
+    previewLayout: 'mobile',
+    websiteUrl: 'https://vdvoem-six.vercel.app/',
+    tags: ['Nuxt 4', 'Vue 3', 'TypeScript', 'Pinia', 'Tailwind CSS 4', 'Supabase', 'PostgreSQL / RLS', 'Capacitor 8', 'Android', 'Gemini', 'Realtime'],
+    codeUrl: '',
+  },
+  {
+    slug: 'smenaos',
+    index: '17',
+    category: 'pet',
+    titleRu: 'SmenaOS',
+    titleEn: 'SmenaOS',
+    introRu: 'SaaS для смен, кассы и пересменки малого бизнеса. Лендинг, авторизация и multi-tenant основа; продукт в разработке.',
+    introEn: 'A SaaS for small-business shifts, cash and handovers. Landing page, authentication and a multi-tenant foundation; in development.',
+    descriptionRu: 'Разрабатываю SaaS для малого бизнеса с быстрыми сценариями сотрудников на телефоне и рабочим пространством владельца на компьютере. Сейчас готовы лендинг, авторизация, защищённые маршруты, UI-компоненты и multi-tenant схема PostgreSQL с изоляцией по business_id и Supabase RLS. Учёт смен и onboarding бизнеса находятся на следующих этапах. Интерфейс построен на Next.js App Router, React 19 и TypeScript, Tailwind CSS 4 и shadcn/ui; в проекте подключены TanStack Query, React Hook Form и Zod, проверки — Vitest и Playwright. На превью — запущенный локальный лендинг с демонстрацией будущего рабочего пространства.',
+    descriptionEn: 'A SaaS for small businesses, with fast employee workflows on mobile and an owner workspace on desktop. The landing page, authentication, protected routes, UI components and a PostgreSQL multi-tenant schema with business_id isolation and Supabase RLS are implemented. Shift workflows and business onboarding are planned next. Built with Next.js App Router, React 19, TypeScript, Tailwind CSS 4 and shadcn/ui, with TanStack Query, React Hook Form, Zod, Vitest and Playwright. The preview shows the running local landing page and its workspace demonstration.',
+    periodRu: '2026 — сейчас',
+    periodEn: '2026 — ongoing',
+    status: 'in-progress',
+    previewImage: '/images/projects/smenaos.png',
+    websiteUrl: '',
+    tags: ['Next.js 16', 'React 19', 'TypeScript', 'Supabase', 'PostgreSQL / RLS', 'Tailwind CSS 4', 'shadcn/ui', 'TanStack Query', 'React Hook Form', 'Zod', 'Vitest', 'Playwright'],
+    codeUrl: '',
+  },
   {
     slug: 'dli-deluxe-limo-italy',
     index: '01',
