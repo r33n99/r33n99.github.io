@@ -1,7 +1,15 @@
+import { fileURLToPath } from 'node:url'
+import { prepareResumeAssets } from './scripts/resume-assets.mjs'
+
+const resumes = prepareResumeAssets(fileURLToPath(new URL('.', import.meta.url)))
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default {
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  runtimeConfig: {
+    public: { resumeFiles: resumes.files },
+  },
   modules: ['@nuxt/icon', '@nuxt/image'],
   css: ['~/assets/css/main.css'],
   postcss: {
@@ -53,6 +61,7 @@ export default {
     },
   },
   nitro: {
+    publicAssets: [{ dir: resumes.directory, baseURL: '/cv' }],
     routeRules: {
       '/projects': { redirect: '/' },
       '/concept': { redirect: '/' },

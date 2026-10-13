@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { useMediaQuery } from '@vueuse/core'
 import PortfolioHeader from '~/components/PortfolioHeader.vue'
 
 const { projects } = useProjects()
 const { language } = useLanguage()
 const ru = computed(() => language.value === 'ru')
-// Mobile browsers and in-app viewers may ignore or block download links.
-// Let their native PDF viewer handle saving, while desktop keeps direct downloads.
-const touchBrowser = useMediaQuery('(hover: none), (pointer: coarse)')
-const mounted = ref(false)
-const openResumeInViewer = computed(() => mounted.value && touchBrowser.value)
-const resumeUrl = computed(() => `/cv/cv-${language.value}.pdf`)
-const resumeDownload = computed(() => openResumeInViewer.value ? undefined : `Rinat-Razhapov-CV-${language.value}.pdf`)
-const resumeTitle = computed(() => openResumeInViewer.value
-  ? (ru.value ? 'Открыть PDF и сохранить через меню браузера' : 'Open PDF and save using the browser menu')
-  : undefined)
+const config = useRuntimeConfig()
+const resumeUrl = computed(() => config.public.resumeFiles[language.value])
+const resumeDownload = computed(() => resumeUrl.value.split('/').pop())
+let downloadSequence = 0
+function prepareResumeDownload(event: MouseEvent) {
+  // Keep the native user gesture; a fresh URL avoids reusing a previous download.
+  const link = event.currentTarget as HTMLAnchorElement
+  const url = new URL(resumeUrl.value, window.location.origin)
+  url.searchParams.set('download', `${Date.now()}-${++downloadSequence}`)
+  link.href = url.href
+}
 const selectedSlugs = ['vdvoem', 'smenaos', 'dli-deluxe-limo-italy', 'eventner', 'inspiritaly', 'travel-2025']
 const selected = projects.filter(p => selectedSlugs.includes(p.slug))
 const otherProjects = projects.filter(p => !selectedSlugs.includes(p.slug))
@@ -53,7 +53,6 @@ function resetSurface(event: PointerEvent) {
   for (const key of ['--image-x', '--image-y']) el.style.setProperty(key, '0px')
 }
 onMounted(() => {
-  mounted.value = true
   const media = window.matchMedia('(prefers-reduced-motion: reduce)')
   const updatePreference = () => { reduced.value = media.matches }
   updatePreference()
@@ -90,7 +89,7 @@ useSeoMeta({
         <p class="hero-description">{{ ru ? 'Vue, React и TypeScript. Разрабатываю веб-приложения, мобильные приложения и SaaS-сервисы.' : 'Vue, React and TypeScript. I build web applications, mobile apps and SaaS products.' }}</p>
         <div class="hero-actions">
           <a href="https://t.me/r33n_dev" target="_blank" rel="noreferrer" class="solid-link">{{ ru ? 'Написать в Telegram' : 'Get in touch on Telegram' }}</a>
-          <a :href="resumeUrl" :download="resumeDownload" target="_blank" rel="noopener" :title="resumeTitle" class="plain-link">{{ openResumeInViewer ? (ru ? 'Открыть резюме' : 'Open résumé') : (ru ? 'Скачать резюме' : 'Download résumé') }} <span>PDF</span></a>
+          <a :href="resumeUrl" :download="resumeDownload" target="_blank" rel="noopener" class="plain-link" @click="prepareResumeDownload">{{ ru ? 'Скачать резюме' : 'Download résumé' }} <span>PDF</span></a>
         </div>
         <p class="hero-facts">{{ ru ? '4+ года опыта · Удалённо / гибрид либо офис в городе Бишкек' : '4+ years of experience · Remote / hybrid or office-based in Bishkek' }}</p>
       </div>
@@ -120,7 +119,7 @@ useSeoMeta({
     </section>
 
     <section id="experience" class="experience page-width" :inert="menuOpen || undefined">
-      <div class="section-heading"><h2>{{ ru ? 'Опыт работы' : 'Experience' }}</h2><a :href="resumeUrl" :download="resumeDownload" target="_blank" rel="noopener" :title="resumeTitle" class="plain-link">{{ ru ? 'Полное резюме' : 'Full résumé' }} <span>PDF</span></a></div>
+      <div class="section-heading"><h2>{{ ru ? 'Опыт работы' : 'Experience' }}</h2><a :href="resumeUrl" :download="resumeDownload" target="_blank" rel="noopener" class="plain-link" @click="prepareResumeDownload">{{ ru ? 'Полное резюме' : 'Full résumé' }} <span>PDF</span></a></div>
       <article v-for="job in jobs" :key="job.company" class="job">
         <div><h3>{{ job.company }}</h3><p class="job-role">Frontend Developer</p></div>
         <p class="job-description">{{ job.description[ru ? 0 : 1] }}</p>
@@ -135,7 +134,7 @@ useSeoMeta({
     <footer id="contact" class="contact" :inert="menuOpen || undefined">
       <div class="page-width contact-layout">
         <div><p class="eyebrow">{{ ru ? 'Контакт' : 'Contact' }}</p><h2>{{ ru ? 'Обсудим вашу задачу.' : 'Let’s talk about your project.' }}</h2><a href="mailto:rinni499@gmail.com" class="contact-email">rinni499@gmail.com</a></div>
-        <div class="contact-links"><a href="https://t.me/r33n_dev" target="_blank" rel="noreferrer">Telegram</a><a href="https://github.com/r33n99" target="_blank" rel="noreferrer">GitHub</a><a href="https://gitlab.com/r33n99" target="_blank" rel="noreferrer">GitLab</a><a :href="resumeUrl" :download="resumeDownload" target="_blank" rel="noopener" :title="resumeTitle">{{ ru ? 'Резюме / PDF' : 'Résumé / PDF' }}</a></div>
+        <div class="contact-links"><a href="https://t.me/r33n_dev" target="_blank" rel="noreferrer">Telegram</a><a href="https://github.com/r33n99" target="_blank" rel="noreferrer">GitHub</a><a href="https://gitlab.com/r33n99" target="_blank" rel="noreferrer">GitLab</a><a :href="resumeUrl" :download="resumeDownload" target="_blank" rel="noopener" @click="prepareResumeDownload">{{ ru ? 'Резюме / PDF' : 'Résumé / PDF' }}</a></div>
       </div>
       <div class="page-width colophon"><span>r33n</span><span>{{ ru ? 'Удалённо / гибрид либо офис в городе Бишкек' : 'Remote / hybrid or office-based in Bishkek' }}</span><a href="#">{{ ru ? 'Наверх' : 'Back to top' }}</a></div>
     </footer>
