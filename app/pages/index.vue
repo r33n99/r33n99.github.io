@@ -16,7 +16,7 @@ function prepareResumeDownload(event: MouseEvent) {
   url.searchParams.set('download', `${Date.now()}-${++downloadSequence}`)
   link.href = url.href
 }
-const selectedSlugs = ['vdvoem', 'smenaos', 'dli-deluxe-limo-italy', 'eventner', 'inspiritaly', 'travel-2025']
+const selectedSlugs = ['vdvoem', 'smenaos', 'tomiko', 'samokettik', 'taskflow', 'fintrack', 'dli-deluxe-limo-italy', 'eventner', 'inspiritaly', 'travel-2025']
 const selected = projects.filter(p => selectedSlugs.includes(p.slug))
 const otherProjects = projects.filter(p => !selectedSlugs.includes(p.slug))
 const root = ref<HTMLElement>()
