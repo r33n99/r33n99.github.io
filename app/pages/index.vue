@@ -18,10 +18,10 @@ function prepareResumeDownload(event: MouseEvent) {
 }
 const selectedSlugs = ['tomiko', 'samokettik', 'taskflow', 'fintrack', 'florist-studio', 'vdvoem', 'smenaos', 'dli-deluxe-limo-italy', 'eventner', 'inspiritaly']
 const selected = selectedSlugs.flatMap(slug => getBySlug(slug) ?? [])
-const automationSlugs = ['2gis-lead-crm', 'figma-2-vue']
+const highlightedOtherSlugs = ['zefira', '2gis-lead-crm', 'figma-2-vue']
 const otherProjects = [
-  ...automationSlugs.flatMap(slug => getBySlug(slug) ?? []),
-  ...projects.filter(project => !selectedSlugs.includes(project.slug) && !automationSlugs.includes(project.slug)),
+  ...highlightedOtherSlugs.flatMap(slug => getBySlug(slug) ?? []),
+  ...projects.filter(project => !selectedSlugs.includes(project.slug) && !highlightedOtherSlugs.includes(project.slug)),
 ]
 const root = ref<HTMLElement>()
 const menuOpen = ref(false)

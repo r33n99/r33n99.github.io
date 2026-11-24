@@ -21,6 +21,23 @@ export interface ProjectEntry {
 
 const projectsData: ProjectEntry[] = [
   {
+    slug: 'zefira',
+    index: '23',
+    category: 'work',
+    titleRu: 'Zefira',
+    titleEn: 'Zefira',
+    introRu: 'Пилот аналитики для розницы: тепловые карты посетителей, история перемещений и отчёты по рабочим зонам.',
+    introEn: 'A retail analytics pilot with visitor heatmaps, movement playback and reports on activity across work zones.',
+    descriptionRu: 'Разработал интерфейс пилота на React и TypeScript. Карта на PixiJS и WebGL объединяет тепловые слои посетителей и маршруты сотрудников, а общий плеер синхронизирует карту и диаграммы по времени. Реализовал дневные и недельные отчёты и сопоставление потока посетителей с наблюдениями персонала по зонам. Пропуски сигнала учитываются как интервалы с неизвестным положением. Приложение использует общий контракт данных для демонстрационного режима и подключения API.',
+    descriptionEn: 'Built the pilot interface with React and TypeScript. A PixiJS and WebGL map combines visitor heatmaps and staff routes, and a shared playback timeline keeps the map and charts in sync. Implemented daily and weekly reports and compared visitor activity with staff observations by zone. Gaps in sensor data are recorded as periods of unknown location. The application uses a shared data contract for demo mode and API integration.',
+    periodRu: '2026',
+    periodEn: '2026',
+    previewImage: '',
+    websiteUrl: '',
+    tags: ['React', 'TypeScript', 'PixiJS / WebGL', 'Zustand', 'TanStack Query', 'Vitest'],
+    codeUrl: '',
+  },
+  {
     slug: 'vdvoem',
     index: '16',
     category: 'pet',
