@@ -38,11 +38,12 @@ RESUMES = {
                 "Разработал монорепозиторий с публичным сайтом на Next.js, React-админкой и REST API на NestJS. Вынес общие типы и схемы валидации Zod в отдельный пакет.",
                 "Реализовал управление каталогом на Prisma и PostgreSQL, сессии в httpOnly cookie, обработку изображений и обновление кэша сайта после правок в админке. Подготовил Docker Compose и скрипты резервного копирования.",
             )),
-            ("TrustyOne | Frontend Developer | Апрель 2024 - февраль 2026", (
-                "Проектировал архитектуру приложений TravelTech и EventTech. Для DLI реализовал многошаговое бронирование, динамический расчёт тарифа и поддержку нескольких брендов в общей кодовой базе.",
+            ("TrustyOne | Fullstack Developer | Апрель 2024 - февраль 2026", (
+                "Разрабатывал интерфейсы на React и проектировал архитектуру приложений TravelTech и EventTech. Для DLI реализовал многошаговое бронирование, динамический расчёт тарифа и поддержку нескольких брендов в общей кодовой базе.",
                 "Согласовывал API-контракты с backend-командой для бронирований, оплаты Stripe и передачи данных в Zoho CRM. Настраивал проверки с Vitest и Playwright и автодеплой в CI/CD.",
             )),
-            ("Paleo Studio | Frontend Developer | Ноябрь 2022 - январь 2024", (
+            ("Paleo Studio | Fullstack Developer | Ноябрь 2022 - январь 2024", (
+                "Разрабатывал клиентские приложения на Vue и работал над серверной частью на Node.js.",
                 "Разрабатывал панели операторов ParcelPoint: статусы отправлений, формы и валидация. Для Silkway Rally создавал личный кабинет с интерфейсами по ролям, таблицами и графиками на Vue и Vuetify.",
             )),
             ("Фриланс | Frontend Developer | Июнь 2021 - август 2022", (
@@ -75,11 +76,12 @@ RESUMES = {
                 "Built a monorepo with a Next.js public site, a React admin panel and a NestJS REST API. Shared TypeScript types and Zod validation schemas across applications.",
                 "Implemented catalog management with Prisma and PostgreSQL, httpOnly cookie sessions, image processing and site cache revalidation after admin edits. Prepared Docker Compose configuration and backup scripts.",
             )),
-            ("TrustyOne | Frontend Developer | April 2024 - February 2026", (
-                "Designed application architecture for TravelTech and EventTech projects. Implemented multi-step booking, dynamic pricing and multi-brand support in a shared codebase for DLI.",
+            ("TrustyOne | Fullstack Developer | April 2024 - February 2026", (
+                "Built React interfaces and designed application architecture for TravelTech and EventTech projects. Implemented multi-step booking, dynamic pricing and multi-brand support in a shared codebase for DLI.",
                 "Defined API contracts with the backend team for bookings, Stripe payments and Zoho CRM data. Configured Vitest and Playwright checks and automated deployments in CI/CD.",
             )),
-            ("Paleo Studio | Frontend Developer | November 2022 - January 2024", (
+            ("Paleo Studio | Fullstack Developer | November 2022 - January 2024", (
+                "Built Vue applications and worked on server-side features with Node.js.",
                 "Built ParcelPoint operator dashboards for shipment status management, forms and validation. Developed role-based views, tables and charts for the Silkway Rally account portal using Vue and Vuetify.",
             )),
             ("Freelance | Frontend Developer | June 2021 - August 2022", (
