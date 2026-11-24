@@ -2,7 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import PortfolioHeader from '~/components/PortfolioHeader.vue'
 
-const { projects } = useProjects()
+const { projects, getBySlug } = useProjects()
 const { language } = useLanguage()
 const ru = computed(() => language.value === 'ru')
 const config = useRuntimeConfig()
@@ -16,23 +16,28 @@ function prepareResumeDownload(event: MouseEvent) {
   url.searchParams.set('download', `${Date.now()}-${++downloadSequence}`)
   link.href = url.href
 }
-const selectedSlugs = ['vdvoem', 'smenaos', 'tomiko', 'samokettik', 'taskflow', 'fintrack', 'dli-deluxe-limo-italy', 'eventner', 'inspiritaly', 'travel-2025']
-const selected = projects.filter(p => selectedSlugs.includes(p.slug))
-const otherProjects = projects.filter(p => !selectedSlugs.includes(p.slug))
+const selectedSlugs = ['tomiko', 'samokettik', 'taskflow', 'fintrack', 'florist-studio', 'vdvoem', 'smenaos', 'dli-deluxe-limo-italy', 'eventner', 'inspiritaly']
+const selected = selectedSlugs.flatMap(slug => getBySlug(slug) ?? [])
+const automationSlugs = ['2gis-lead-crm', 'figma-2-vue']
+const otherProjects = [
+  ...automationSlugs.flatMap(slug => getBySlug(slug) ?? []),
+  ...projects.filter(project => !selectedSlugs.includes(project.slug) && !automationSlugs.includes(project.slug)),
+]
 const root = ref<HTMLElement>()
 const menuOpen = ref(false)
 const reduced = ref(false)
 const name = computed(() => ru.value ? ['Ринат', 'Ражапов'] : ['Rinat', 'Razhapov'])
 const skillGroups = [
-  { label: ['Frontend', 'Frontend'], description: ['Продуктовые интерфейсы, SSR и типизация.', 'Product interfaces, SSR and type safety.'], items: ['TypeScript', 'Vue 3 / Nuxt 4', 'React 19 / Next.js', 'Pinia', 'TanStack Query', 'Tailwind CSS', 'shadcn/ui'] },
-  { label: ['Мобильные приложения', 'Mobile apps'], description: ['Веб-интерфейс и нативные возможности Android.', 'Web interfaces and native Android capabilities.'], items: ['Capacitor 8', 'Android', 'Geolocation', 'Local Notifications', 'Mobile-first UI'] },
-  { label: ['Данные и интеграции', 'Data and integrations'], description: ['Авторизация, изоляция данных и серверные API.', 'Authentication, data isolation and server APIs.'], items: ['Node.js', 'Supabase Auth', 'PostgreSQL', 'RLS / RPC', 'Realtime', 'Storage', 'REST API', 'Gemini / Search Grounding'] },
-  { label: ['Качество и доставка', 'Quality and delivery'], description: ['Валидация, проверки и стабильные релизы.', 'Validation, verification and reliable releases.'], items: ['Zod', 'React Hook Form', 'Vitest', 'Playwright', 'CI/CD', 'Core Web Vitals'] },
+  { label: ['Frontend', 'Frontend'], items: ['React', 'Next.js', 'TypeScript', 'App Router / SSR', 'TanStack Query', 'React Hook Form'] },
+  { label: ['Backend и данные', 'Backend and data'], items: ['Node.js', 'NestJS', 'PostgreSQL', 'REST API', 'Prisma', 'Drizzle ORM', 'Fastify', 'Express', 'Supabase / RLS', 'WebSocket', 'Zod'] },
+  { label: ['Мобильная разработка и интеграции', 'Mobile development and integrations'], items: ['Android', 'Capacitor', 'Stripe', 'Zoho CRM', 'WhatsApp / Green API', 'Gemini API'] },
+  { label: ['Дополнительные технологии', 'Additional technologies'], items: ['Vue', 'Nuxt', 'Vitest', 'Playwright', 'Docker', 'CI/CD'] },
 ]
 const jobs = [
-  { company: 'TrustyOne', date: ['Апрель 2024 — Февраль 2026', 'April 2024 — February 2026'], description: ['Travel и EventTech. Архитектура с нуля, бронирования, API-контракты, тестирование и CI/CD.', 'Travel and EventTech. Architecture, booking flows, API contracts, testing and CI/CD.'] },
-  { company: 'Paleo Studio', date: ['Ноябрь 2022 — Январь 2024', 'November 2022 — January 2024'], description: ['Логистические платформы, кабинеты, динамические таблицы и графики на Vue.', 'Logistics platforms, accounts, dynamic tables and charts with Vue.'] },
-  { company: 'Freelance', date: ['Июнь 2021 — Август 2022', 'June 2021 — August 2022'], description: ['Клиентские приложения и лендинги на React и Next.js. SSR, REST API, формы и валидация.', 'Client apps and landing pages with React and Next.js. SSR, REST APIs, forms and validation.'] },
+  { company: 'Tomiko × JOSEI', role: 'Fullstack Developer', date: ['2026 · проект на заказ', '2026 · commissioned project'], description: ['Спроектировал монорепозиторий для публичного сайта на Next.js, React-админки и REST API на NestJS. Реализовал модель каталога в PostgreSQL, авторизацию администраторов и обновление кэша сайта после правок в админке.', 'Designed a monorepo for a Next.js public site, a React admin panel and a NestJS REST API. Implemented the PostgreSQL catalog model, admin authentication and site cache revalidation after content edits.'] },
+  { company: 'TrustyOne', role: 'Frontend Developer', date: ['Апрель 2024 — февраль 2026', 'April 2024 — February 2026'], description: ['Проектировал архитектуру веб-приложений TravelTech и EventTech. Реализовал многошаговое бронирование и динамический расчёт стоимости. Согласовывал API-контракты с backend-командой и подключал клиентские сценарии оплаты Stripe и передачи данных в Zoho CRM. Настраивал тестирование и CI/CD.', 'Designed web application architecture for TravelTech and EventTech projects. Implemented multi-step booking and dynamic pricing. Defined API contracts with the backend team and wired up client flows for Stripe payments and Zoho CRM. Set up testing and CI/CD.'] },
+  { company: 'Paleo Studio', role: 'Frontend Developer', date: ['Ноябрь 2022 — январь 2024', 'November 2022 — January 2024'], description: ['Разрабатывал рабочие панели операторов ParcelPoint: управление статусами отправлений, формы и валидацию. В личном кабинете Silkway Rally реализовал интерфейсы для разных ролей, динамические таблицы и графики на Vue и Vuetify.', 'Built ParcelPoint operator dashboards for shipment status management, forms and validation. Implemented role-based views, dynamic tables and charts for the Silkway Rally account portal using Vue and Vuetify.'] },
+  { company: 'Freelance', role: 'Frontend Developer', date: ['Июнь 2021 — август 2022', 'June 2021 — August 2022'], description: ['Разрабатывал приложения на React, Next.js и TypeScript. Настраивал SSR, маршрутизацию и формы с валидацией, интегрировал REST API и управлял состоянием данных в интерфейсе.', 'Built applications with React, Next.js and TypeScript. Set up SSR, routing and form validation, integrated REST APIs and managed client-side data state.'] },
 ]
 let observer: IntersectionObserver | undefined
 let dispose = () => {}
@@ -69,9 +74,22 @@ onMounted(() => {
   dispose = () => { media.removeEventListener('change', updatePreference) }
 })
 onBeforeUnmount(() => { observer?.disconnect(); dispose() })
+const title = computed(() => `${name.value.join(' ')} — Middle Fullstack Developer`)
+const description = computed(() => ru.value
+  ? 'Ринат Ражапов, Middle Fullstack Developer из Бишкека. React, Next.js, TypeScript, Node.js, NestJS и PostgreSQL. Коммерческие проекты, мобильная разработка и резюме.'
+  : 'Rinat Razhapov, Middle Fullstack Developer based in Bishkek. React, Next.js, TypeScript, Node.js, NestJS and PostgreSQL. Commercial projects, mobile development and résumé.')
+const canonicalUrl = 'https://r33n99.github.io/'
+useHead({ link: [{ rel: 'canonical', href: canonicalUrl }] })
 useSeoMeta({
-  title: computed(() => ru.value ? 'Ринат Ражапов — веб, мобильные приложения и SaaS' : 'Rinat Razhapov — web, mobile apps and SaaS'),
-  description: computed(() => ru.value ? 'Разрабатываю веб-приложения, мобильные приложения и SaaS-сервисы на Vue, React и TypeScript. 4+ года опыта. Удалённо / гибрид либо офис в городе Бишкек.' : 'Web applications, mobile apps and SaaS products with Vue, React and TypeScript. 4+ years of experience. Remote / hybrid or office-based in Bishkek.'),
+  title, description,
+  ogTitle: title,
+  ogDescription: description,
+  ogType: 'website',
+  ogUrl: canonicalUrl,
+  ogLocale: computed(() => ru.value ? 'ru_RU' : 'en_US'),
+  twitterCard: 'summary',
+  twitterTitle: title,
+  twitterDescription: description,
 })
 </script>
 
@@ -82,11 +100,11 @@ useSeoMeta({
 
     <section class="hero page-width" :inert="menuOpen || undefined">
       <div class="hero-copy">
-        <p class="eyebrow">Frontend developer · {{ ru ? 'Бишкек' : 'Bishkek' }}</p>
+        <p class="eyebrow">Middle Fullstack Developer · {{ ru ? 'Бишкек' : 'Bishkek' }}</p>
         <h1 :key="language" :aria-label="name.join(' ')">
           <span v-for="(line, row) in name" :key="line" class="name-line" aria-hidden="true"><span v-for="(letter, index) in line" :key="index" class="letter" :style="{ '--delay': `${row * 120 + index * 35}ms` }">{{ letter }}</span></span>
         </h1>
-        <p class="hero-description">{{ ru ? 'Vue, React и TypeScript. Разрабатываю веб-приложения, мобильные приложения и SaaS-сервисы.' : 'Vue, React and TypeScript. I build web applications, mobile apps and SaaS products.' }}</p>
+        <p class="hero-description">{{ ru ? 'Разрабатываю приложения от интерфейса до базы данных. Мой основной стек — React, Next.js, TypeScript, Node.js, NestJS и PostgreSQL.' : 'I build applications from the UI to the database. My core stack is React, Next.js, TypeScript, Node.js, NestJS and PostgreSQL.' }}</p>
         <div class="hero-actions">
           <a href="https://t.me/r33n_dev" target="_blank" rel="noreferrer" class="solid-link">{{ ru ? 'Написать в Telegram' : 'Get in touch on Telegram' }}</a>
           <a :href="resumeUrl" :download="resumeDownload" target="_blank" rel="noopener" class="plain-link" @click="prepareResumeDownload">{{ ru ? 'Скачать резюме' : 'Download résumé' }} <span>PDF</span></a>
@@ -99,14 +117,14 @@ useSeoMeta({
     </section>
 
     <section id="projects" class="work page-width" :inert="menuOpen || undefined">
-      <div class="section-heading"><h2>{{ ru ? 'Избранные проекты' : 'Selected projects' }}</h2><p>{{ ru ? 'Мобильные приложения · SaaS · Web' : 'Mobile apps · SaaS · Web' }}</p></div>
+      <div class="section-heading"><h2>{{ ru ? 'Избранные проекты' : 'Selected projects' }}</h2><p>{{ ru ? 'Fullstack · Мобильные приложения · Автоматизация' : 'Fullstack · Mobile apps · Automation' }}</p></div>
       <div class="project-grid">
         <article v-for="project in selected" :key="project.slug" class="project">
-          <a class="project-preview" :class="{ 'has-mobile-screens': project.previewLayout === 'mobile' }" :href="project.websiteUrl || `/projects/${project.slug}`" :target="project.websiteUrl ? '_blank' : undefined" :rel="project.websiteUrl ? 'noreferrer' : undefined" :aria-label="`${ru ? 'Открыть' : 'Visit'} ${ru ? project.titleRu : project.titleEn}`" @pointermove="moveSurface" @pointerleave="resetSurface">
+          <NuxtLink class="project-preview" :class="{ 'has-mobile-screens': project.previewLayout === 'mobile' }" :to="`/projects/${project.slug}`" :aria-label="`${ru ? 'Открыть' : 'View'} ${ru ? project.titleRu : project.titleEn}`" @pointermove="moveSurface" @pointerleave="resetSurface">
             <div v-if="project.previewLayout === 'mobile'" class="mobile-preview"><img v-for="(shot, i) in project.previewImages?.slice(0, 2)" :key="shot" :src="shot" :alt="`${ru ? project.titleRu : project.titleEn} — ${i === 0 ? (ru ? 'Главная' : 'Home') : (ru ? 'Напоминания' : 'Reminders')}`" loading="lazy"></div>
             <img v-else :src="project.previewImage" :alt="ru ? project.titleRu : project.titleEn" loading="lazy">
-          </a>
-          <div class="project-heading"><h3><a :href="project.websiteUrl || `/projects/${project.slug}`" :target="project.websiteUrl ? '_blank' : undefined" :rel="project.websiteUrl ? 'noreferrer' : undefined">{{ ru ? project.titleRu : project.titleEn }}</a></h3><span v-if="project.status === 'in-progress'" class="project-status">{{ ru ? 'В разработке' : 'In development' }}</span><span class="project-period">{{ ru ? project.periodRu : project.periodEn }}</span></div>
+          </NuxtLink>
+          <div class="project-heading"><h3><NuxtLink :to="`/projects/${project.slug}`">{{ ru ? project.titleRu : project.titleEn }}</NuxtLink></h3><span v-if="project.status === 'in-progress'" class="project-status">{{ ru ? 'В разработке' : 'In development' }}</span><span class="project-period">{{ ru ? project.periodRu : project.periodEn }}</span></div>
           <p class="project-description">{{ ru ? project.introRu : project.introEn }}</p>
           <div class="project-meta"><span>{{ project.tags.join(' · ') }}</span></div>
           <div class="project-actions"><a v-if="project.websiteUrl" class="project-open" :href="project.websiteUrl" target="_blank" rel="noreferrer">{{ ru ? (project.previewLayout === 'mobile' ? 'Открыть приложение' : 'Открыть сайт') : (project.previewLayout === 'mobile' ? 'Open app' : 'Visit website') }}</a><NuxtLink v-else class="project-open" :to="`/projects/${project.slug}`">{{ ru ? 'О проекте' : 'About the project' }}</NuxtLink><a v-if="project.codeUrl" :href="project.codeUrl" target="_blank" rel="noreferrer">{{ ru ? 'Код проекта' : 'Source code' }}</a></div>
@@ -114,21 +132,21 @@ useSeoMeta({
       </div>
     </section>
     <section id="other-projects" class="more-work page-width" :inert="menuOpen || undefined">
-        <div class="section-heading"><h2>{{ ru ? 'Другие работы' : 'More work' }}</h2><p>{{ ru ? 'Пет-проекты, сервисы и лендинги' : 'Side projects, services and landing pages' }}</p></div>
+        <div class="section-heading"><h2>{{ ru ? 'Другие работы' : 'More work' }}</h2><p>{{ ru ? 'Интеграции ИИ, инструменты и сайты' : 'AI integrations, tools and websites' }}</p></div>
         <div class="other-projects"><NuxtLink v-for="project in otherProjects" :key="project.slug" :to="`/projects/${project.slug}`"><span>{{ ru ? project.titleRu : project.titleEn }}</span><span class="other-category">{{ project.tags.slice(0, 2).join(' / ') }}</span></NuxtLink></div>
     </section>
 
     <section id="experience" class="experience page-width" :inert="menuOpen || undefined">
       <div class="section-heading"><h2>{{ ru ? 'Опыт работы' : 'Experience' }}</h2><a :href="resumeUrl" :download="resumeDownload" target="_blank" rel="noopener" class="plain-link" @click="prepareResumeDownload">{{ ru ? 'Полное резюме' : 'Full résumé' }} <span>PDF</span></a></div>
       <article v-for="job in jobs" :key="job.company" class="job">
-        <div><h3>{{ job.company }}</h3><p class="job-role">Frontend Developer</p></div>
+        <div><h3>{{ job.company }}</h3><p class="job-role">{{ job.role }}</p></div>
         <p class="job-description">{{ job.description[ru ? 0 : 1] }}</p>
         <p class="job-date">{{ job.date[ru ? 0 : 1] }}</p>
       </article>
     </section>
     <section id="stack" class="skills page-width" :inert="menuOpen || undefined">
       <div class="section-heading"><h2>{{ ru ? 'Технологии и инструменты' : 'Technologies and tools' }}</h2></div>
-      <div class="skill-grid"><article v-for="group in skillGroups" :key="group.label[0]"><h3>{{ group.label[ru ? 0 : 1] }}</h3><p>{{ group.description[ru ? 0 : 1] }}</p><ul><li v-for="item in group.items" :key="item">{{ item }}</li></ul></article></div>
+      <div class="skill-grid"><article v-for="group in skillGroups" :key="group.label[0]"><h3>{{ group.label[ru ? 0 : 1] }}</h3><ul><li v-for="item in group.items" :key="item">{{ item }}</li></ul></article></div>
     </section>
 
     <footer id="contact" class="contact" :inert="menuOpen || undefined">

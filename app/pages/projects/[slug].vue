@@ -20,7 +20,14 @@ const images = entry.previewImages?.length ? entry.previewImages : entry.preview
 const nextProject = projects[(projects.findIndex(project => project.slug === entry.slug) + 1) % projects.length]!
 
 useHead(() => ({ htmlAttrs: { lang: language.value } }))
-useSeoMeta({ title, description })
+useSeoMeta({
+  title,
+  description,
+  ogTitle: title,
+  ogDescription: description,
+  ogType: 'website',
+  ogLocale: computed(() => ru.value ? 'ru_RU' : 'en_US'),
+})
 </script>
 
 <template>
